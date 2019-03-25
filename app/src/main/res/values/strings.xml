@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">ChickenLover</string>
+    <string name="app_permission">권한 설정</string>
+    <string name="app_permission_storage_title">Storage</string>
+    <string name="app_permission_storage_content">단말기 내부, 외부 저장소 사용을 위한 권한이 필요합니다</string>
+    <string name="app_permission_submit">설정하기</string>
+    <string name="toolbar_title_home">홈</string>
+    <string name="toolbar_title_board">게시판</string>
+    <string name="toolbar_title_rank_n_info">랭킹과 정보</string>
+    <string name="toolbar_title_profile">내 정보</string>
+    <string name="app_guest_kr">손님</string>
+    <string name="app_guest_en">GUEST</string>
+    <string name="app_home_first_visit_favorite_brand">선호하는 치킨 브랜드 고르기</string>
+    <string name="app_home_first_visit_favorite_type">선호하는 맛 고르기</string>
+    <string name="home_go_select_fb">선호 브랜드 설정</string>
+    <string name="home_go_select_ft">선호 맛 설정</string>
+    <string name="search">검색</string>
+    <string name="app_chicken_info_title">치킨 정보</string>
+    <string name="join">회원가입</string>
+    <string name="login">로그인</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
