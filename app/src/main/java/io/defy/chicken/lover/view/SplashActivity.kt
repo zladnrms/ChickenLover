@@ -32,5 +32,9 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT)
     }
+    override fun onDestroy() {
+        super.onDestroy()
 
+        presenter?.detachView(this)
+    }
 }

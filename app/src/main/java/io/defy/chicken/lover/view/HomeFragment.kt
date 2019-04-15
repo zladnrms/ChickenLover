@@ -43,16 +43,6 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        home_go_select_fb.setOnClickListener {
-            val intent = Intent(activity, SelectFavoriteBrandActivity::class.java)
-            startActivity(intent)
-        }
-
-        home_go_select_ft.setOnClickListener {
-            val intent = Intent(activity, SelectFavoriteTypeActivity::class.java)
-            startActivity(intent)
-        }
-
         btn_id.setOnClickListener {
             val data = RandomPickUtil.randomBrandPick()
             val data2 = RandomPickUtil.randomTypePick()
@@ -85,5 +75,10 @@ class HomeFragment : Fragment(), HomeContract.View {
         if (a != null && b != null) {
             code(a, b)
         }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
     }
 }

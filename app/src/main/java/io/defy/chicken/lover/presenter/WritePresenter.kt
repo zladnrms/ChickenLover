@@ -1,5 +1,7 @@
 package io.defy.chicken.lover.presenter
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
 import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.WriteContract
@@ -92,13 +94,20 @@ class WritePresenter : WriteContract.Presenter {
             })
     }
 
-    fun testImg() {
-/*
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        // MultipartBody.Part is used to send also the actual filename
-        val body = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
-        // adds another part within the multipart request
-        val descriptionString = "Sample description"
-        val description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString)*/
+    override fun getFileName(fileStr : String,isExtension : Boolean) : String? {
+        var fileName : String? = null
+        if(isExtension)
+        {
+            fileName = fileStr.substring(fileStr.lastIndexOf("/"),fileStr.lastIndexOf("."));
+        }else{
+            fileName = fileStr.substring(fileStr.lastIndexOf("/")+1);
+        }
+        return fileName
+    }
+
+    override fun imgPathToBitmap(path : String) : Bitmap {
+        val file = File(path)
+        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+        return bitmap
     }
 }

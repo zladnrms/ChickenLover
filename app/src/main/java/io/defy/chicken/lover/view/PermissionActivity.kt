@@ -137,4 +137,9 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
+    }
 }

@@ -41,4 +41,10 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
     override fun complete() {
         finish()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
+    }
 }

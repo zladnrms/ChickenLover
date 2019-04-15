@@ -91,10 +91,6 @@ MainActivity : AppCompatActivity(), MainContract.View {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT)
     }
@@ -114,5 +110,11 @@ MainActivity : AppCompatActivity(), MainContract.View {
             // do something u want
             RxBus.publish(ImagePickResultEvent("board",selectPaths))
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
     }
 }

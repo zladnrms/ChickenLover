@@ -1,5 +1,6 @@
 package io.defy.chicken.lover.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -83,5 +84,11 @@ class BoardFragment : Fragment(), BoardContract.View {
 
         /* for memory */
         articleList.adapter = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
     }
 }

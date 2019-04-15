@@ -51,4 +51,10 @@ class RankNInfoFragment : Fragment(), RankNInfoContract.View {
             code(a, b)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
+    }
 }

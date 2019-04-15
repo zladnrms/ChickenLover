@@ -21,4 +21,10 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
         presenter = ChickenInfoPresenter()
         presenter?.attachView(this)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
+    }
 }

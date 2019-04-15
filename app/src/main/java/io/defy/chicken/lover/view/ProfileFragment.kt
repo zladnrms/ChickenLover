@@ -118,4 +118,10 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun setUserVisitTime(visitTime: Int) {
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
+    }
 }

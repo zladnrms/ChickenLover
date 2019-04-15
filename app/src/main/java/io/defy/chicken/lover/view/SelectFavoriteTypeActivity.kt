@@ -98,4 +98,9 @@ class SelectFavoriteTypeActivity : AppCompatActivity(), SelectFavoriteTypeContra
             favorite_type_next.visibility = View.VISIBLE
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
+    }
 }

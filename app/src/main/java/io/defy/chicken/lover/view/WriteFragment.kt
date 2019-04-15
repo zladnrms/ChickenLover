@@ -1,5 +1,6 @@
 package io.defy.chicken.lover.view
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -14,6 +15,8 @@ import io.defy.chicken.lover.presenter.WritePresenter
 import java.io.File
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.werb.pickphotoview.PickPhotoView
@@ -36,6 +39,10 @@ class WriteFragment : Fragment(), WriteContract.View {
         fun newInstance(): WriteFragment {
             return WriteFragment()
         }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +74,15 @@ class WriteFragment : Fragment(), WriteContract.View {
                 val title = et_title.text.toString()
                 val content = et_content.text.toString().replace("\n", "<br />")
                 val imagesPath = it.getImagesPath()
-                presenter?.write("free", title, content, imagesPath)
+
+                if(title.trim().equals("") || content.trim().equals(""))
+                {
+                    Toast.makeText(activity, "제목 혹은 내용을 작성해주세요", Toast.LENGTH_SHORT).show()
+                }
+                else
+                {
+                    presenter?.write("free", title, content, imagesPath)
+                }
             }
         }
 
@@ -95,24 +110,21 @@ class WriteFragment : Fragment(), WriteContract.View {
                 it.imagesPath?.let {
                     for((index, item) in it.withIndex())
                     {
-                        val bitmap = imgPathToBitmap(item)
-                        val data = FileUploadData(index, getFileName(item, true), item, bitmap)
+                        val bitmap = presenter?.imgPathToBitmap(item)
+                        val data = FileUploadData(index, presenter?.getFileName(item, true), item, bitmap)
                         adapter?.add(data)
                         adapter?.refresh()
                     }
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
 
     }
 
     override fun writeResultCallback(lastId: Int) {
         switchFragment(ArticleFragment.newInstance(lastId), "article")
         (activity as BoardActivity).supportFragmentManager.beginTransaction().remove(this).commit()
+        (activity as BoardActivity).supportFragmentManager.popBackStack()
     }
 
     override fun switchFragment(fragment: Fragment, tag: String) {
@@ -121,23 +133,6 @@ class WriteFragment : Fragment(), WriteContract.View {
         ft.replace(R.id.fragment_layout, fragment, tag)
         ft.addToBackStack(null)
         ft.commit()
-    }
-
-    private fun getFileName(fileStr : String,isExtension : Boolean) : String {
-        var fileName : String? = null
-        if(isExtension)
-        {
-            fileName = fileStr.substring(fileStr.lastIndexOf("/"),fileStr.lastIndexOf("."));
-        }else{
-            fileName = fileStr.substring(fileStr.lastIndexOf("/")+1);
-        }
-        return fileName
-    }
-
-    private fun imgPathToBitmap(path : String) : Bitmap {
-        val file = File(path)
-        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-        return bitmap
     }
 
     override fun toastMsg(msg: String) {
@@ -149,5 +144,12 @@ class WriteFragment : Fragment(), WriteContract.View {
 
         /* for memory */
         uploadFileList.adapter = null
+        onDestroy()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
     }
 }

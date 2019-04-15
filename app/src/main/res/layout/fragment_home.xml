@@ -1,217 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:sl="http://schemas.android.com/apk/res-auto"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:ignore="missingPrefix"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <Button android:id="@+id/btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#222222"
+            android:text="고르기"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-        <com.ssomai.android.scalablelayout.ScalableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                sl:scale_base_width="1440"
-                sl:scale_base_height="2960">
+    <TextView
+            android:id="@+id/tv_chicken_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#222222"
+            android:text="치킨 이름"
+            app:layout_constraintTop_toBottomOf="@id/btn_id"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-            <android.support.v7.widget.CardView
-                    android:id="@+id/home_go_select_fb"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:cardUseCompatPadding="true"
-                    app:cardCornerRadius="6dp"
-                    app:cardElevation="1.5dp"
-                    sl:scale_height="140"
-                    sl:scale_left="50"
-                    sl:scale_top="50"
-                    sl:scale_width="1340">
+    <TextView
+            android:id="@+id/tv_chicken_info_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#222222"
+            android:text="브랜드"
+            app:layout_constraintTop_toBottomOf="@id/tv_chicken_info_name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_go_select_fb"
-                        android:textColor="#000000"
-                        android:textSize="13sp"
-                        android:layout_gravity="center"
-                        android:gravity="center"/>
-
-                <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="right|center"
-                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-                        android:layout_marginRight="10dp"/>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                    android:id="@+id/home_go_select_ft"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:cardUseCompatPadding="true"
-                    app:cardCornerRadius="6dp"
-                    app:cardElevation="1.5dp"
-                    sl:scale_height="140"
-                    sl:scale_left="50"
-                    sl:scale_top="190"
-                    sl:scale_width="1340">
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_go_select_ft"
-                        android:textColor="#000000"
-                        android:textSize="13sp"
-                        android:layout_gravity="center"
-                        android:gravity="center"/>
-
-                <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="right|center"
-                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-                        android:layout_marginRight="10dp"/>
-
-            </android.support.v7.widget.CardView>
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#D5D5D5"
-                    sl:scale_textsize="70"
-                    sl:scale_width="660"
-                    sl:scale_height="120"
-                    sl:scale_left="50"
-                    sl:scale_top="600">
-
-                <com.ssomai.android.scalablelayout.ScalableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        sl:scale_base_width="660"
-                        sl:scale_base_height="120">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="빠른 선택"
-                            android:textColor="#FFFFFF"
-                            sl:scale_textsize="50"
-                            sl:scale_width="660"
-                            sl:scale_height="120"/>
-
-                </com.ssomai.android.scalablelayout.ScalableLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FFDEA9"
-                    sl:scale_textsize="70"
-                    sl:scale_width="660"
-                    sl:scale_height="120"
-                    sl:scale_left="710"
-                    sl:scale_top="600">
-
-                <com.ssomai.android.scalablelayout.ScalableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        sl:scale_base_width="660"
-                        sl:scale_base_height="120">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="이유있는 선택"
-                            android:textColor="#000000"
-                            sl:scale_textsize="50"
-                            sl:scale_width="660"
-                            sl:scale_height="120"/>
-
-                </com.ssomai.android.scalablelayout.ScalableLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FFFFFF"
-                    sl:scale_width="1320"
-                    sl:scale_height="150"
-                    sl:scale_left="50"
-                    sl:scale_top="750">
-
-                <com.ssomai.android.scalablelayout.ScalableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        sl:scale_base_width="1320"
-                        sl:scale_base_height="250">
-
-                    <Spinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            sl:scale_width="630"
-                            sl:scale_height="120"/>
-
-                    <Spinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            sl:scale_width="630"
-                            sl:scale_height="120"
-                            sl:scale_left="730"/>
-
-                </com.ssomai.android.scalablelayout.ScalableLayout>
-
-            </LinearLayout>
-
-            <Button android:id="@+id/btn_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    sl:scale_textsize="70"
-                    sl:scale_width="1320"
-                    sl:scale_height="200"
-                    sl:scale_left="50"
-                    sl:scale_top="1000"
-                    android:text="고르기"/>
-
-            <TextView
-                    android:id="@+id/tv_chicken_info_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="치킨 이름"
-                    sl:scale_textsize="60"
-                    sl:scale_width="1320"
-                    sl:scale_height="150"
-                    sl:scale_left="50"
-                    sl:scale_top="1250"/>
-
-            <TextView
-                    android:id="@+id/tv_chicken_info_brand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="브랜드"
-                    sl:scale_textsize="60"
-                    sl:scale_width="1320"
-                    sl:scale_height="150"
-                    sl:scale_left="50"
-                    sl:scale_top="1350"/>
-
-        </com.ssomai.android.scalablelayout.ScalableLayout>
-
-    </LinearLayout>
-
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

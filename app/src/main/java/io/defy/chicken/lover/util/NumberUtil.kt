@@ -16,4 +16,5 @@ open class NumberUtil {
                 return 1
         }
     }
+
 }

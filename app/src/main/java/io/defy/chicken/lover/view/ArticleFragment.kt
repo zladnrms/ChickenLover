@@ -86,7 +86,16 @@ class ArticleFragment : Fragment(), ArticleContract.View {
 
         btn_submit.setOnClickListener {
             val comment = et_comment.text.toString()
-            presenter?.writeBoardComment(articleId, comment)
+
+            if(comment.trim().equals(""))
+            {
+                Toast.makeText(activity, "내용을 작성해주세요", Toast.LENGTH_SHORT).show()
+            }
+            else
+            {
+                et_comment.text = null
+                presenter?.writeBoardComment(articleId, comment)
+            }
         }
 
         layout_thumbs_up.setOnClickListener {
@@ -209,5 +218,11 @@ class ArticleFragment : Fragment(), ArticleContract.View {
 
         /* for memory */
         commentList.adapter = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter?.detachView(this)
     }
 }

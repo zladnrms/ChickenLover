@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.util.Log
 import com.werb.pickphotoview.util.PickConfig
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.rxbus.ImagePickResultEvent
@@ -54,6 +55,10 @@ class BoardActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            Log.d("예아", "백스택체인지 : " + supportFragmentManager.backStackEntryCount)
+        }
     }
 
     fun switchFragment(fragment: Fragment, tag: String) {
@@ -63,7 +68,6 @@ class BoardActivity : AppCompatActivity() {
         ft.addToBackStack(null)
         ft.commit()
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
