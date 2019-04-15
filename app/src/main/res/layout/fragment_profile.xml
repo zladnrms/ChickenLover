@@ -6,43 +6,85 @@
         tools:ignore="missingPrefix"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:background="#EFEFEF">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_person_black_24dp"
-            app:civ_border_width="1dp"
-            app:civ_border_color="#FF000000"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="8dp"/>
-
-    <TextView
-            android:id="@+id/profile_name"
+    <android.support.constraint.Guideline
+            android:id="@+id/guideline_left"
+            app:layout_constraintGuide_begin="15dp"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PlaceHolder Name"
-            app:layout_constraintLeft_toRightOf="@id/profile_image"
-            android:layout_marginLeft="8dp"/>
+            android:layout_height="wrap_content"/>
 
-    <TextView
-            android:id="@+id/profile_point"
+    <android.support.constraint.Guideline
+            android:id="@+id/guideline_right"
+            app:layout_constraintGuide_end="15dp"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PlaceHolder Point"
-            app:layout_constraintLeft_toRightOf="@id/profile_image"
-            app:layout_constraintBottom_toBottomOf="@id/profile_image"
-            android:layout_marginLeft="8dp"/>
+            android:layout_height="wrap_content"/>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_profile"
+            android:layout_width="0dp"
+            android:layout_height="66dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/round_corner_background">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_person_black_24dp"
+                app:civ_border_width="1dp"
+                app:civ_border_color="#FF000000"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"/>
+
+        <TextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PlaceHolder Name"
+                app:layout_constraintLeft_toRightOf="@id/profile_image"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"/>
+
+        <TextView
+                android:id="@+id/profile_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PlaceHolder Point"
+                app:layout_constraintLeft_toRightOf="@id/profile_image"
+                app:layout_constraintBottom_toBottomOf="@id/profile_image"
+                android:layout_marginLeft="8dp"/>
+
+        <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|center"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
             android:id="@+id/layout_card1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/profile_image"
+            app:layout_constraintTop_toBottomOf="@id/layout_profile"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             android:orientation="vertical">
 
         <android.support.v7.widget.CardView
@@ -76,12 +118,12 @@
 
     <LinearLayout
             android:id="@+id/layout_card2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/layout_card1"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             android:orientation="vertical">
 
         <android.support.v7.widget.CardView

@@ -43,6 +43,12 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        layout_search.setOnClickListener {
+            var intent = Intent(activity, BoardActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            startActivity(intent)
+        }
+
         btn_id.setOnClickListener {
             val data = RandomPickUtil.randomBrandPick()
             val data2 = RandomPickUtil.randomTypePick()

@@ -12,7 +12,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             sl:scale_base_width="2960"
-            sl:scale_base_height="1440">
+            sl:scale_base_height="1440"
+            android:background="#EFEFEF">
 
         <!-- toolbar -->
         <android.support.v7.widget.Toolbar

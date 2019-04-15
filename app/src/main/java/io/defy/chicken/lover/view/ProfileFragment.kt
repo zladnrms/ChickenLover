@@ -51,7 +51,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         presenter?.getUserPoint()
         presenter?.getUserVisitTime()
 
-        profile_image.setOnClickListener {
+        layout_profile.setOnClickListener {
             when(presenter?.getLoginType())
             {
                 0 -> {

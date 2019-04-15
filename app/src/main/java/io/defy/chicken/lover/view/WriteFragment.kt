@@ -122,9 +122,9 @@ class WriteFragment : Fragment(), WriteContract.View {
     }
 
     override fun writeResultCallback(lastId: Int) {
-        switchFragment(ArticleFragment.newInstance(lastId), "article")
         (activity as BoardActivity).supportFragmentManager.beginTransaction().remove(this).commit()
         (activity as BoardActivity).supportFragmentManager.popBackStack()
+        switchFragment(ArticleFragment.newInstance(lastId), "article")
     }
 
     override fun switchFragment(fragment: Fragment, tag: String) {

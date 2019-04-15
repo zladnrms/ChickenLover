@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import io.defy.chicken.lover.R
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeActivity : AppCompatActivity() {
 

@@ -48,7 +48,7 @@ class FileUploadListAdapter(var context: Context, var lists: ArrayList<FileUploa
 
         Glide.with(context)
             .load(imageUri)
-            .into(holder.itemView.iv_file);
+            .into(holder.itemView.iv_file)
 
         holder.itemView.iv_file.setOnClickListener {
             lists.remove(lists[position])

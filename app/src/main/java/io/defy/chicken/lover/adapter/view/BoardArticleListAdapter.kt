@@ -55,13 +55,13 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
          */
         holder.itemView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                holder.itemView.setBackgroundColor(Color.parseColor("#FFCD12"))
+                holder.itemView.setBackgroundColor(Color.parseColor("#BCBCBC"))
                 // 버튼을 눌렀을 때
             } else if (event.action == MotionEvent.ACTION_UP) {
                 // 버튼에서 손을 떼었을 때
-                holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"))
             } else if(event.action == MotionEvent.ACTION_MOVE) {
-                holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"))
             }
             false
         }

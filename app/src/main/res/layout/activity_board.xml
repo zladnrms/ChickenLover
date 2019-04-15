@@ -13,7 +13,7 @@
             android:orientation="vertical"
             sl:scale_base_width="2960"
             sl:scale_base_height="1440"
-            android:background="#FFFFFF">
+            android:background="#EFEFEF">
 
         <!-- toolbar -->
         <android.support.v7.widget.Toolbar

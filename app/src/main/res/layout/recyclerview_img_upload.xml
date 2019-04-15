@@ -5,7 +5,8 @@
               tools:ignore="missingPrefix"
               android:layout_width="95dp"
               android:layout_height="95dp"
-              android:layout_margin="5dp">
+              android:layout_margin="5dp"
+             android:background="#EFEFEF">
 
     <ImageView
             android:id="@+id/iv_file"
