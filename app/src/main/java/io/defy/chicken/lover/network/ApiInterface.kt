@@ -2,7 +2,6 @@ package com.zeniex.www.zeniexautomarketing.network
 
 import com.google.gson.GsonBuilder
 import io.defy.chicken.lover.BuildConfig
-import io.defy.chicken.lover.model.data.BoardCommentData
 import io.defy.chicken.lover.network.AddHeaderInterceptor
 import io.defy.chicken.lover.network.response.*
 import io.reactivex.Observable
@@ -98,12 +97,17 @@ interface ApiInterface {
     @POST("/chickenlover/member/login_as_auto.php")
     fun loginAsAuto(@Field("mobile") mobile: String, @Field("login_type") login_type: Int, @Field("hashed_value") hashed_value: String?): Observable<LoginGuestRes>
 
-
     @FormUrlEncoded
     @POST("/chickenlover/member/login_as_normal.php")
     fun loginAsMember(@Field("mobile") mobile: String, @Field("login_type") login_type: Int, @Field("id") id: String?, @Field("password") password: String?): Observable<LoginMemberRes>
 
     @FormUrlEncoded
+    @POST("/chickenlover/version/check_chicken_info_version.php")
+    fun checkChickenInfoVersion(@Field("mobile") mobile: String): Observable<VersionCheckRes>
+
+    @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/control_board_article_thumbs.php")
     fun controlBoardArticleThumbs(@Field("type1") type1: String?, @Field("type2") type2: String?, @Field("switch") switch: Int?, @Field("a_id") a_id: Int?, @Field("hashed_value") hashed_value: String?): Observable<ArticleThumbsRes>
+
+
 }

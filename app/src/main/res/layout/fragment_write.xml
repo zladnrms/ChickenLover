@@ -30,6 +30,8 @@
             android:maxLength="30"
             android:textSize="15sp"
             android:textColor="#222222"
+            android:textCursorDrawable="@null"
+            app:backgroundTint="@color/pick_transparent"
             android:hint="여기에 제목을 적어주세요 (최대 30자)"
             app:layout_constraintTop_toBottomOf="@id/iv_submit"
             app:layout_constraintLeft_toLeftOf="parent"/>
@@ -45,6 +47,8 @@
             android:maxLines="100"
             android:textSize="13sp"
             android:textColor="#222222"
+            android:textCursorDrawable="@null"
+            app:backgroundTint="@color/pick_transparent"
             app:layout_constraintTop_toBottomOf="@id/et_title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@id/iv_upload"

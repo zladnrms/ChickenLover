@@ -44,8 +44,7 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         layout_search.setOnClickListener {
-            var intent = Intent(activity, BoardActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            var intent = Intent(activity, SearchChickenInfoActivity::class.java)
             startActivity(intent)
         }
 

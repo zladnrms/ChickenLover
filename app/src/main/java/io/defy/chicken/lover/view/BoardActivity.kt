@@ -40,6 +40,12 @@ class BoardActivity : AppCompatActivity() {
                 R.id.action_board -> {
                     true
                 }
+                R.id.action_chat -> {
+                    var intent = Intent(this, ChatActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivity(intent)
+                    true
+                }
                 R.id.action_sale_info -> {
                     var intent = Intent(this, RankNInfoActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

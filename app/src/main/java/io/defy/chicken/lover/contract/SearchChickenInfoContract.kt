@@ -9,5 +9,7 @@ interface SearchChickenInfoContract {
         fun attachView(view: Any)
 
         fun detachView(view: Any)
+
+        fun checkChickenInfoVersion()
     }
 }

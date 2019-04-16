@@ -14,6 +14,12 @@
             android:title="게시판"/>
 
     <item
+            android:id="@+id/action_chat"
+            android:enabled="true"
+            android:icon="@drawable/ic_star_black_24dp"
+            android:title="채팅"/>
+
+    <item
             android:id="@+id/action_sale_info"
             android:enabled="true"
             android:icon="@drawable/ic_star_black_24dp"

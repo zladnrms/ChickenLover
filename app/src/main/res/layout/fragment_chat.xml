@@ -6,26 +6,8 @@
         tools:ignore="missingPrefix"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="8dp"
         android:background="#EFEFEF">
-
-    <!-- toolbar -->
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/Toolbar"
-            app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/toolbar_title_search_chicken_info"
-                android:textColor="#000000"
-                android:textSize="18sp"/>
-
-    </android.support.v7.widget.Toolbar>
 
     <android.support.constraint.Guideline
             android:id="@+id/guideline_left"
@@ -41,24 +23,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <android.support.constraint.ConstraintLayout
-            android:id="@+id/layout_search"
+    <RelativeLayout
+            android:id="@+id/layout_chatList"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_height="0dp"
+            android:descendantFocusability="blocksDescendants"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/chatList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"/>
+
+    </RelativeLayout>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
-            android:background="@drawable/round_corner_background2">
+            android:background="@drawable/round_corner_background2"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+                android:id="@+id/iv_door"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_door_enter"
+                android:gravity="center_vertical"
+                app:layout_constraintBaseline_toBaselineOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
 
         <EditText
+                android:id="@+id/et_content"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:hint="치킨 검색"
+                android:hint="채팅해요~!"
                 android:textSize="14sp"
                 android:textColor="#222222"
                 android:textColorHint="#ADADAD"
@@ -68,33 +79,24 @@
                 android:gravity="center_vertical"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
+                android:layout_marginLeft="5dp"
                 android:textCursorDrawable="@null"
                 app:backgroundTint="@color/pick_transparent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/iv_search"
+                app:layout_constraintLeft_toRightOf="@id/iv_door"
+                app:layout_constraintRight_toLeftOf="@id/iv_send"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
-                android:id="@+id/iv_search"
+                android:id="@+id/iv_send"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_search_gray_24dp"
+                android:src="@drawable/ic_send_gray_24dp"
                 android:gravity="center_vertical"
-                app:layout_constraintBaseline_toBaselineOf="@id/layout_search"
+                app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/searchList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:nestedScrollingEnabled="false"
-            app:layout_constraintTop_toBottomOf="@id/layout_search"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
