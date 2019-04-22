@@ -1,5 +1,8 @@
 package io.defy.chicken.lover.view
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -26,14 +29,24 @@ class ChatFragment : Fragment(), ChatContract.View {
     private var adapter : ChatListAdapter? = null
     private var handler : Handler? = null
 
+    private var pref: SharedPreferences? = null
+    private var editor: SharedPreferences.Editor? = null
+
     companion object {
         fun newInstance(): ChatFragment {
             return ChatFragment()
         }
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        pref = context?.getSharedPreferences("chat_agreement", MODE_PRIVATE)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,7 +75,24 @@ class ChatFragment : Fragment(), ChatContract.View {
 
             if(!content.trim().equals(""))
                 presenter?.send(content)
+
+            et_content.text = null
         }
+
+        btn_agree.setOnClickListener {
+            layout_agreement.visibility = View.GONE
+            editor?.let {
+                it.putBoolean("chat_agreement", true)
+                it.commit()
+            }
+        }
+    }
+
+    override fun listHideOn(flag: Boolean) {
+        if(flag)
+            layout_chatList_hider.visibility = View.VISIBLE
+        else
+            layout_chatList_hider.visibility = View.GONE
     }
 
     override fun changeConnectImage(drawable : Int){
@@ -73,10 +103,21 @@ class ChatFragment : Fragment(), ChatContract.View {
         return handler
     }
 
+    override fun listClear() {
+        adapter?.clear()
+    }
+
+    override fun listRefresh() {
+        adapter?.refresh()
+    }
+
     override fun appendChatMessage(data: ChatData) {
         handler?.post {
-            adapter?.add(data)
-            adapter?.refresh()
+            adapter?.let {
+                it.add(data)
+                it.refresh()
+                chatList.scrollToPosition(it.itemCount - 1)
+            }
         }
     }
 
@@ -84,11 +125,11 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun onStop() {
         super.onStop()
 
-        presenter?.onStop()
-
-        presenter?.isConnect()
-
-        presenter?.detachView(this)
+        presenter?.let {
+            it.onStop()
+            it.isConnect()
+            it.detachView(this)
+        }
         presenter = null
 
         handler = null

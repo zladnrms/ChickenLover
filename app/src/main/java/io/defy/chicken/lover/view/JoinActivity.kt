@@ -17,6 +17,9 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
 
+        toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
+        toolbar.setNavigationOnClickListener { finish() }
+
         presenter = JoinPresenter()
         presenter?.attachView(this)
 

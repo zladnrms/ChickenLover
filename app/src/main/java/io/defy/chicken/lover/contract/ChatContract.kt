@@ -12,6 +12,12 @@ interface ChatContract {
 
         fun getHandler(): Handler?
 
+        fun listClear()
+
+        fun listRefresh()
+
+        fun listHideOn(flag: Boolean)
+
         fun appendChatMessage(data: ChatData)
     }
 

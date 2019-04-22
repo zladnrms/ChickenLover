@@ -1,16 +1,14 @@
 package io.defy.chicken.lover.network.netty;
 
-import android.os.Handler;
 import android.util.Log;
 import io.defy.chicken.lover.contract.ChatContract;
 import io.defy.chicken.lover.model.data.ChatData;
-import io.defy.chicken.lover.network.packet.ChatPacket;
-import io.defy.chicken.lover.network.packet.EntryPacket;
-import io.defy.chicken.lover.network.packet.ExitPacket;
-import io.defy.chicken.lover.network.packet.HeaderPacket;
-import io.defy.chicken.lover.rxbus.RxBus;
+import io.defy.chicken.lover.network.packet.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class NettyClientHandler extends SimpleChannelInboundHandler<HeaderPacket> {
 
@@ -51,16 +49,29 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<HeaderPacket
                 break;
 
             case 2: // 채팅 패킷 받아 해석
-                ChatPacket chatPacket = (ChatPacket) headerPacket;
-                String chatName = chatPacket.getName();
-                int chatRoomId = chatPacket.getRoomId();
-                String chatContent = chatPacket.getContent();
-                String chatTimestamp = chatPacket.getTimestamp();
+                ChatPacket chatPacket1 = (ChatPacket) headerPacket;
+                String chatName1 = chatPacket1.getName();
+                int chatRoomId1 = chatPacket1.getRoomId();
+                String chatContent1 = chatPacket1.getContent();
+                String chatTimestamp1 = chatPacket1.getTimestamp();
 
-                Log.d("ChatPacket","Name" + chatName + ", Room Id : " + chatRoomId + ", Content : " + chatContent + ", timestamp : " + chatTimestamp);
-                ChatData chatData = new ChatData(chatName, chatRoomId, chatContent, chatTimestamp);
+                Log.d("ChatPacket","Name" + chatName1 + ", Room Id : " + chatRoomId1 + ", Content : " + chatContent1 + ", timestamp : " + chatTimestamp1);
+                ChatData chatData = new ChatData(chatName1, chatRoomId1, chatContent1, chatTimestamp1);
                 view.appendChatMessage(chatData);
 
+                break;
+
+            case 3:
+                ChatHistoryPacket chatHistoryPacket = (ChatHistoryPacket) headerPacket;
+                LinkedList<ChatPacket> chatList = chatHistoryPacket.getChatList();
+
+                Iterator<ChatPacket> iterator = chatList.iterator(); // get iterator instance
+                while (iterator.hasNext()) { // using Iterator
+                    ChatPacket chatPacket2 = iterator.next();
+
+                    ChatData chatData2 = new ChatData(chatPacket2.getName(), chatPacket2.getRoomId(),chatPacket2.getContent(), chatPacket2.getTimestamp());
+                    view.appendChatMessage(chatData2);
+                }
                 break;
         }
     }

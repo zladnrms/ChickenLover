@@ -4,7 +4,6 @@ import com.zeniex.www.zeniexautomarketing.model.FavoriteTypeRepositoryModel
 import io.defy.chicken.lover.contract.FavoriteTypeContract
 import io.defy.chicken.lover.model.FavoriteTypeRepository
 import io.defy.chicken.lover.model.data.FavoriteTypeData
-import io.realm.RealmResults
 
 /**
  * Created by kim on 2017-09-14.

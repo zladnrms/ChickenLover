@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.multidex.MultiDex
 import android.util.Log
 import com.squareup.leakcanary.LeakCanary
+import io.defy.chicken.lover.model.data.AppVersionData
 import io.realm.FieldAttribute
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -16,14 +17,18 @@ class GlobalApplication : Application() {
         Realm.init(this)
 
         val config = RealmConfiguration.Builder()
-            .schemaVersion(2)
+            .deleteRealmIfMigrationNeeded()
+/*            .schemaVersion(3)
             .migration { realm, oldVersion, newVersion ->
                 val schema = realm.schema
 
-
-                    val user = schema.get("UserInfoData")
+                val local = schema.get("LocalChickenInfoData")
+                local?.apply {
+                    this.addField("brand", String::class.java)
+                    this.addField("name", String::class.java)
+                } ?: Log.d("GlobalApplication★", "왜없냐")
                 //user!!.addField("_id", Int::class.java, FieldAttribute.PRIMARY_KEY)
-                user!!.addField("hashed_value", String::class.java)
+
 /*
                          schema.get("UserInfoData")
                         .addField("_id", Int::class.java, FieldAttribute.PRIMARY_KEY)
@@ -35,8 +40,20 @@ class GlobalApplication : Application() {
                         .addField("password", String::class.java)
                         */
 
+            }*/
+            .build()
+
+
+            /*
+            val config = RealmConfiguration.Builder()
+            .deleteRealmIfMigrationNeeded()
+            .initialData {
+                initialAppVersionData(it, 1)
+                initialFavoriteBrandData(it)
+                initialFavoriteTypeData(it)
             }
             .build()
+            */
 
         Realm.setDefaultConfiguration(config)
 /*

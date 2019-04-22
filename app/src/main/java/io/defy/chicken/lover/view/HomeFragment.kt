@@ -61,19 +61,16 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onResume()
     }
 
-    override fun showChickenInfo(way: String, name: String, brand: String, type: JSONObject) {
+    override fun showChickenInfo(way: String, name: String, brand: String) {
+
         tv_chicken_info_name.text = name
         tv_chicken_info_brand.text = brand
 
-        var type_array = ArrayList<String>()
-        for(key : String in type.keys())
-        {
-            type_array.add(type.get(key).toString())
-        }
-        for(item in type_array)
-        {
-            Log.d("로그 : ", item)
-        }
+        iv_picked_chicken.setImageResource(R.drawable.fried)
+    }
+
+    override fun showChickenImage(drawable: Int) {
+        iv_picked_chicken.setImageResource(drawable)
     }
 
     inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R) {

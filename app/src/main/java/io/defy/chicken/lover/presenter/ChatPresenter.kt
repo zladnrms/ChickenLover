@@ -74,6 +74,8 @@ class ChatPresenter : ChatContract.Presenter {
 
             connectOn = true
         }
+
+        this.view?.listHideOn(false)
     }
 
     override fun send(content: String) {
@@ -101,6 +103,11 @@ class ChatPresenter : ChatContract.Presenter {
         this.client = null
 
         this.connectOn = false
+
+        this.view?.listClear()
+        this.view?.listRefresh()
+
+        this.view?.listHideOn(true)
     }
 
     override fun onConnectClick() {

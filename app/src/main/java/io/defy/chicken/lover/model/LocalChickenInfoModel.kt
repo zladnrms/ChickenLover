@@ -1,17 +1,15 @@
 package com.zeniex.www.zeniexautomarketing.model
 
-import io.defy.chicken.lover.model.data.UserInfoData
+import io.defy.chicken.lover.model.data.LocalChickenInfoData
 
 interface LocalChickenInfoModel {
-    fun insert(type : Int?, uid: Int?, hashedValue : String?, guestId : String?, name : String?, id : String?, password : String?)
+    fun insert(brand: String?, name : String?)
 
-    fun select() : UserInfoData
-
-    fun update(hashed_value : String?, guest_id : String?, name : String?)
+    fun select(text: String) : LocalChickenInfoData
 
     fun delete()
 
     fun realmClose()
 
-    fun selectAll() : List<UserInfoData>
+    fun selectAll() : List<LocalChickenInfoData>
 }

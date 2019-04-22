@@ -102,8 +102,11 @@ interface ApiInterface {
     fun loginAsMember(@Field("mobile") mobile: String, @Field("login_type") login_type: Int, @Field("id") id: String?, @Field("password") password: String?): Observable<LoginMemberRes>
 
     @FormUrlEncoded
-    @POST("/chickenlover/version/check_chicken_info_version.php")
+    @POST("/chickenlover/mobile/version/check_chicken_info_version.php")
     fun checkChickenInfoVersion(@Field("mobile") mobile: String): Observable<VersionCheckRes>
+
+    @POST("/chickenlover/mobile/info/get_chicken_info_for_serarch.php")
+    fun updateLocalChickenInfo(): Observable<UpdateLocalChickenInfoRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/control_board_article_thumbs.php")
