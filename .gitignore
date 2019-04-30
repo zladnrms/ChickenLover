@@ -5,6 +5,8 @@
 .externalNativeBuild
 
 ./build.gradle
+./app/build.gradle
+
 
 # built application files
 *.apk
