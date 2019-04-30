@@ -49,7 +49,6 @@ class ArticleFragment : Fragment(), ArticleContract.View {
             ArticleFragment().apply {
                 arguments = Bundle().apply {
                     putInt("articleId", articleId)
-
                 }
             }
     }
@@ -62,7 +61,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_article, container, false)
+        val view = inflater.inflate(R.layout.fragment_article, container, false)
 
         presenter = ArticlePresenter()
         presenter?.attachView(this)
@@ -84,7 +83,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         adapter = BoardCommentListAdapter((activity as BoardActivity), ArrayList<BoardCommentData>())
         commentList.adapter = adapter
 
-        btn_submit.setOnClickListener {
+        iv_submit.setOnClickListener {
             val comment = et_comment.text.toString()
 
             if(comment.trim().equals(""))
@@ -129,41 +128,40 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     }
 
     override fun setArticleInfo(data: BoardArticleRes) {
-        /* set Article Title */
-        data.title?.let {
-            tv_title.text = data.title
-        }
-        /* set Article Content */
-        data.content?.let {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                tv_content.setText(Html.fromHtml(data.content, Html.FROM_HTML_MODE_LEGACY))
-            } else {
-                tv_content.setText(Html.fromHtml(data.content))
+        data.apply {
+            title?.let {
+                tv_title.text = it
             }
-        }
-
-        /* set Image List */
-        data.img_url?.let {
-            for (item in data.img_url) {
-                val layout = ArticleImageViewLayout(activity as BoardActivity)
-                layout.setImageView(item)
-                layout_img.addView(layout)
+            writer?.let {
+                tv_writer.text = it
+                tv_profile.text = it[0].toString()
             }
-        }
+            content?.let {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    tv_content.setText(Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY))
+                } else {
+                    tv_content.setText(Html.fromHtml(it))
+                }
+            }
+            img_url?.let{
+                for (item in img_url) {
+                    val layout = ArticleImageViewLayout(activity as BoardActivity)
+                    layout.setImageView(item)
+                    layout_img.addView(layout)
+                }
+            }
+            thumbs?.let{
+                val thumbsList = JSONObject(it)
+                thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
 
-        /* */
-        data.thumbs?.let {
-            val thumbsList = JSONObject(it)
-            thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
+                tv_thumbs_up.text = thumbsUpList?.length().toString()
+            }
 
-            tv_thumbs_up.text = thumbsUpList?.length().toString()
-        }
-
-        /* set comment List */
-        data.comment_id?.let {
-            editor?.putInt("comment_id", data.comment_id.toInt())
-            editor?.commit()
-            presenter?.getCommentList("free", data.comment_id.toInt())
+            comment_id?.let {
+                editor?.putInt("comment_id", it.toInt())
+                editor?.commit()
+                presenter?.getCommentList("free", it.toInt())
+            }
         }
     }
 
@@ -173,9 +171,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
             val thumbsList = JSONObject(it)
             thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
 
-            tv_thumbs_up?.let {
-                it.text = thumbsUpList?.length().toString()
-            }
+            tv_thumbs_up.text = thumbsUpList?.length().toString()
         }
     }
 
@@ -188,7 +184,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         activity?.let {
             try {
                 val imm = it.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imm!!.hideSoftInputFromWindow(it.getCurrentFocus().getWindowToken(), 0)
+                imm?.hideSoftInputFromWindow(it.getCurrentFocus().getWindowToken(), 0)
             } catch (e: Exception) {
                 // TODO: handle exception
             }
@@ -202,6 +198,14 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     private fun unknownPage() {
         Toast.makeText(activity, "게시물 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
         (activity as BoardActivity).onBackPressed()
+    }
+
+    override fun dialogShow() {
+        CustomDialog.instance.show(activity as BoardActivity)
+    }
+
+    override fun dialogDismiss() {
+        CustomDialog.instance.dismiss()
     }
 
     override fun clearCommentList() {

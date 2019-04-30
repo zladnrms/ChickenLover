@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -49,8 +50,10 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
         articleList.layoutManager = LinearLayoutManager(activity)
         articleList.hasFixedSize()
+        articleList.addItemDecoration(dividerItemDecoration)
         adapter = BoardArticleListAdapter((activity as BoardActivity), ArrayList<BoardArticleData>())
         articleList.adapter = adapter
 
@@ -90,5 +93,13 @@ class BoardFragment : Fragment(), BoardContract.View {
         super.onDestroy()
 
         presenter?.detachView(this)
+    }
+
+    override fun dialogShow() {
+        CustomDialog.instance.show(activity as BoardActivity)
+    }
+
+    override fun dialogDismiss() {
+        CustomDialog.instance.dismiss()
     }
 }

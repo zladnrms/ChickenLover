@@ -47,6 +47,8 @@ class ArticlePresenter : ArticleContract.Presenter {
     }
 
     override fun getArticleInfo(type : String, a_id : Int?, title : String?) {
+        this.view?.dialogShow()
+
         retrofitClient.getBoardArticle(type, a_id, title)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -64,6 +66,7 @@ class ArticlePresenter : ArticleContract.Presenter {
                 }
 
                 override fun onComplete() {
+                    view?.dialogDismiss()
                 }
             })
     }
@@ -92,6 +95,7 @@ class ArticlePresenter : ArticleContract.Presenter {
     }
 
     override fun writeBoardComment(a_id: Int?, content: String) {
+        this.view?.dialogShow()
         val selectVal = userRepo?.select()
 
         retrofitClient.writeBoardComment(a_id, selectVal?.name, content)
@@ -117,12 +121,13 @@ class ArticlePresenter : ArticleContract.Presenter {
                 }
 
                 override fun onComplete() {
+                    view?.dialogDismiss()
                 }
             })
     }
 
     override fun getCommentList(type: String, c_id: Int) {
-        view?.clearCommentList()
+        this.view?.clearCommentList()
 
         retrofitClient.getBoardComment(type, c_id)
             .subscribeOn(Schedulers.newThread())

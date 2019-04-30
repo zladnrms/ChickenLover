@@ -38,6 +38,8 @@ class WritePresenter : WriteContract.Presenter {
     }
 
     override fun write(type: String, title: String, content: String, imagesPath : ArrayList<FileUploadData>) {
+        this.view?.dialogShow()
+
         val selectVal = userRepo?.select()
         val name = selectVal?.name
         var imgUrl: String? = null
@@ -69,6 +71,7 @@ class WritePresenter : WriteContract.Presenter {
                 override fun onNext(repo: WriteArticleRes) {
                     if(repo.result.equals("success"))
                     {
+                        view?.dialogDismiss()
                         view?.writeResultCallback(repo.last_id)
                     }
                     else if(repo.result.equals("exceed_size"))
@@ -90,6 +93,7 @@ class WritePresenter : WriteContract.Presenter {
                 }
 
                 override fun onComplete() {
+
                 }
             })
     }

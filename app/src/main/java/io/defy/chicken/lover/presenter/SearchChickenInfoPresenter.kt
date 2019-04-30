@@ -11,17 +11,20 @@ import io.defy.chicken.lover.model.LocalChickenInfoRepository
 import io.defy.chicken.lover.model.data.LocalChickenInfoData
 import io.defy.chicken.lover.network.response.UpdateLocalChickenInfoRes
 import io.defy.chicken.lover.network.response.VersionCheckRes
+import io.defy.chicken.lover.view.CustomDialog
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
+import java.util.*
 
 class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
 
     private var view: SearchChickenInfoContract.View? = null
     private var localRepo: LocalChickenInfoModel? = null
     private var appVersionRepo: AppVersionDataModel? = null
+    private var dialog: CustomDialog? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
@@ -122,6 +125,24 @@ class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
     }
 
     override fun searchChickenInfo(text: CharSequence?) {
-        this.localRepo?.select(text.toString())
+        this.view?.dialogShow()
+
+        view?.apply {
+            this.listClear()
+
+            val searchResultList = localRepo?.select(text.toString())
+
+            searchResultList?.let {
+                val iterator = it.iterator()
+                while(iterator.hasNext())
+                {
+                    this.addSearchResult(iterator.next())
+                }
+            }
+
+            this.listRefresh()
+        }
+
+        this.view?.dialogDismiss()
     }
 }

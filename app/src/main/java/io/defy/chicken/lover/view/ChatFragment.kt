@@ -38,10 +38,10 @@ class ChatFragment : Fragment(), ChatContract.View {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        pref = context?.getSharedPreferences("chat_agreement", MODE_PRIVATE)
+        pref = context.getSharedPreferences("chat_agreement", MODE_PRIVATE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,5 +148,13 @@ class ChatFragment : Fragment(), ChatContract.View {
         }
 
         handler = Handler()
+    }
+
+    override fun dialogShow() {
+        CustomDialog.instance.show(activity as ChatActivity)
+    }
+
+    override fun dialogDismiss() {
+        CustomDialog.instance.dismiss()
     }
 }

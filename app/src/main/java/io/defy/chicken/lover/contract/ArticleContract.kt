@@ -17,6 +17,10 @@ interface ArticleContract {
         fun setCommentId(c_id : String)
 
         fun complete()
+
+        fun dialogShow()
+
+        fun dialogDismiss()
     }
 
     interface Presenter {

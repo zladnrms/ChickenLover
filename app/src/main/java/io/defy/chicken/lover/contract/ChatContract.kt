@@ -19,6 +19,10 @@ interface ChatContract {
         fun listHideOn(flag: Boolean)
 
         fun appendChatMessage(data: ChatData)
+
+        fun dialogShow()
+
+        fun dialogDismiss()
     }
 
     interface Presenter {

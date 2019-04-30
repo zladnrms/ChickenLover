@@ -1,60 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             xmlns:sl="http://schemas.android.com/apk/res-auto"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             xmlns:civ="http://schemas.android.com/apk/res-auto"
-             tools:ignore="missingPrefix"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:ignore="missingPrefix"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EFEFEF">
+
+    <!-- toolbar -->
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/Toolbar"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/toolbar_title_profile"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/fragment_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            sl:scale_base_width="2960"
-            sl:scale_base_height="1440"
-            android:background="#EFEFEF">
-
-        <!-- toolbar -->
-        <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/Toolbar">
-
-            <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/toolbar_title_profile"
-                    android:textColor="#000000"
-                    android:textSize="18sp"/>
-
-        </android.support.v7.widget.Toolbar>
-
-        <LinearLayout
-                android:id="@+id/fragment_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-        </LinearLayout>
-
-        <android.support.design.widget.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/background"
-                app:labelVisibilityMode="unlabeled"
-                sl:itemIconTint="@color/iconText"
-                sl:itemTextColor="@color/iconText"
-                sl:layout_constraintBottom_toBottomOf="parent"
-                sl:layout_constraintStart_toStartOf="parent"
-                sl:menu="@menu/bottom_navigation"/>
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
     </LinearLayout>
 
-</FrameLayout>
+    <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@color/iconText"
+            app:itemTextColor="@color/iconText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_navigation"/>
+
+</android.support.constraint.ConstraintLayout>

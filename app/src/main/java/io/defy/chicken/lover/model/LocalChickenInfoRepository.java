@@ -1,6 +1,7 @@
 package io.defy.chicken.lover.model;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import com.zeniex.www.zeniexautomarketing.model.LocalChickenInfoModel;
 import io.defy.chicken.lover.model.data.LocalChickenInfoData;
 import io.defy.chicken.lover.model.data.UserInfoData;
@@ -9,6 +10,8 @@ import io.realm.RealmResults;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LocalChickenInfoRepository implements LocalChickenInfoModel {
@@ -60,19 +63,30 @@ public class LocalChickenInfoRepository implements LocalChickenInfoModel {
     }
 
     @Override
-    public LocalChickenInfoData select(@NotNull String text) {
+    public LinkedList<LocalChickenInfoData> select(@NotNull String text) {
         if (realm != null && !realm.isClosed()) {
         } else {
             realm = Realm.getDefaultInstance();
         }
 
-        LocalChickenInfoData result = null;
+        LinkedList<LocalChickenInfoData> result = new LinkedList<>();
 
         realm.beginTransaction();
         long count = realm.where(LocalChickenInfoData.class).count();
         if (count > 0) {
             RealmResults<LocalChickenInfoData> realmResult = realm.where(LocalChickenInfoData.class).findAll();
-            result = realmResult.get(0);
+            Iterator<LocalChickenInfoData> iterator = realmResult.iterator();
+            while(iterator.hasNext())
+            {
+                /*
+                    검색 결과 도출
+                */
+                LocalChickenInfoData data = iterator.next();
+                if(data.getBrand().contains(text) || data.getName().contains(text))
+                {
+                    result.add(data);
+                }
+            }
         } else {
             result = null;
         }

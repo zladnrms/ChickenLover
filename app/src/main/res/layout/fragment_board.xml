@@ -5,7 +5,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:ignore="missingPrefix"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#EFEFEF">
 
     <android.support.constraint.Guideline
             android:id="@+id/guideline_left"
@@ -25,7 +26,7 @@
             android:id="@+id/layout_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/iv_logo"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             android:layout_marginTop="10dp"

@@ -1,5 +1,6 @@
 package io.defy.chicken.lover.view
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -26,6 +27,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
             val id = et_id.text.toString().trim()
             val password = et_password.text.toString().trim()
             presenter?.login("mobile", 1, id, password)
+        }
+
+        btn_go_join.setOnClickListener {
+            val intent = Intent(this,  JoinActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

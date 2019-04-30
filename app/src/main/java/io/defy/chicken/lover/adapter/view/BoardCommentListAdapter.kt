@@ -51,6 +51,7 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
         holder.itemView.tv_date.text =  DateUtil.parseDate(lists[position].write_date)
         holder.itemView.tv_content.text =  lists[position].content
         holder.itemView.tv_thumbs_up.text = lists[position].thumbs_up.size.toString()
+        holder.itemView.tv_profile.text = lists[position].name[0].toString()
 
         val comment_id = pref.getInt("comment_id", 0) // 해당 article의 comment_id
         val comment_c_id = lists[position]._id // 해당 article의 comment_id에 걸린 댓글 중 몇 번째 인지
@@ -63,7 +64,7 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
                 thumbs_up_status = 1
         }
 
-        holder.itemView.iv_thumbs_up.setOnClickListener {
+        holder.itemView.layout_thumbs_up.setOnClickListener {
             presenter.controlCommentThumbs("free", "up", NumberUtil.valueInverse(thumbs_up_status), comment_id, comment_c_id)
         }
     }

@@ -28,6 +28,8 @@ class BoardPresenter : BoardContract.Presenter {
     }
 
     override fun getArticleList(type: String, index: Int?, limit: Int?) {
+        this.view?.dialogShow()
+
         retrofitClient.getBoardArticleList(type, index, limit)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -54,6 +56,7 @@ class BoardPresenter : BoardContract.Presenter {
                 }
 
                 override fun onComplete() {
+                    view?.dialogDismiss()
                 }
             })
     }

@@ -40,6 +40,8 @@ class ChatPresenter : ChatContract.Presenter {
     }
 
     override fun connect() {
+        this.view?.dialogShow()
+
         this.client = NettyClient(view)
         val selectVal = userRepo?.select()
         val name = selectVal?.name
@@ -76,6 +78,8 @@ class ChatPresenter : ChatContract.Presenter {
         }
 
         this.view?.listHideOn(false)
+
+        this.view?.dialogDismiss()
     }
 
     override fun send(content: String) {

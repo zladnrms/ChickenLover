@@ -8,6 +8,10 @@ interface BoardContract {
         fun switchFragment(fragment: Fragment, tag: String)
 
         fun setArticleList(item : BoardArticleData)
+
+        fun dialogShow()
+
+        fun dialogDismiss()
     }
 
     interface Presenter {

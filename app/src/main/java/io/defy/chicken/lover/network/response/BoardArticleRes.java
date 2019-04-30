@@ -12,6 +12,9 @@ public class BoardArticleRes {
     @SerializedName("title")
     String title;
 
+    @SerializedName("writer")
+    String writer;
+
     @SerializedName("content")
     String content;
 
@@ -33,6 +36,10 @@ public class BoardArticleRes {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getWriter() {
+        return writer;
     }
 
     public String getContent() {

@@ -11,6 +11,10 @@ interface WriteContract {
         fun switchFragment(fragment: Fragment, tag: String)
 
         fun toastMsg(msg: String)
+
+        fun dialogShow()
+
+        fun dialogDismiss()
     }
 
     interface Presenter {

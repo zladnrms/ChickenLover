@@ -117,6 +117,7 @@
                 android:layout_height="30dp"
                 android:src="@drawable/ic_send_gray_24dp"
                 android:gravity="center_vertical"
+                android:imeOptions="actionSend"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 

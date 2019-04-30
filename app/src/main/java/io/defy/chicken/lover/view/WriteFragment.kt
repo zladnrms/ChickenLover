@@ -135,6 +135,14 @@ class WriteFragment : Fragment(), WriteContract.View {
         ft.commit()
     }
 
+    override fun dialogShow() {
+        CustomDialog.instance.show(activity as BoardActivity)
+    }
+
+    override fun dialogDismiss() {
+        CustomDialog.instance.dismiss()
+    }
+
     override fun toastMsg(msg: String) {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT)
     }

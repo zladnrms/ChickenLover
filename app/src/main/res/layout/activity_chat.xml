@@ -22,17 +22,20 @@
                 android:gravity="center"
                 android:text="@string/toolbar_title_chat"
                 android:textColor="#000000"
-                android:textSize="18sp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"/>
 
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
             android:id="@+id/fragment_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
     </LinearLayout>
 
@@ -41,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/background"
-            app:labelVisibilityMode="unlabeled"
+            app:labelVisibilityMode="labeled"
             app:itemIconTint="@color/iconText"
             app:itemTextColor="@color/iconText"
             app:layout_constraintBottom_toBottomOf="parent"
