@@ -25,9 +25,6 @@ class BoardFragment : Fragment(), BoardContract.View {
     private var presenter : BoardContract.Presenter? = null
     private var adapter : BoardArticleListAdapter? = null
 
-    private var index = 0
-    private var limit = 15
-
     companion object {
         fun newInstance(): BoardFragment {
             return BoardFragment()
@@ -60,13 +57,15 @@ class BoardFragment : Fragment(), BoardContract.View {
         iv_write.setOnClickListener {
             (activity as BoardActivity).switchFragment(WriteFragment(), "write")
         }
+
+        presenter?.setRecyclerViewScrollListener(articleList)
     }
 
     override fun onResume() {
         super.onResume()
 
         adapter?.clear()
-        presenter?.getArticleList("free", index, limit)
+        presenter?.getArticleList()
     }
 
     override fun switchFragment(fragment: Fragment, tag: String) {

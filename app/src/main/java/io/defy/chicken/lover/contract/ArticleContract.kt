@@ -1,5 +1,6 @@
 package io.defy.chicken.lover.contract
 
+import android.support.v7.widget.RecyclerView
 import io.defy.chicken.lover.model.data.BoardCommentData
 import io.defy.chicken.lover.network.response.BoardArticleRes
 import org.json.JSONArray

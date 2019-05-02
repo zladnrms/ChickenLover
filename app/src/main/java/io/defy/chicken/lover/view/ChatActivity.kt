@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import io.defy.chicken.lover.R
+import io.defy.chicken.lover.util.BottomNavigationHelper
 import kotlinx.android.synthetic.main.activity_rank_n_info.*
 
 class ChatActivity : AppCompatActivity() {
@@ -53,9 +54,10 @@ class ChatActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                else -> false
+                else -> true
             }
         }
+        BottomNavigationHelper.disableShiftMode(bottom_navigation)
     }
 
     override fun onBackPressed() {

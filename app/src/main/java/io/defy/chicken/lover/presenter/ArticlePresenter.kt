@@ -1,5 +1,7 @@
 package io.defy.chicken.lover.presenter
 
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.Toast
 import com.google.gson.JsonArray
@@ -19,6 +21,7 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_article.*
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -70,7 +73,6 @@ class ArticlePresenter : ArticleContract.Presenter {
                 }
             })
     }
-
 
     override fun getArticleThumbsInfo(type : String, a_id : Int?, title : String?) {
         retrofitClient.getBoardArticle(type, a_id, title)

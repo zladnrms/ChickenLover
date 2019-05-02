@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.HomeContract
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -63,10 +64,16 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun showChickenInfo(way: String, name: String, brand: String) {
 
+        val fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in)
+
         tv_chicken_info_name.text = name
+        tv_chicken_info_name.animation = fadeIn
+
         tv_chicken_info_brand.text = brand
+        tv_chicken_info_brand.animation = fadeIn
 
         iv_picked_chicken.setImageResource(R.drawable.fried)
+        iv_picked_chicken.animation = fadeIn
     }
 
     override fun showChickenImage(drawable: Int) {

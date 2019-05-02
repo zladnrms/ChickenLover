@@ -11,6 +11,7 @@ import com.werb.pickphotoview.util.PickConfig
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.rxbus.ImagePickResultEvent
 import io.defy.chicken.lover.rxbus.RxBus
+import io.defy.chicken.lover.util.BottomNavigationHelper
 import kotlinx.android.synthetic.main.activity_board.*
 
 class BoardActivity : AppCompatActivity() {
@@ -58,9 +59,10 @@ class BoardActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                else -> false
+                else -> true
             }
         }
+        BottomNavigationHelper.disableShiftMode(bottom_navigation)
 
         supportFragmentManager.addOnBackStackChangedListener {
             Log.d("예아", "백스택체인지 : " + supportFragmentManager.backStackEntryCount)

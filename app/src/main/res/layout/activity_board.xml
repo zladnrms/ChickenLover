@@ -46,6 +46,7 @@
                 app:labelVisibilityMode="labeled"
                 app:itemIconTint="@color/iconText"
                 app:itemTextColor="@color/iconText"
+                app:itemHorizontalTranslationEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:menu="@menu/bottom_navigation"/>

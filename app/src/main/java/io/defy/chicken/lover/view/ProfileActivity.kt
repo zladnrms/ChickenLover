@@ -10,6 +10,7 @@ import com.werb.pickphotoview.util.PickConfig
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.rxbus.ImagePickResultEvent
 import io.defy.chicken.lover.rxbus.RxBus
+import io.defy.chicken.lover.util.BottomNavigationHelper
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -56,9 +57,10 @@ class ProfileActivity : AppCompatActivity() {
                 R.id.action_profile -> {
                     true
                 }
-                else -> false
+                else -> true
             }
         }
+        BottomNavigationHelper.disableShiftMode(bottom_navigation)
     }
 
     override fun onBackPressed() {

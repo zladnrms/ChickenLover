@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import io.defy.chicken.lover.R
 import io.defy.chicken.lover.adapter.view.BoardCommentListAdapter
 import io.defy.chicken.lover.contract.ArticleContract
 import io.defy.chicken.lover.model.data.BoardCommentData
@@ -22,10 +21,13 @@ import io.defy.chicken.lover.rxbus.CommentThumbsRefreshEvent
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import io.defy.chicken.lover.R
 import org.json.JSONArray
 import org.json.JSONObject
 import io.defy.chicken.lover.rxbus.ArticleThumbsRefreshEvent
 import kotlinx.android.synthetic.main.fragment_article.*
+
+
 
 
 /**

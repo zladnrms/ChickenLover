@@ -8,6 +8,10 @@ import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.JoinContract
 import io.defy.chicken.lover.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.activity_join.*
+import android.text.InputFilter
+import android.text.Spanned
+import java.util.regex.Pattern
+
 
 class JoinActivity : AppCompatActivity(), JoinContract.View {
 
@@ -22,6 +26,15 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
 
         presenter = JoinPresenter()
         presenter?.attachView(this)
+
+        et_id.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
+            val ps = Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
+            if (source == "" || ps.matcher(source).matches()) {
+                return@InputFilter source
+            }
+            Toast.makeText(this, "한글, 영문, 숫자만 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+            ""
+        }, InputFilter.LengthFilter(9))
 
         btn_join.setOnClickListener {
             val id = et_id.text.toString().trim()

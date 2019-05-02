@@ -8,135 +8,122 @@ import io.defy.chicken.lover.model.data.FavoriteTypeData
 import java.util.*
 import kotlin.collections.ArrayList
 
-open class RandomPickUtil {
+object RandomPickUtil {
+    val fbRepo = FavoriteBrandRepository.getInstance()
+    val ftRepo = FavoriteTypeRepository.getInstance()
 
-    companion object {
-        val fbRepo = FavoriteBrandRepository.getInstance()
-        val ftRepo = FavoriteTypeRepository.getInstance()
+    fun randomBrandPick(): String? {
+        val fbList = this.fbRepo.selectAll()
 
-        fun randomBrandPick() : String? {
-            val fbList = this.fbRepo.selectAll()
-
-            var fbCheckedList : ArrayList<FavoriteBrandData>? = ArrayList()
-            for(item in fbList)
-            {
-                if(item.checked) fbCheckedList?.add(item)
-            }
-
-            var selectedFb : FavoriteBrandData? = null
-
-            fbCheckedList?.let {
-                val fbSize = fbCheckedList.size
-
-                /*
-                 * 선호하는 브랜드 , 종류를 모두 고른 유저라면
-                 */
-                if(fbSize > 0)
-                {
-                    fbCheckedList.let {
-                        selectedFb = getRandomInFb(it)
-                    }
-                    return selectedFb?.brandName
-                }
-                else
-                {
-                    return "empty"
-                }
-            }
-
-            return "empty"
+        var fbCheckedList: ArrayList<FavoriteBrandData>? = ArrayList()
+        for (item in fbList) {
+            if (item.checked) fbCheckedList?.add(item)
         }
 
-        fun randomTypePick() : String? {
-            val ftList = this.ftRepo.selectAll()
+        var selectedFb: FavoriteBrandData? = null
 
-            var ftCheckedList : ArrayList<FavoriteTypeData>? = ArrayList()
-            for(item in ftList)
-            {
-                if(item.checked) ftCheckedList?.add(item)
-            }
+        fbCheckedList?.let {
+            val fbSize = fbCheckedList.size
 
-            var selectedFt : FavoriteTypeData? = null
-
-            ftCheckedList?.let {
-                val ftSize = ftCheckedList.size
-
-                /*
-                 * 선호하는 브랜드 , 종류를 모두 고른 유저라면
-                 */
-                if (ftSize > 0) {
-                    ftCheckedList.let {
-                        selectedFt = getRandomInFt(it)
-                    }
-                    return selectedFt?.typeName
-                } else {
-                    return "empty"
+            /*
+             * 선호하는 브랜드 , 종류를 모두 고른 유저라면
+             */
+            if (fbSize > 0) {
+                fbCheckedList.let {
+                    selectedFb = getRandomInFb(it)
                 }
+                return selectedFb?.brandName
+            } else {
+                return "empty"
             }
-
-            return "empty"
         }
 
-        fun randomPick() : Int {
-            val fbList = this.fbRepo.selectAll()
-            val ftList = this.ftRepo.selectAll()
+        return "empty"
+    }
 
-            var fbCheckedList : ArrayList<FavoriteBrandData>? = ArrayList()
-            for(item in fbList)
-            {
-                if(item.checked) fbCheckedList?.add(item)
-            }
-            var ftCheckedList : ArrayList<FavoriteTypeData>? = ArrayList()
-            for(item in ftList)
-            {
-                if(item.checked) ftCheckedList?.add(item)
-            }
+    fun randomTypePick(): String? {
+        val ftList = this.ftRepo.selectAll()
 
-            var selectedFb : FavoriteBrandData? = null
-            var selectedFt : FavoriteTypeData? = null
+        var ftCheckedList: ArrayList<FavoriteTypeData>? = ArrayList()
+        for (item in ftList) {
+            if (item.checked) ftCheckedList?.add(item)
+        }
 
-            ifNotNull(fbCheckedList, ftCheckedList) { fbCheckedList, ftCheckedList ->
-                val fbSize = fbCheckedList.size
-                val ftSize = ftCheckedList.size
+        var selectedFt: FavoriteTypeData? = null
 
-                /*
-                 * 선호하는 브랜드 , 종류를 모두 고른 유저라면
-                 */
-                if(fbSize > 0 && ftSize > 0)
-                {
-                    fbCheckedList.let {
-                        selectedFb = getRandomInFb(it)
-                    }
+        ftCheckedList?.let {
+            val ftSize = ftCheckedList.size
 
-                    ftCheckedList.let {
-                        selectedFt = getRandomInFt(it)
-                    }
+            /*
+             * 선호하는 브랜드 , 종류를 모두 고른 유저라면
+             */
+            if (ftSize > 0) {
+                ftCheckedList.let {
+                    selectedFt = getRandomInFt(it)
                 }
-                else
-                {
+                return selectedFt?.typeName
+            } else {
+                return "empty"
+            }
+        }
 
+        return "empty"
+    }
+
+    fun randomPick(): Int {
+        val fbList = this.fbRepo.selectAll()
+        val ftList = this.ftRepo.selectAll()
+
+        var fbCheckedList: ArrayList<FavoriteBrandData>? = ArrayList()
+        for (item in fbList) {
+            if (item.checked) fbCheckedList?.add(item)
+        }
+        var ftCheckedList: ArrayList<FavoriteTypeData>? = ArrayList()
+        for (item in ftList) {
+            if (item.checked) ftCheckedList?.add(item)
+        }
+
+        var selectedFb: FavoriteBrandData? = null
+        var selectedFt: FavoriteTypeData? = null
+
+        ifNotNull(fbCheckedList, ftCheckedList) { fbCheckedList, ftCheckedList ->
+            val fbSize = fbCheckedList.size
+            val ftSize = ftCheckedList.size
+
+            /*
+             * 선호하는 브랜드 , 종류를 모두 고른 유저라면
+             */
+            if (fbSize > 0 && ftSize > 0) {
+                fbCheckedList.let {
+                    selectedFb = getRandomInFb(it)
                 }
+
+                ftCheckedList.let {
+                    selectedFt = getRandomInFt(it)
+                }
+            } else {
+
             }
-
-            Log.d("골라진 것 : ", " : " + selectedFb?.uid + ", " + selectedFt?.uid)
-
-            return 1
         }
 
-        fun getRandomInFb(list : ArrayList<FavoriteBrandData>) : FavoriteBrandData{
-            val rand = Random()
-            return list.get(rand.nextInt(list.size))
-        }
+        Log.d("골라진 것 : ", " : " + selectedFb?.uid + ", " + selectedFt?.uid)
 
-        fun getRandomInFt(list : ArrayList<FavoriteTypeData>) : FavoriteTypeData {
-            val rand = Random()
-            return list.get(rand.nextInt(list.size))
-        }
+        return 1
+    }
 
-        inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R) {
-            if (a != null && b != null) {
-                code(a, b)
-            }
+    fun getRandomInFb(list: ArrayList<FavoriteBrandData>): FavoriteBrandData {
+        val rand = Random()
+        return list.get(rand.nextInt(list.size))
+    }
+
+    fun getRandomInFt(list: ArrayList<FavoriteTypeData>): FavoriteTypeData {
+        val rand = Random()
+        return list.get(rand.nextInt(list.size))
+    }
+
+    inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R) {
+        if (a != null && b != null) {
+            code(a, b)
         }
     }
 }

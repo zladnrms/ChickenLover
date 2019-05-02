@@ -1,6 +1,7 @@
 package io.defy.chicken.lover.contract
 
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import io.defy.chicken.lover.model.data.BoardArticleData
 
 interface BoardContract {
@@ -19,6 +20,8 @@ interface BoardContract {
 
         fun detachView(view: Any)
 
-        fun getArticleList(type: String, index: Int?, limit: Int?)
+        fun getArticleList()
+
+        fun setRecyclerViewScrollListener(list: RecyclerView)
     }
 }

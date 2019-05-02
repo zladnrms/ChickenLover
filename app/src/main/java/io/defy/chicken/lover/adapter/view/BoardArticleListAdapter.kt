@@ -50,22 +50,6 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
         holder.itemView.tv_date.text = DateUtil.parseDate(lists[position].create_date)
         holder.itemView.tv_name.text = lists[position].name
 
-        /*
-         * 클릭 시 체크하며 local DB에 upgrade 및 실시간 반영
-         */
-        holder.itemView.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                holder.itemView.setBackgroundColor(Color.parseColor("#BCBCBC"))
-                // 버튼을 눌렀을 때
-            } else if (event.action == MotionEvent.ACTION_UP) {
-                // 버튼에서 손을 떼었을 때
-                holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"))
-            } else if(event.action == MotionEvent.ACTION_MOVE) {
-                holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"))
-            }
-            false
-        }
-
         holder.itemView.setOnClickListener {
             activity.switchFragment(ArticleFragment.newInstance(lists[position]._id.toInt()), "article")
         }

@@ -10,7 +10,10 @@
         android:paddingBottom="13dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:background="#EFEFEF">
+        android:background="#EFEFEF"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
             android:id="@+id/tv_chicken_info"

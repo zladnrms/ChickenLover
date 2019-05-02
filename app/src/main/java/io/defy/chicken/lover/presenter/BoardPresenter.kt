@@ -1,5 +1,7 @@
 package io.defy.chicken.lover.presenter
 
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.BoardContract
@@ -12,6 +14,10 @@ import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 
 class BoardPresenter : BoardContract.Presenter {
+
+    private val type = "free"
+    private var index = 0
+    private val limit = 15
 
     val retrofitClient by lazy {
         ApiInterface.create()
@@ -27,7 +33,7 @@ class BoardPresenter : BoardContract.Presenter {
         this.view = null
     }
 
-    override fun getArticleList(type: String, index: Int?, limit: Int?) {
+    override fun getArticleList() {
         this.view?.dialogShow()
 
         retrofitClient.getBoardArticleList(type, index, limit)
@@ -59,5 +65,30 @@ class BoardPresenter : BoardContract.Presenter {
                     view?.dialogDismiss()
                 }
             })
+    }
+
+
+
+    override fun setRecyclerViewScrollListener(list: RecyclerView) {
+        val scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount
+
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    index = lastVisibleItemPosition + 1
+                    getArticleList()
+                }
+            }
+        }
+        list.addOnScrollListener(scrollListener)
     }
 }
