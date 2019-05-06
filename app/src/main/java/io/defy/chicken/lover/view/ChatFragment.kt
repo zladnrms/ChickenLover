@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.defy.chicken.lover.R
-import io.defy.chicken.lover.adapter.view.BoardArticleListAdapter
 import io.defy.chicken.lover.adapter.view.ChatListAdapter
 import io.defy.chicken.lover.contract.ChatContract
 import io.defy.chicken.lover.model.data.ChatData
@@ -150,11 +148,19 @@ class ChatFragment : Fragment(), ChatContract.View {
         handler = Handler()
     }
 
-    override fun dialogShow() {
-        CustomDialog.instance.show(activity as ChatActivity)
+    override fun loadingShow() {
+        LoadingDialog.instance.show(activity as ChatActivity)
     }
 
-    override fun dialogDismiss() {
-        CustomDialog.instance.dismiss()
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(this as ChatActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
     }
 }

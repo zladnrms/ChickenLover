@@ -33,6 +33,8 @@ class LoginPresenter : LoginContract.Presenter {
     }
 
     override fun login(mobile : String, loginType : Int, id: String, password: String) {
+        this.view?.loadingShow()
+
         retrofitClient.loginAsMember(mobile, loginType, id, password)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -53,6 +55,7 @@ class LoginPresenter : LoginContract.Presenter {
                 }
 
                 override fun onComplete() {
+                    view?.loadingDismiss()
                 }
             })
     }

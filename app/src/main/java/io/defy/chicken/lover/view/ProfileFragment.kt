@@ -47,10 +47,6 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter?.getUserName()
-        presenter?.getUserPoint()
-        presenter?.getUserVisitTime()
-
         layout_profile.setOnClickListener {
             when(presenter?.getLoginType())
             {
@@ -105,6 +101,9 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onResume() {
         super.onResume()
 
+        presenter?.getUserName()
+        presenter?.getUserPoint()
+        presenter?.getUserVisitTime()
     }
 
     override fun setUserName(name: String) {
@@ -123,5 +122,21 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         super.onDestroy()
 
         presenter?.detachView(this)
+    }
+
+    override fun loadingShow() {
+        LoadingDialog.instance.show(activity as BoardActivity)
+    }
+
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(this as ProfileActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
     }
 }

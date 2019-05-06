@@ -7,6 +7,10 @@ interface SplashContract {
         fun pass()
 
         fun toastMsg(msg: String)
+
+        fun alertShow()
+
+        fun alertDismiss()
     }
 
     interface Presenter {

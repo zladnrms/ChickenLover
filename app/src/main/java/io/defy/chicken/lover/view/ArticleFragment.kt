@@ -41,15 +41,12 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     private var pref: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
 
-    private var articleId: Int? = null
-
-    private var thumbsUpList: JSONArray? = null
-
     companion object {
         @JvmStatic
-        fun newInstance(articleId: Int) =
+        fun newInstance(type:String, articleId: Int) =
             ArticleFragment().apply {
                 arguments = Bundle().apply {
+                    putString("type", type)
                     putInt("articleId", articleId)
                 }
             }
@@ -68,17 +65,17 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         presenter = ArticlePresenter()
         presenter?.attachView(this)
 
-        if (arguments != null) {
-            articleId = arguments?.getInt("articleId")
+        arguments?.apply {
+            presenter?.setType(this.getString("type"))
+            presenter?.setArticleId(this.getInt("articleId"))
         }
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter?.getArticleInfo("free", articleId, null)
+        presenter?.getArticleInfo(null)
 
         commentList.layoutManager = LinearLayoutManager(activity)
         commentList.hasFixedSize()
@@ -95,20 +92,22 @@ class ArticleFragment : Fragment(), ArticleContract.View {
             else
             {
                 et_comment.text = null
-                presenter?.writeBoardComment(articleId, comment)
+                presenter?.writeBoardComment(comment)
             }
         }
 
         layout_thumbs_up.setOnClickListener {
             presenter?.let {
+                val thumbsUpList = presenter?.getThumbsUpList()
+
                 when(it.checkThumbsList(thumbsUpList))
                 {
                     1 -> {
-                        presenter?.controlArticleThumbs("free", "up", 0, articleId)
+                        presenter?.controlArticleThumbs("free", "up", 0)
                     }
                     else ->
                     {
-                        presenter?.controlArticleThumbs("free", "up", 1, articleId)
+                        presenter?.controlArticleThumbs("free", "up", 1)
                     }
                 }
             }
@@ -117,14 +116,14 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         /* Register Event */
         RxBus.listen(CommentThumbsRefreshEvent::class.java).subscribe {
             if (it.result.equals("refresh")) {
-                presenter?.getCommentList("free", pref!!.getInt("comment_id", 0))
+                presenter?.getCommentList(pref!!.getInt("comment_id", 0))
             }
         }
 
         /* Register Event */
         RxBus.listen(ArticleThumbsRefreshEvent::class.java).subscribe {
             if (it.result.equals("refresh")) {
-                presenter?.getArticleThumbsInfo("free", articleId, null)
+                presenter?.getArticleThumbsInfo(null)
             }
         }
     }
@@ -154,26 +153,26 @@ class ArticleFragment : Fragment(), ArticleContract.View {
             }
             thumbs?.let{
                 val thumbsList = JSONObject(it)
-                thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
+                val thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
+                presenter?.setThumbsUpList(thumbsUpList)
 
                 tv_thumbs_up.text = thumbsUpList?.length().toString()
             }
-
             comment_id?.let {
                 editor?.putInt("comment_id", it.toInt())
                 editor?.commit()
-                presenter?.getCommentList("free", it.toInt())
+                presenter?.getCommentList(it.toInt())
             }
         }
     }
 
     override fun setArticleThumbsInfo(data: BoardArticleRes) {
-        Log.d("데이터 : ", data.thumbs.toString())
         data.thumbs?.let {
             val thumbsList = JSONObject(it)
-            thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
+            val thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
+            presenter?.setThumbsUpList(thumbsUpList)
 
-            tv_thumbs_up.text = thumbsUpList?.length().toString()
+            tv_thumbs_up.text = thumbsUpList.length().toString()
         }
     }
 
@@ -183,17 +182,17 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     }
 
     override fun complete() {
-        activity?.let {
+        activity?.apply {
             try {
-                val imm = it.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imm?.hideSoftInputFromWindow(it.getCurrentFocus().getWindowToken(), 0)
+                val imm = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(this.currentFocus.windowToken, 0)
             } catch (e: Exception) {
                 // TODO: handle exception
             }
         }
 
-        pref?.let {
-            presenter?.getCommentList("free", it.getInt("comment_id", 0))
+        pref?.apply {
+            presenter?.getCommentList(this.getInt("comment_id", 0))
         }
     }
 
@@ -202,12 +201,20 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         (activity as BoardActivity).onBackPressed()
     }
 
-    override fun dialogShow() {
-        CustomDialog.instance.show(activity as BoardActivity)
+    override fun loadingShow() {
+        LoadingDialog.instance.show(activity as BoardActivity)
     }
 
-    override fun dialogDismiss() {
-        CustomDialog.instance.dismiss()
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(this as BoardActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
     }
 
     override fun clearCommentList() {

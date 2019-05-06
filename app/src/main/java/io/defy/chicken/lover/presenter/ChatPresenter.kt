@@ -40,7 +40,7 @@ class ChatPresenter : ChatContract.Presenter {
     }
 
     override fun connect() {
-        this.view?.dialogShow()
+        this.view?.loadingShow()
 
         this.client = NettyClient(view)
         val selectVal = userRepo?.select()
@@ -79,7 +79,7 @@ class ChatPresenter : ChatContract.Presenter {
 
         this.view?.listHideOn(false)
 
-        this.view?.dialogDismiss()
+        this.view?.loadingDismiss()
     }
 
     override fun send(content: String) {

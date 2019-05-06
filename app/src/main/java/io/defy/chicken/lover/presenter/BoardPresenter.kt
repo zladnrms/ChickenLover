@@ -15,7 +15,7 @@ import org.json.JSONObject
 
 class BoardPresenter : BoardContract.Presenter {
 
-    private val type = "free"
+    private var type = "free"
     private var index = 0
     private val limit = 15
 
@@ -23,7 +23,7 @@ class BoardPresenter : BoardContract.Presenter {
         ApiInterface.create()
     }
 
-    private var view: BoardContract.View? = null;
+    private var view: BoardContract.View? = null
 
     override fun attachView(view: Any) {
         this.view = view as BoardContract.View
@@ -33,8 +33,12 @@ class BoardPresenter : BoardContract.Presenter {
         this.view = null
     }
 
+    override fun setType(type: String) {
+        this.type = type
+    }
+
     override fun getArticleList() {
-        this.view?.dialogShow()
+        this.view?.loadingShow()
 
         retrofitClient.getBoardArticleList(type, index, limit)
             .subscribeOn(Schedulers.newThread())
@@ -62,12 +66,10 @@ class BoardPresenter : BoardContract.Presenter {
                 }
 
                 override fun onComplete() {
-                    view?.dialogDismiss()
+                    view?.loadingDismiss()
                 }
             })
     }
-
-
 
     override fun setRecyclerViewScrollListener(list: RecyclerView) {
         val scrollListener = object : RecyclerView.OnScrollListener() {

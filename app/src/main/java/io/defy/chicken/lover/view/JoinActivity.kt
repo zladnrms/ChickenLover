@@ -9,7 +9,6 @@ import io.defy.chicken.lover.contract.JoinContract
 import io.defy.chicken.lover.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.activity_join.*
 import android.text.InputFilter
-import android.text.Spanned
 import java.util.regex.Pattern
 
 
@@ -52,6 +51,22 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
 
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT)
+    }
+
+    override fun loadingShow() {
+        LoadingDialog.instance.show(this)
+    }
+
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(this, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
     }
 
     override fun complete() {

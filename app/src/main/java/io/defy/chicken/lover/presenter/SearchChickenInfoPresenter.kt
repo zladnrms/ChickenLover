@@ -4,27 +4,24 @@ import android.util.Log
 import com.zeniex.www.zeniexautomarketing.model.AppVersionDataModel
 import com.zeniex.www.zeniexautomarketing.model.LocalChickenInfoModel
 import com.zeniex.www.zeniexautomarketing.network.ApiInterface
-import io.defy.chicken.lover.BuildConfig
 import io.defy.chicken.lover.contract.SearchChickenInfoContract
 import io.defy.chicken.lover.model.AppVersionDataRepository
 import io.defy.chicken.lover.model.LocalChickenInfoRepository
-import io.defy.chicken.lover.model.data.LocalChickenInfoData
 import io.defy.chicken.lover.network.response.UpdateLocalChickenInfoRes
 import io.defy.chicken.lover.network.response.VersionCheckRes
-import io.defy.chicken.lover.view.CustomDialog
+import io.defy.chicken.lover.view.LoadingDialog
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
-import java.util.*
 
 class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
 
     private var view: SearchChickenInfoContract.View? = null
     private var localRepo: LocalChickenInfoModel? = null
     private var appVersionRepo: AppVersionDataModel? = null
-    private var dialog: CustomDialog? = null
+    private var dialog: LoadingDialog? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()

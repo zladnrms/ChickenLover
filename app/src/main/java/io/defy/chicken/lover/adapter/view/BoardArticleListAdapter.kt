@@ -26,12 +26,12 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     BoardArticleDataModel, BoardArticleContract.View {
 
-    private var presenterArticle: BoardArticleAdapterPresenter
+    private var presenter: BoardArticleAdapterPresenter
     private val context: Context = activity.applicationContext
 
     init {
-        presenterArticle = BoardArticleAdapterPresenter()
-        presenterArticle.attachView(this)
+        presenter = BoardArticleAdapterPresenter()
+        presenter.attachView(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -51,7 +51,7 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
         holder.itemView.tv_name.text = lists[position].name
 
         holder.itemView.setOnClickListener {
-            activity.switchFragment(ArticleFragment.newInstance(lists[position]._id.toInt()), "article")
+            activity.switchFragment(ArticleFragment.newInstance(presenter.getType(), lists[position]._id.toInt()), "article")
         }
     }
 
@@ -74,5 +74,9 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
 
     override fun remove(position: Int) {
         lists.removeAt(position)
+    }
+
+    override fun setType(type: String) {
+        presenter.setType(type)
     }
 }

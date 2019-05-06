@@ -1,7 +1,9 @@
 package io.defy.chicken.lover.view
 
 import android.content.Context
+import android.support.design.widget.Snackbar
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
@@ -16,6 +18,9 @@ import kotlinx.android.synthetic.main.article_image_view_layout.view.*
  */
 
 class ArticleImageViewLayout : LinearLayout {
+
+    init {
+    }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
 
@@ -32,6 +37,18 @@ class ArticleImageViewLayout : LinearLayout {
     }
 
     fun setImageView(filename : String) {
+        this.setOnLongClickListener {
+            val snackbar = Snackbar.make(this, "이 이미지를 다운로드 하시겠습니까?", Snackbar.LENGTH_INDEFINITE)
+            snackbar.setAction("다운로드",
+                {
+                    v-> Log.d("ㅇㅇ", "" + filename)
+                }
+            )
+
+            snackbar.show()
+
+            true
+        }
         /*val ext = filename.substring(filename.lastIndexOf("."))
         if(ext.equals("gif"))
         {
@@ -46,5 +63,8 @@ class ArticleImageViewLayout : LinearLayout {
                 .load(BuildConfig.SERVER_URL + BuildConfig.SERVER_IMG_BASE_URL + filename)
                 .into(iv_article_item)
         //}
+
+
+
     }
 }

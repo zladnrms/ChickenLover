@@ -10,15 +10,21 @@ interface BoardContract {
 
         fun setArticleList(item : BoardArticleData)
 
-        fun dialogShow()
+        fun loadingShow()
 
-        fun dialogDismiss()
+        fun loadingDismiss()
+
+        fun alertShow()
+
+        fun alertDismiss()
     }
 
     interface Presenter {
         fun attachView(view: Any)
 
         fun detachView(view: Any)
+
+        fun setType(type: String)
 
         fun getArticleList()
 

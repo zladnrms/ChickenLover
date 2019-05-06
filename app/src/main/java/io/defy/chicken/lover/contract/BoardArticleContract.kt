@@ -15,5 +15,9 @@ interface BoardArticleContract {
         fun attachView(view: Any)
 
         fun detachView(view: Any)
+
+        fun setType(type: String)
+
+        fun getType(): String
     }
 }

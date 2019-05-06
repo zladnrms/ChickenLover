@@ -65,11 +65,11 @@ class SearchChickenInfoActivity : AppCompatActivity(), SearchChickenInfoContract
     }
 
     override fun dialogShow() {
-        CustomDialog.instance.show(this)
+        LoadingDialog.instance.show(this)
     }
 
     override fun dialogDismiss() {
-        CustomDialog.instance.dismiss()
+        LoadingDialog.instance.dismiss()
     }
 
     override fun onDestroy() {

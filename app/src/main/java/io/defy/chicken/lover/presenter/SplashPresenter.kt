@@ -13,6 +13,8 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.net.ConnectException
+import java.util.concurrent.TimeoutException
 
 class SplashPresenter : SplashContract.Presenter {
 
@@ -66,7 +68,11 @@ class SplashPresenter : SplashContract.Presenter {
                 }
 
                 override fun onError(e: Throwable) {
-                    e.printStackTrace()
+                    when(e)
+                    {
+                        is ConnectException -> view?.alertShow()
+                        is TimeoutException -> view?.alertShow()
+                    }
                 }
 
                 override fun onComplete() {
@@ -93,7 +99,11 @@ class SplashPresenter : SplashContract.Presenter {
                 }
 
                 override fun onError(e: Throwable) {
-                    e.printStackTrace()
+                    when(e)
+                    {
+                        is ConnectException -> view?.alertShow()
+                        is TimeoutException -> view?.alertShow()
+                    }
                 }
 
                 override fun onComplete() {
@@ -117,7 +127,11 @@ class SplashPresenter : SplashContract.Presenter {
                 }
 
                 override fun onError(e: Throwable) {
-                    e.printStackTrace()
+                    when(e)
+                    {
+                        is ConnectException -> view?.alertShow()
+                        is TimeoutException -> view?.alertShow()
+                    }
                 }
 
                 override fun onComplete() {

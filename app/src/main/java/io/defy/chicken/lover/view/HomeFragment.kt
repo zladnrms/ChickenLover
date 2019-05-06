@@ -3,6 +3,7 @@ package io.defy.chicken.lover.view
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -89,5 +90,21 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onDestroy()
 
         presenter?.detachView(this)
+    }
+
+    override fun loadingShow() {
+        LoadingDialog.instance.show(activity as HomeActivity)
+    }
+
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(activity as HomeActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
     }
 }

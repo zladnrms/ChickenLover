@@ -15,6 +15,7 @@ import retrofit2.http.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.POST
 import retrofit2.http.FormUrlEncoded
+import java.util.concurrent.TimeUnit
 
 interface ApiInterface {
 
@@ -26,6 +27,9 @@ interface ApiInterface {
             interceptor.level = HttpLoggingInterceptor.Level.BODY
 
             val client = OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                     .addInterceptor { chain -> chain.proceed(chain.request()) }
                     .addInterceptor(interceptor)
                     .addNetworkInterceptor(AddHeaderInterceptor()).build()
@@ -55,7 +59,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/get_board_article_list.php")
-    fun getBoardArticleList(@Field("type") type: String, @Field("index") index: Int?, @Field("limit") limit: Int?): Observable<BoardArticleListRes>
+    fun getBoardArticleList(@Field("type") type: String, @Field("index") index: Int, @Field("limit") limit: Int): Observable<BoardArticleListRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/get_board_article.php")

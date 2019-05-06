@@ -7,6 +7,14 @@ interface LoginContract {
         fun complete()
 
         fun toastMsg(msg : String)
+
+        fun loadingShow()
+
+        fun loadingDismiss()
+
+        fun alertShow()
+
+        fun alertDismiss()
     }
 
     interface Presenter {

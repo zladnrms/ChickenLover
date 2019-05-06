@@ -12,11 +12,6 @@ import io.defy.chicken.lover.adapter.view.FileUploadListAdapter
 import io.defy.chicken.lover.contract.WriteContract
 import io.defy.chicken.lover.model.data.FileUploadData
 import io.defy.chicken.lover.presenter.WritePresenter
-import java.io.File
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
-import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.werb.pickphotoview.PickPhotoView
@@ -47,13 +42,14 @@ class WriteFragment : Fragment(), WriteContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.let {
-            it.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        activity?.apply {
+            this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_write, container, false)
+        val view = inflater.inflate(R.layout.fragment_write, container, false)
 
         presenter = WritePresenter()
         presenter?.attachView(this)
@@ -81,7 +77,7 @@ class WriteFragment : Fragment(), WriteContract.View {
                 }
                 else
                 {
-                    presenter?.write("free", title, content, imagesPath)
+                    presenter?.write(title, content, imagesPath)
                 }
             }
         }
@@ -99,6 +95,26 @@ class WriteFragment : Fragment(), WriteContract.View {
                 .setSelectIconColor(R.color.pick_black)     // select icon color
                 .setShowGif(true)                    // is show gif
                 .start()
+        }
+
+        layout_category.setOnClickListener {
+            layout_category_selector.visibility = View.VISIBLE
+        }
+
+        tv_category_notice.setOnClickListener {
+            tv_category.text = "실시간정보"
+            presenter?.setType("info")
+            layout_category_selector.visibility = View.GONE
+        }
+
+        tv_category_free.setOnClickListener {
+            tv_category.text = "자유게시판"
+            presenter?.setType("free")
+            layout_category_selector.visibility = View.GONE
+        }
+
+        iv_category_close.setOnClickListener {
+            layout_category_selector.visibility = View.GONE
         }
 
         /* Register Event */
@@ -121,10 +137,10 @@ class WriteFragment : Fragment(), WriteContract.View {
 
     }
 
-    override fun writeResultCallback(lastId: Int) {
+    override fun writeResultCallback(type: String, lastId: Int) {
         (activity as BoardActivity).supportFragmentManager.beginTransaction().remove(this).commit()
         (activity as BoardActivity).supportFragmentManager.popBackStack()
-        switchFragment(ArticleFragment.newInstance(lastId), "article")
+        switchFragment(ArticleFragment.newInstance(type, lastId), "article")
     }
 
     override fun switchFragment(fragment: Fragment, tag: String) {
@@ -135,12 +151,20 @@ class WriteFragment : Fragment(), WriteContract.View {
         ft.commit()
     }
 
-    override fun dialogShow() {
-        CustomDialog.instance.show(activity as BoardActivity)
+    override fun loadingShow() {
+        LoadingDialog.instance.show(activity as BoardActivity)
     }
 
-    override fun dialogDismiss() {
-        CustomDialog.instance.dismiss()
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(activity as BoardActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
     }
 
     override fun toastMsg(msg: String) {

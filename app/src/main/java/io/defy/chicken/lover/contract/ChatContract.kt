@@ -20,9 +20,13 @@ interface ChatContract {
 
         fun appendChatMessage(data: ChatData)
 
-        fun dialogShow()
+        fun loadingShow()
 
-        fun dialogDismiss()
+        fun loadingDismiss()
+
+        fun alertShow()
+
+        fun alertDismiss()
     }
 
     interface Presenter {

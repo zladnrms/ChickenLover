@@ -14,9 +14,9 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_home.*
 import org.json.JSONObject
-
+import java.net.ConnectException
+import java.util.concurrent.TimeoutException
 
 
 class HomePresenter : HomeContract.Presenter {
@@ -52,11 +52,14 @@ class HomePresenter : HomeContract.Presenter {
                 }
 
                 override fun onError(e: Throwable) {
-                    e.printStackTrace()
+                    when(e)
+                    {
+                        is ConnectException -> view?.alertShow()
+                        is TimeoutException -> view?.alertShow()
+                    }
                 }
 
                 override fun onComplete() {
-
                 }
             })
     }
@@ -81,7 +84,11 @@ class HomePresenter : HomeContract.Presenter {
                 }
 
                 override fun onError(e: Throwable) {
-                    e.printStackTrace()
+                    when(e)
+                    {
+                        is ConnectException -> view?.alertShow()
+                        is TimeoutException -> view?.alertShow()
+                    }
                 }
 
                 override fun onComplete() {

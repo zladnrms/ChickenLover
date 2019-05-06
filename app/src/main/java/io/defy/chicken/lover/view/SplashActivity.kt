@@ -7,7 +7,6 @@ import android.widget.Toast
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.SplashContract
 import io.defy.chicken.lover.presenter.SplashPresenter
-import kotlinx.android.synthetic.main.activity_chicken_info.*
 
 class SplashActivity : AppCompatActivity(), SplashContract.View {
 
@@ -36,13 +35,13 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
     override fun onResume() {
         super.onResume()
 
-        CustomDialog.instance.show(this)
+        LoadingDialog.instance.show(this)
     }
 
     override fun onStop() {
         super.onStop()
 
-        CustomDialog.instance.dismiss()
+        LoadingDialog.instance.dismiss()
     }
 
     override fun onDestroy() {
@@ -51,4 +50,11 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
         presenter?.detachView(this)
     }
 
+    override fun alertShow() {
+        AlertDialog.instance.show(this, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
+    }
 }

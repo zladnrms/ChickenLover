@@ -35,6 +35,7 @@ class JoinPresenter : JoinContract.Presenter {
     }
 
     override fun join(id: String, password: String, name: String) {
+        this.view?.loadingShow()
         val selectVal = userRepo?.select()
 
         var hashed_value = selectVal?.hashed_value
@@ -60,6 +61,7 @@ class JoinPresenter : JoinContract.Presenter {
                 }
 
                 override fun onComplete() {
+                    view?.loadingDismiss()
                 }
             })
     }

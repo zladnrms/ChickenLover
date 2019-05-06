@@ -36,6 +36,22 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         }
     }
 
+    override fun loadingShow() {
+        LoadingDialog.instance.show(this)
+    }
+
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(this, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
+    }
+
     override fun complete() {
         finish()
     }

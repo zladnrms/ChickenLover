@@ -2,7 +2,9 @@ package io.defy.chicken.lover.contract
 
 interface ChickenInfoContract {
     interface View {
+        fun alertShow()
 
+        fun alertDismiss()
     }
 
     interface Presenter {

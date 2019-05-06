@@ -11,4 +11,7 @@ interface BoardArticleDataModel {
 
     /* 데이터 초기화*/
     fun clear()
+
+    /* 종류 설정*/
+    fun setType(type: String)
 }

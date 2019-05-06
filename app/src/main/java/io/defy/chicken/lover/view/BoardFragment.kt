@@ -1,7 +1,5 @@
 package io.defy.chicken.lover.view
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -13,7 +11,6 @@ import io.defy.chicken.lover.R
 import io.defy.chicken.lover.adapter.view.BoardArticleListAdapter
 import io.defy.chicken.lover.contract.BoardContract
 import io.defy.chicken.lover.model.data.BoardArticleData
-import io.defy.chicken.lover.network.response.BoardArticleRes
 import io.defy.chicken.lover.presenter.BoardPresenter
 import kotlinx.android.synthetic.main.fragment_board.*
 
@@ -51,11 +48,31 @@ class BoardFragment : Fragment(), BoardContract.View {
         articleList.layoutManager = LinearLayoutManager(activity)
         articleList.hasFixedSize()
         articleList.addItemDecoration(dividerItemDecoration)
-        adapter = BoardArticleListAdapter((activity as BoardActivity), ArrayList<BoardArticleData>())
+        adapter = BoardArticleListAdapter((activity as BoardActivity), ArrayList())
         articleList.adapter = adapter
 
         iv_write.setOnClickListener {
             (activity as BoardActivity).switchFragment(WriteFragment(), "write")
+        }
+
+        layout_category.setOnClickListener {
+            layout_category_selector.visibility = View.VISIBLE
+        }
+
+        tv_category_notice.setOnClickListener {
+            val type = "info"
+            tv_category.text = "실시간정보"
+            changeCategory(type)
+        }
+
+        tv_category_free.setOnClickListener {
+            val type = "free"
+            tv_category.text = "자유게시판"
+            changeCategory(type)
+        }
+
+        iv_category_close.setOnClickListener {
+            layout_category_selector.visibility = View.GONE
         }
 
         presenter?.setRecyclerViewScrollListener(articleList)
@@ -64,7 +81,19 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onResume() {
         super.onResume()
 
+        resetArticleList()
+    }
+
+    private fun changeCategory(type: String) {
+        presenter?.setType(type)
+        adapter?.setType(type)
+        resetArticleList()
+        layout_category_selector.visibility = View.GONE
+    }
+
+    private fun resetArticleList() {
         adapter?.clear()
+        adapter?.refresh()
         presenter?.getArticleList()
     }
 
@@ -94,11 +123,19 @@ class BoardFragment : Fragment(), BoardContract.View {
         presenter?.detachView(this)
     }
 
-    override fun dialogShow() {
-        CustomDialog.instance.show(activity as BoardActivity)
+    override fun loadingShow() {
+        LoadingDialog.instance.show(activity as BoardActivity)
     }
 
-    override fun dialogDismiss() {
-        CustomDialog.instance.dismiss()
+    override fun loadingDismiss() {
+        LoadingDialog.instance.dismiss()
+    }
+
+    override fun alertShow() {
+        AlertDialog.instance.show(this as BoardActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+    }
+
+    override fun alertDismiss() {
+        AlertDialog.instance.dismiss()
     }
 }

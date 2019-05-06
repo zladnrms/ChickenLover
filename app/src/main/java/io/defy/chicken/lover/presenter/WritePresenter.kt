@@ -15,13 +15,14 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.Multipart
 import java.io.File
 
 
 class WritePresenter : WriteContract.Presenter {
 
-    private var view: WriteContract.View? = null;
+    private var type = "free"
+
+    private var view: WriteContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
     val retrofitClient by lazy {
@@ -37,12 +38,15 @@ class WritePresenter : WriteContract.Presenter {
         this.view = null
     }
 
-    override fun write(type: String, title: String, content: String, imagesPath : ArrayList<FileUploadData>) {
-        this.view?.dialogShow()
+    override fun setType(type: String) {
+        this.type = type
+    }
+
+    override fun write(title: String, content: String, imagesPath : ArrayList<FileUploadData>) {
+        this.view?.loadingShow()
 
         val selectVal = userRepo?.select()
         val name = selectVal?.name
-        var imgUrl: String? = null
 
         var fileList = mutableListOf<MultipartBody.Part>()
 
@@ -50,7 +54,7 @@ class WritePresenter : WriteContract.Presenter {
         {
             val file = File(item.path)
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-            val filePart = MultipartBody.Part.createFormData("uploadfile[]", file.getName(), requestFile);
+            val filePart = MultipartBody.Part.createFormData("uploadfile[]", file.name, requestFile)
             fileList.add(filePart)
         }
 
@@ -69,22 +73,16 @@ class WritePresenter : WriteContract.Presenter {
                 }
 
                 override fun onNext(repo: WriteArticleRes) {
-                    if(repo.result.equals("success"))
+                    when(repo.result)
                     {
-                        view?.dialogDismiss()
-                        view?.writeResultCallback(repo.last_id)
-                    }
-                    else if(repo.result.equals("exceed_size"))
-                    {
-                        view?.toastMsg("업로드하려는 이미지 용량이 너무 큽니다")
-                    }
-                    else if(repo.result.equals("file_not_found"))
-                    {
-                        view?.toastMsg("업로드하려는 이미지를 찾을 수 없습니다")
-                    }
-                    else if(repo.result.equals("not_allowed_ext"))
-                    {
-                        view?.toastMsg("jpg, jpeg, png, gif 확장자만 업로드 가능합니다")
+                        "success"->
+                        {
+                            view?.loadingDismiss()
+                            view?.writeResultCallback(type, repo.last_id)
+                        }
+                        "exceed_size"->view?.toastMsg("업로드하려는 이미지 용량이 너무 큽니다")
+                        "file_not_found"->view?.toastMsg("업로드하려는 이미지를 찾을 수 없습니다")
+                        "not_allowed_ext"->view?.toastMsg("jpg, jpeg, png, gif 확장자만 업로드 가능합니다")
                     }
                 }
 
@@ -111,7 +109,6 @@ class WritePresenter : WriteContract.Presenter {
 
     override fun imgPathToBitmap(path : String) : Bitmap {
         val file = File(path)
-        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-        return bitmap
+        return BitmapFactory.decodeFile(file.absolutePath)
     }
 }

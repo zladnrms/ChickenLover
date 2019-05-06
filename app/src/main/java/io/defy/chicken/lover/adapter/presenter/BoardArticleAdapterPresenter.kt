@@ -7,6 +7,7 @@ import io.defy.chicken.lover.contract.BoardArticleContract
  */
 class BoardArticleAdapterPresenter : BoardArticleContract.Presenter {
 
+    private var type = "free"
     private var view: BoardArticleContract.View? = null
 
     override fun attachView(view: Any) {
@@ -15,5 +16,13 @@ class BoardArticleAdapterPresenter : BoardArticleContract.Presenter {
 
     override fun detachView(view: Any) {
         this.view = null
+    }
+
+    override fun setType(type: String) {
+        this.type = type
+    }
+
+    override fun getType(): String {
+        return this.type
     }
 }

@@ -1,10 +1,5 @@
 package io.defy.chicken.lover.presenter
 
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.widget.Toast
-import com.google.gson.JsonArray
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
 import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.ArticleContract
@@ -15,23 +10,24 @@ import io.defy.chicken.lover.network.response.BoardArticleRes
 import io.defy.chicken.lover.network.response.BoardCommentRes
 import io.defy.chicken.lover.network.response.WriteCommentRes
 import io.defy.chicken.lover.rxbus.ArticleThumbsRefreshEvent
-import io.defy.chicken.lover.rxbus.CommentThumbsRefreshEvent
 import io.defy.chicken.lover.rxbus.RxBus
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_article.*
 import org.json.JSONArray
-import org.json.JSONObject
 
 class ArticlePresenter : ArticleContract.Presenter {
+
+    private var type = "free"
+    private var articleId: Int = 0
+    private var thumbsUpList: JSONArray? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    private var view: ArticleContract.View? = null;
+    private var view: ArticleContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
     override fun attachView(view: Any) {
@@ -43,16 +39,36 @@ class ArticlePresenter : ArticleContract.Presenter {
         this.view = null
     }
 
+    override fun setType(type: String) {
+        this.type = type
+    }
+
+    override fun setArticleId(articleId: Int) {
+        this.articleId = articleId
+    }
+
+    override fun getArticle(): Int {
+        return this.articleId
+    }
+
+    override fun setThumbsUpList(list: JSONArray) {
+        this.thumbsUpList = list
+    }
+
+    override fun getThumbsUpList(): JSONArray? {
+        return this.thumbsUpList
+    }
+
     override fun getUserHashValue() : String? {
         val selectVal = userRepo?.select()
 
         return selectVal?.hashed_value
     }
 
-    override fun getArticleInfo(type : String, a_id : Int?, title : String?) {
-        this.view?.dialogShow()
+    override fun getArticleInfo(title : String?) {
+        this.view?.loadingShow()
 
-        retrofitClient.getBoardArticle(type, a_id, title)
+        retrofitClient.getBoardArticle(type, articleId, title)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<BoardArticleRes> {
@@ -69,13 +85,15 @@ class ArticlePresenter : ArticleContract.Presenter {
                 }
 
                 override fun onComplete() {
-                    view?.dialogDismiss()
+                    view?.loadingDismiss()
                 }
             })
     }
 
-    override fun getArticleThumbsInfo(type : String, a_id : Int?, title : String?) {
-        retrofitClient.getBoardArticle(type, a_id, title)
+    override fun getArticleThumbsInfo(title : String?) {
+        this.view?.loadingShow()
+
+        retrofitClient.getBoardArticle(type, articleId, title)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<BoardArticleRes> {
@@ -92,15 +110,16 @@ class ArticlePresenter : ArticleContract.Presenter {
                 }
 
                 override fun onComplete() {
+                    view?.loadingDismiss()
                 }
             })
     }
 
-    override fun writeBoardComment(a_id: Int?, content: String) {
-        this.view?.dialogShow()
+    override fun writeBoardComment(content: String) {
+        this.view?.loadingShow()
         val selectVal = userRepo?.select()
 
-        retrofitClient.writeBoardComment(a_id, selectVal?.name, content)
+        retrofitClient.writeBoardComment(articleId, selectVal?.name, content)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<WriteCommentRes> {
@@ -123,12 +142,13 @@ class ArticlePresenter : ArticleContract.Presenter {
                 }
 
                 override fun onComplete() {
-                    view?.dialogDismiss()
+                    view?.loadingDismiss()
                 }
             })
     }
 
-    override fun getCommentList(type: String, c_id: Int) {
+    override fun getCommentList(c_id: Int) {
+        this.view?.loadingShow()
         this.view?.clearCommentList()
 
         retrofitClient.getBoardComment(type, c_id)
@@ -150,17 +170,20 @@ class ArticlePresenter : ArticleContract.Presenter {
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
+
                 }
 
                 override fun onComplete() {
+                    view?.loadingDismiss()
                 }
             })
     }
 
-    override fun controlArticleThumbs(type1 : String, type2 : String, switch : Int, a_id : Int?) {
+    override fun controlArticleThumbs(type1 : String, type2 : String, switch : Int) {
+        this.view?.loadingShow()
         val selectVal = userRepo?.select()
 
-        retrofitClient.controlBoardArticleThumbs(type1, type2, switch, a_id, selectVal?.hashed_value)
+        retrofitClient.controlBoardArticleThumbs(type1, type2, switch, articleId, selectVal?.hashed_value)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<ArticleThumbsRes> {
@@ -183,6 +206,7 @@ class ArticlePresenter : ArticleContract.Presenter {
 
                 override fun onComplete() {
                     RxBus.publish(ArticleThumbsRefreshEvent("refresh"))
+                    view?.loadingDismiss()
                 }
             })
     }

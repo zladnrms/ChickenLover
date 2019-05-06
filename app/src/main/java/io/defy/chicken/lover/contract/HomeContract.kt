@@ -7,6 +7,14 @@ interface HomeContract {
         fun showChickenInfo(way: String, name: String, brand: String)
 
         fun showChickenImage(drawable: Int)
+
+        fun loadingShow()
+
+        fun loadingDismiss()
+
+        fun alertShow()
+
+        fun alertDismiss()
     }
 
     interface Presenter {

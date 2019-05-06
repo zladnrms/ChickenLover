@@ -7,6 +7,14 @@ interface ProfileContract {
         fun setUserPoint(point : Int)
 
         fun setUserVisitTime(visitTime : Int)
+
+        fun loadingShow()
+
+        fun loadingDismiss()
+
+        fun alertShow()
+
+        fun alertDismiss()
     }
 
     interface Presenter {

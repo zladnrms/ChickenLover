@@ -6,15 +6,19 @@ import io.defy.chicken.lover.model.data.FileUploadData
 
 interface WriteContract {
     interface View {
-        fun writeResultCallback(lastId : Int)
+        fun writeResultCallback(type: String, lastId : Int)
 
         fun switchFragment(fragment: Fragment, tag: String)
 
         fun toastMsg(msg: String)
 
-        fun dialogShow()
+        fun loadingShow()
 
-        fun dialogDismiss()
+        fun loadingDismiss()
+
+        fun alertShow()
+
+        fun alertDismiss()
     }
 
     interface Presenter {
@@ -22,7 +26,9 @@ interface WriteContract {
 
         fun detachView(view: Any)
 
-        fun write(type : String, title : String, content : String, imagesPath : ArrayList<FileUploadData>)
+        fun setType(type: String)
+
+        fun write(title : String, content : String, imagesPath : ArrayList<FileUploadData>)
 
         fun getFileName(fileStr : String,isExtension : Boolean) : String?
 
