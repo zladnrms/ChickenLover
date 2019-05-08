@@ -3,7 +3,6 @@ package io.defy.chicken.lover.view
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,8 @@ import io.defy.chicken.lover.contract.HomeContract
 import kotlinx.android.synthetic.main.fragment_home.*
 import io.defy.chicken.lover.presenter.HomePresenter
 import io.defy.chicken.lover.util.RandomPickUtil
-import org.json.JSONObject
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 
 
 /**
@@ -63,7 +63,7 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onResume()
     }
 
-    override fun showChickenInfo(way: String, name: String, brand: String) {
+    override fun showChickenInfo(way: String, name: String, brand: String, thumbs_up: Int) {
 
         val fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in)
 
@@ -75,6 +75,8 @@ class HomeFragment : Fragment(), HomeContract.View {
 
         iv_picked_chicken.setImageResource(R.drawable.fried)
         iv_picked_chicken.animation = fadeIn
+
+        //thumbs_up 해야함
     }
 
     override fun showChickenImage(drawable: Int) {

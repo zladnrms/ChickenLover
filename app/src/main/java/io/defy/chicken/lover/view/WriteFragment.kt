@@ -17,6 +17,8 @@ import android.widget.Toast
 import com.werb.pickphotoview.PickPhotoView
 import io.defy.chicken.lover.rxbus.ImagePickResultEvent
 import io.defy.chicken.lover.rxbus.RxBus
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_write.*
 
 

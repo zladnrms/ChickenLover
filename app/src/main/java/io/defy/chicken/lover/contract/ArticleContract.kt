@@ -35,6 +35,8 @@ interface ArticleContract {
 
         fun setType(type: String)
 
+        fun getType(): String
+
         fun setArticleId(articleId: Int)
 
         fun getArticle(): Int
@@ -53,7 +55,7 @@ interface ArticleContract {
 
         fun getCommentList(c_id: Int)
 
-        fun controlArticleThumbs(type1 : String, type2 : String, switch : Int)
+        fun controlArticleThumbs(type2 : String, switch : Int)
 
         fun checkThumbsList(thumbsUpList : JSONArray?) : Int
     }

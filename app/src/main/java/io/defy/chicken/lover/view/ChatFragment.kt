@@ -15,6 +15,8 @@ import io.defy.chicken.lover.adapter.view.ChatListAdapter
 import io.defy.chicken.lover.contract.ChatContract
 import io.defy.chicken.lover.model.data.ChatData
 import io.defy.chicken.lover.presenter.ChatPresenter
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_chat.*
 
 

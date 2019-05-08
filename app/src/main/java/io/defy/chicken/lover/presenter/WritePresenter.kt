@@ -15,7 +15,10 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.HttpException
 import java.io.File
+import java.net.ConnectException
+import java.util.concurrent.TimeoutException
 
 
 class WritePresenter : WriteContract.Presenter {
@@ -87,11 +90,17 @@ class WritePresenter : WriteContract.Presenter {
                 }
 
                 override fun onError(e: Throwable) {
-                    e.printStackTrace()
+                    view?.loadingDismiss()
+                    when(e)
+                    {
+                        is ConnectException -> view?.alertShow()
+                        is TimeoutException -> view?.alertShow()
+                        is HttpException -> view?.alertShow()
+                    }
                 }
 
                 override fun onComplete() {
-
+                    view?.loadingDismiss()
                 }
             })
     }

@@ -9,7 +9,7 @@ import io.defy.chicken.lover.model.AppVersionDataRepository
 import io.defy.chicken.lover.model.LocalChickenInfoRepository
 import io.defy.chicken.lover.network.response.UpdateLocalChickenInfoRes
 import io.defy.chicken.lover.network.response.VersionCheckRes
-import io.defy.chicken.lover.view.LoadingDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -102,7 +102,9 @@ class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
 
                                 it.insert(
                                     item_obj.get("brand") as String,
-                                    item_obj.get("name") as String
+                                    item_obj.get("name") as String,
+                                    item_obj.get("type_number").toString().toInt(),
+                                    item_obj.get("type_array") as String
                                 )
                             }
 

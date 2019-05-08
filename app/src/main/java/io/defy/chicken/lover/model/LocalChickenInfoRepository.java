@@ -43,7 +43,7 @@ public class LocalChickenInfoRepository implements LocalChickenInfoModel {
     }
 
     @Override
-    public void insert(@Nullable String brand, @Nullable String name) {
+    public void insert(@Nullable String brand, @Nullable String name, @Nullable Integer type_number, @Nullable String type_array) {
         if (realm != null && !realm.isClosed()) {
         } else {
             realm = Realm.getDefaultInstance();
@@ -59,6 +59,8 @@ public class LocalChickenInfoRepository implements LocalChickenInfoModel {
             LocalChickenInfoData data = realm.createObject(LocalChickenInfoData.class, nextId);
             data.setBrand(brand);
             data.setName(name);
+            data.setType_number(type_number);
+            data.setType_array(type_array);
         });
     }
 

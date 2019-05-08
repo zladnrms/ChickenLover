@@ -1,10 +1,8 @@
-package io.defy.chicken.lover.view
+package io.defy.chicken.lover.view.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.util.Log
 import android.view.Window
-import android.widget.ImageView
 import android.widget.TextView
 import io.defy.chicken.lover.R
 import kotlinx.android.synthetic.main.dialog_alert.*
@@ -43,6 +41,8 @@ class AlertDialog {
     }
 
     fun dismiss() {
-        dialog!!.dismiss()
+        dialog?.apply {
+            this.dismiss()
+        }
     }
 }

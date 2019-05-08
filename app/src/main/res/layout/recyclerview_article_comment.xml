@@ -9,27 +9,13 @@
     android:paddingTop="10dp"
     tools:ignore="missingPrefix">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="15dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="15dp" />
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
-        app:layout_constraintRight_toRightOf="@id/guideline_right">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <android.support.constraint.Guideline
                 android:id="@+id/guideline_content_left"

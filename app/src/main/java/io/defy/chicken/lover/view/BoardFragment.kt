@@ -12,6 +12,8 @@ import io.defy.chicken.lover.adapter.view.BoardArticleListAdapter
 import io.defy.chicken.lover.contract.BoardContract
 import io.defy.chicken.lover.model.data.BoardArticleData
 import io.defy.chicken.lover.presenter.BoardPresenter
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_board.*
 
 /**
@@ -76,12 +78,14 @@ class BoardFragment : Fragment(), BoardContract.View {
         }
 
         presenter?.setRecyclerViewScrollListener(articleList)
+
+        resetArticleList()
     }
 
     override fun onResume() {
         super.onResume()
 
-        resetArticleList()
+        //resetArticleList()
     }
 
     private fun changeCategory(type: String) {

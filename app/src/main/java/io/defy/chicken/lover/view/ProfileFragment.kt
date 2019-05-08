@@ -11,10 +11,11 @@ import com.bumptech.glide.Glide
 import com.werb.pickphotoview.PickPhotoView
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.ProfileContract
-import io.defy.chicken.lover.model.data.FileUploadData
 import io.defy.chicken.lover.presenter.ProfilePresenter
 import io.defy.chicken.lover.rxbus.ImagePickResultEvent
 import io.defy.chicken.lover.rxbus.RxBus
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.File
 

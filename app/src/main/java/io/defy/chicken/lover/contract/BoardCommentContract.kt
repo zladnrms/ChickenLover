@@ -16,10 +16,14 @@ interface BoardCommentContract {
 
         fun detachView(view: Any)
 
-        fun controlCommentThumbs(type1 : String, type2 : String, switch : Int, c_id : Int, c_uid : Int)
+        fun controlCommentThumbs(type2 : String, switch : Int, c_id : Int, c_uid : Int)
 
         fun compareThumbsList(uid : String) : Boolean
 
         fun getUid(): Int?
+
+        fun setType(type: String)
+
+        fun getType(): String
     }
 }

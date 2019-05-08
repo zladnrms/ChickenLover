@@ -13,7 +13,7 @@ import io.defy.chicken.lover.model.data.LocalChickenInfoData
 import io.defy.chicken.lover.presenter.SearchChickenInfoPresenter
 import kotlinx.android.synthetic.main.activity_search_chicken_info.*
 import android.support.v7.widget.DividerItemDecoration
-
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 
 
 class SearchChickenInfoActivity : AppCompatActivity(), SearchChickenInfoContract.View {

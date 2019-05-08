@@ -9,6 +9,8 @@ import io.defy.chicken.lover.contract.JoinContract
 import io.defy.chicken.lover.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.activity_join.*
 import android.text.InputFilter
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import java.util.regex.Pattern
 
 

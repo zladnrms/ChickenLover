@@ -56,7 +56,7 @@ class GlobalApplication : Application() {
             */
 
         Realm.setDefaultConfiguration(config)
-/*
+
             if (LeakCanary.isInAnalyzerProcess(this)) {
                 // This process is dedicated to LeakCanary for heap analysis.
                 // You should not init your app in this process.
@@ -64,7 +64,7 @@ class GlobalApplication : Application() {
             }
             LeakCanary.install(this)
             // Normal app init code...
-*/
+
     }
 
     override fun attachBaseContext(base: Context?) {

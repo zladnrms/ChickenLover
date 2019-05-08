@@ -19,12 +19,14 @@ import io.defy.chicken.lover.presenter.ArticlePresenter
 import io.defy.chicken.lover.rxbus.RxBus
 import io.defy.chicken.lover.rxbus.CommentThumbsRefreshEvent
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import io.defy.chicken.lover.R
 import org.json.JSONArray
 import org.json.JSONObject
 import io.defy.chicken.lover.rxbus.ArticleThumbsRefreshEvent
+import io.defy.chicken.lover.view.custom.ArticleImageViewLayout
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_article.*
 
 
@@ -81,6 +83,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         commentList.hasFixedSize()
         adapter = BoardCommentListAdapter((activity as BoardActivity), ArrayList<BoardCommentData>())
         commentList.adapter = adapter
+        adapter?.setType(presenter?.getType())
 
         iv_submit.setOnClickListener {
             val comment = et_comment.text.toString()
@@ -103,11 +106,11 @@ class ArticleFragment : Fragment(), ArticleContract.View {
                 when(it.checkThumbsList(thumbsUpList))
                 {
                     1 -> {
-                        presenter?.controlArticleThumbs("free", "up", 0)
+                        presenter?.controlArticleThumbs("up", 0)
                     }
                     else ->
                     {
-                        presenter?.controlArticleThumbs("free", "up", 1)
+                        presenter?.controlArticleThumbs("up", 1)
                     }
                 }
             }

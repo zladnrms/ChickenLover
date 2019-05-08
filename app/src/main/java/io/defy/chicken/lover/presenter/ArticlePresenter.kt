@@ -12,6 +12,7 @@ import io.defy.chicken.lover.network.response.WriteCommentRes
 import io.defy.chicken.lover.rxbus.ArticleThumbsRefreshEvent
 import io.defy.chicken.lover.rxbus.RxBus
 import io.reactivex.Observer
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -43,6 +44,10 @@ class ArticlePresenter : ArticleContract.Presenter {
         this.type = type
     }
 
+    override fun getType(): String {
+        return this.type
+    }
+
     override fun setArticleId(articleId: Int) {
         this.articleId = articleId
     }
@@ -66,147 +71,131 @@ class ArticlePresenter : ArticleContract.Presenter {
     }
 
     override fun getArticleInfo(title : String?) {
-        this.view?.loadingShow()
-
         retrofitClient.getBoardArticle(type, articleId, title)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<BoardArticleRes> {
+            .subscribe(object : SingleObserver<BoardArticleRes> {
                 override fun onSubscribe(d: Disposable) {
-
+                    view?.loadingShow()
                 }
 
-                override fun onNext(repo: BoardArticleRes) {
-                    view?.setArticleInfo(repo)
+                override fun onSuccess(repo: BoardArticleRes?) {
+                    repo?.let {
+                        view?.setArticleInfo(it)
+                    }
+                    view?.loadingDismiss()
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-                }
-
-                override fun onComplete() {
-                    view?.loadingDismiss()
                 }
             })
     }
 
     override fun getArticleThumbsInfo(title : String?) {
-        this.view?.loadingShow()
-
         retrofitClient.getBoardArticle(type, articleId, title)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<BoardArticleRes> {
-                override fun onSubscribe(d: Disposable) {
-
+            .subscribe(object : SingleObserver<BoardArticleRes> {
+                override fun onSuccess(repo: BoardArticleRes?) {
+                    repo?.let {
+                        view?.setArticleThumbsInfo(it)
+                    }
+                    view?.loadingDismiss()
                 }
-
-                override fun onNext(repo: BoardArticleRes) {
-                    view?.setArticleThumbsInfo(repo)
+                override fun onSubscribe(d: Disposable) {
+                    view?.loadingShow()
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-                }
-
-                override fun onComplete() {
-                    view?.loadingDismiss()
                 }
             })
     }
 
     override fun writeBoardComment(content: String) {
-        this.view?.loadingShow()
         val selectVal = userRepo?.select()
 
-        retrofitClient.writeBoardComment(articleId, selectVal?.name, content)
+        retrofitClient.writeBoardComment(type, articleId, selectVal?.name, content)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<WriteCommentRes> {
+            .subscribe(object : SingleObserver<WriteCommentRes> {
                 override fun onSubscribe(d: Disposable) {
-
+                    view?.loadingShow()
                 }
 
-                override fun onNext(repo: WriteCommentRes) {
-                    if(repo.result.equals("success"))
-                    {
-                        repo.comment_id?.let {
-                            view?.setCommentId(repo.comment_id)
+                override fun onSuccess(repo: WriteCommentRes?) {
+                    repo?.apply {
+                        if(this.result.equals("success"))
+                        {
+                            this.comment_id?.let {
+                                view?.setCommentId(it)
+                            }
+                            view?.complete()
                         }
-                        view?.complete()
                     }
+                    view?.loadingDismiss()
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-                }
-
-                override fun onComplete() {
-                    view?.loadingDismiss()
                 }
             })
     }
 
     override fun getCommentList(c_id: Int) {
-        this.view?.loadingShow()
-        this.view?.clearCommentList()
-
         retrofitClient.getBoardComment(type, c_id)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<BoardCommentRes> {
+            .subscribe(object : SingleObserver<BoardCommentRes> {
                 override fun onSubscribe(d: Disposable) {
-
-                }
-
-                override fun onNext(repo: BoardCommentRes) {
-                    if(repo.result.equals("success")) {
-                        for(item in repo.resultArray) {
-                            val data = BoardCommentData(item._id.toInt(), item.name as String, item.content as String, item.thumbs_up, item.write_date as String, item.invisible)
-                            view?.setCommentList(data)
-                        }
-                    }
+                    view?.clearCommentList()
+                    view?.loadingShow()
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-
                 }
 
-                override fun onComplete() {
+                override fun onSuccess(repo: BoardCommentRes?) {
+                    repo?.apply {
+                        if(this.result.equals("success")) {
+                            this.resultArray?.let {
+                                for(item in it) {
+                                    val data = BoardCommentData(item._id.toInt(), item.name as String, item.content as String, item.thumbs_up, item.write_date as String, item.invisible)
+                                    view?.setCommentList(data)
+                                }
+                            }
+                        }
+                    }
                     view?.loadingDismiss()
                 }
             })
     }
 
-    override fun controlArticleThumbs(type1 : String, type2 : String, switch : Int) {
-        this.view?.loadingShow()
+    override fun controlArticleThumbs(type2 : String, switch : Int) {
         val selectVal = userRepo?.select()
 
-        retrofitClient.controlBoardArticleThumbs(type1, type2, switch, articleId, selectVal?.hashed_value)
+        retrofitClient.controlBoardArticleThumbs(type, type2, switch, articleId, selectVal?.hashed_value)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<ArticleThumbsRes> {
+            .subscribe(object : SingleObserver<ArticleThumbsRes> {
                 override fun onSubscribe(d: Disposable) {
-
+                    view?.loadingShow()
                 }
 
-                override fun onNext(repo: ArticleThumbsRes) {
-                    if(repo.result.equals("success"))
-                    {
-                        /*
-                        * Do Nothing
-                        */
+                override fun onSuccess(repo: ArticleThumbsRes?) {
+                    repo?.apply {
+                        if(this.result.equals("success"))
+                        {
+                            RxBus.publish(ArticleThumbsRefreshEvent("refresh"))
+                        }
                     }
+                    view?.loadingDismiss()
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-                }
-
-                override fun onComplete() {
-                    RxBus.publish(ArticleThumbsRefreshEvent("refresh"))
-                    view?.loadingDismiss()
                 }
             })
     }

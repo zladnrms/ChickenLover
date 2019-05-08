@@ -65,7 +65,7 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
         }
 
         holder.itemView.layout_thumbs_up.setOnClickListener {
-            presenter.controlCommentThumbs("free", "up", NumberUtil.valueInverse(thumbs_up_status), comment_id, comment_c_id)
+            presenter.controlCommentThumbs("up", NumberUtil.valueInverse(thumbs_up_status), comment_id, comment_c_id)
         }
     }
 
@@ -90,5 +90,11 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
 
     override fun remove(position: Int) {
         lists.removeAt(position)
+    }
+
+    override fun setType(type: String?) {
+        type?.let {
+            presenter.setType(it)
+        }
     }
 }

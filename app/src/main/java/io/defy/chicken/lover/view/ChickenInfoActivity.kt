@@ -5,6 +5,7 @@ import android.os.Bundle
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.ChickenInfoContract
 import io.defy.chicken.lover.presenter.ChickenInfoPresenter
+import io.defy.chicken.lover.view.dialog.AlertDialog
 import kotlinx.android.synthetic.main.activity_chicken_info.*
 
 class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {

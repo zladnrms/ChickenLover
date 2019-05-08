@@ -18,13 +18,18 @@ public class LocalChickenInfoData extends RealmObject {
 
     private String name;
 
+    private int type_number;
+
+    private String type_array;
+
     public LocalChickenInfoData() {
 
     }
 
-    public LocalChickenInfoData(String brand, String name) {
+    public LocalChickenInfoData(String brand, String name, int type_number) {
         this.brand = brand;
         this.name = name;
+        this.type_number = type_number;
     }
 
     public String getName() {
@@ -42,4 +47,18 @@ public class LocalChickenInfoData extends RealmObject {
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
+    public int getType_number() { return type_number; }
+
+    public void setType_number(int type_number) { this.type_number = type_number; }
+
+
+    public String getType_array() {
+        return type_array;
+    }
+
+    public void setType_array(String type_array) {
+        this.type_array = type_array;
+    }
+
 }

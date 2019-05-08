@@ -7,6 +7,8 @@ import android.widget.Toast
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.SplashContract
 import io.defy.chicken.lover.presenter.SplashPresenter
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 
 class SplashActivity : AppCompatActivity(), SplashContract.View {
 

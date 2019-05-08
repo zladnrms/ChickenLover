@@ -94,7 +94,7 @@ class SplashPresenter : SplashContract.Presenter {
                         userRepo?.insert(0, 0, repo.hashed_value, repo.guest_id, repo.name, null, null)
                         view?.pass()
                     } else {
-                        view?.toastMsg("서버와의 통신 에러 불량입니다. 어플을 껐다 켜주시면 정상 작동합니다.")
+                        view?.alertShow()
                     }
                 }
 

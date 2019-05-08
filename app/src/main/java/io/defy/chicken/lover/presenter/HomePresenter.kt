@@ -47,8 +47,18 @@ class HomePresenter : HomeContract.Presenter {
                 }
 
                 override fun onNext(repo: ChickenInfoRes) {
-                    val type_obj = JSONObject(repo.type_array)
-                    renderType(repo.way, repo.name, repo.brand, type_obj)
+                    view?.showChickenInfo(repo.way, repo.name, repo.brand, repo.thumbs_up)
+
+                    when(repo.type_number)
+                    {
+                        0 -> view?.showChickenImage(R.drawable.fried)
+                        1 -> view?.showChickenImage(R.drawable.seasoned_fried)
+                        2 -> view?.showChickenImage(R.drawable.cheese_fried)
+                        3 -> view?.showChickenImage(R.drawable.soy_fried)
+                        4 -> view?.showChickenImage(R.drawable.green_onion_fried)
+                        5 -> view?.showChickenImage(R.drawable.garlic_fried)
+                        6 -> view?.showChickenImage(R.drawable.peoper_fried)
+                    }
                 }
 
                 override fun onError(e: Throwable) {
@@ -95,33 +105,6 @@ class HomePresenter : HomeContract.Presenter {
 
                 }
             })
-    }
-
-    override fun renderType(way: String, name: String, brand: String, type: JSONObject) {
-        view?.showChickenInfo(way, name, brand)
-
-        var type_array = ArrayList<String>()
-
-        for(key : String in type.keys())
-        {
-            type_array.add(type.get(key).toString())
-        }
-
-        for(item in type_array)
-        {
-            Log.d("로그 : ", item)
-            when(item)
-            {
-                "양념"->
-                {
-                    view?.showChickenImage(R.drawable.seasoned_fried)
-                }
-                "스노윙"->
-                {
-                    view?.showChickenImage(R.drawable.cheese_fried)
-                }
-            }
-        }
     }
 
     private class SimpleThread: Thread() {

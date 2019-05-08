@@ -7,6 +7,8 @@ import android.widget.Toast
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.LoginContract
 import io.defy.chicken.lover.presenter.LoginPresenter
+import io.defy.chicken.lover.view.dialog.AlertDialog
+import io.defy.chicken.lover.view.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), LoginContract.View {

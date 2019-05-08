@@ -5,6 +5,7 @@ import io.defy.chicken.lover.BuildConfig
 import io.defy.chicken.lover.network.AddHeaderInterceptor
 import io.defy.chicken.lover.network.response.*
 import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -63,7 +64,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/get_board_article.php")
-    fun getBoardArticle(@Field("type") type: String, @Field("a_id") a_id: Int?, @Field("title") title: String?): Observable<BoardArticleRes>
+    fun getBoardArticle(@Field("type") type: String, @Field("a_id") a_id: Int?, @Field("title") title: String?): Single<BoardArticleRes>
 
     @Multipart
     @POST("/chickenlover/mobile/board/article/write_board_article.php")
@@ -75,15 +76,15 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/comment/get_board_comment.php")
-    fun getBoardComment(@Field("type") type: String, @Field("c_id") c_id: Int): Observable<BoardCommentRes>
+    fun getBoardComment(@Field("type") type: String, @Field("c_id") c_id: Int): Single<BoardCommentRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/comment/write_board_comment.php")
-    fun writeBoardComment(@Field("a_id") a_id: Int?, @Field("name") name: String?, @Field("content") content: String?): Observable<WriteCommentRes>
+    fun writeBoardComment(@Field("type") type: String, @Field("a_id") a_id: Int?, @Field("name") name: String?, @Field("content") content: String?): Single<WriteCommentRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/comment/control_board_comment_thumbs.php")
-    fun controlBoardCommentThumbs(@Field("type1") type1: String?, @Field("type2") type2: String?, @Field("switch") switch: Int?, @Field("c_id") c_id: Int?, @Field("c_uid") c_uid: Int?, @Field("hashed_value") hashed_value: String?): Observable<CommentThumbsRes>
+    fun controlBoardCommentThumbs(@Field("type1") type1: String?, @Field("type2") type2: String?, @Field("switch") switch: Int?, @Field("c_id") c_id: Int?, @Field("c_uid") c_uid: Int?, @Field("hashed_value") hashed_value: String?): Single<CommentThumbsRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/member/join_as_guest.php")
@@ -114,7 +115,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/control_board_article_thumbs.php")
-    fun controlBoardArticleThumbs(@Field("type1") type1: String?, @Field("type2") type2: String?, @Field("switch") switch: Int?, @Field("a_id") a_id: Int?, @Field("hashed_value") hashed_value: String?): Observable<ArticleThumbsRes>
+    fun controlBoardArticleThumbs(@Field("type1") type1: String?, @Field("type2") type2: String?, @Field("switch") switch: Int?, @Field("a_id") a_id: Int?, @Field("hashed_value") hashed_value: String?): Single<ArticleThumbsRes>
 
 
 }

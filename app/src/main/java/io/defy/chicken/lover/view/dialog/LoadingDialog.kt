@@ -1,4 +1,4 @@
-package io.defy.chicken.lover.view
+package io.defy.chicken.lover.view.dialog
 
 import android.app.Dialog
 import android.content.Context

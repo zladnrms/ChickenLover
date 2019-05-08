@@ -4,7 +4,7 @@ import org.json.JSONObject
 
 interface HomeContract {
     interface View {
-        fun showChickenInfo(way: String, name: String, brand: String)
+        fun showChickenInfo(way: String, name: String, brand: String, thumbs_up: Int)
 
         fun showChickenImage(drawable: Int)
 
@@ -25,8 +25,6 @@ interface HomeContract {
         fun getChickenInfo(way: String, brand: String?, type: String?)
 
         fun getChickenSelectHistory(mobile: String)
-
-        fun renderType(way: String, name: String, brand: String, type: JSONObject)
     }
 
 }

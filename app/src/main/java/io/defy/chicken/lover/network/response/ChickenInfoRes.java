@@ -21,6 +21,12 @@ public class ChickenInfoRes {
     @SerializedName("type_array")
     String type_array;
 
+    @SerializedName("type_number")
+    int type_number;
+
+    @SerializedName("thumbs_up")
+    int thumbs_up;
+
     public String getWay() {
         return way;
     }
@@ -36,4 +42,8 @@ public class ChickenInfoRes {
     public String getType_array() {
         return type_array;
     }
+
+    public int getType_number() { return type_number; }
+
+    public int getThumbs_up() { return thumbs_up; }
 }
