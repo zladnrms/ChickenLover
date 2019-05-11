@@ -1,9 +1,12 @@
 package io.defy.chicken.lover.view
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_board.*
  */
 class BoardFragment : Fragment(), BoardContract.View {
 
+    private var fView : View? = null
     private var presenter : BoardContract.Presenter? = null
     private var adapter : BoardArticleListAdapter? = null
 
@@ -32,15 +36,21 @@ class BoardFragment : Fragment(), BoardContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_board, container, false)
+        if(fView == null)
+            fView = inflater.inflate(R.layout.fragment_board, container, false)
+        //val view = inflater.inflate(R.layout.fragment_board, container, false)
 
-        presenter = BoardPresenter()
-        presenter?.attachView(this)
+        if(presenter == null)
+        {
+            presenter = BoardPresenter()
+            presenter?.attachView(this)
+        }
 
-        return view
+        return fView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,6 +63,25 @@ class BoardFragment : Fragment(), BoardContract.View {
         adapter = BoardArticleListAdapter((activity as BoardActivity), ArrayList())
         articleList.adapter = adapter
 
+        /*
+        articleList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager =  articleList.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
+
+                if (lastVisible >= totalItemCount - 1) {
+                    Log.d("dqd", "lastVisibled");
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })*/
+
         iv_write.setOnClickListener {
             (activity as BoardActivity).switchFragment(WriteFragment(), "write")
         }
@@ -62,14 +91,14 @@ class BoardFragment : Fragment(), BoardContract.View {
         }
 
         tv_category_notice.setOnClickListener {
-            val type = "info"
-            tv_category.text = "실시간정보"
+            val type = getString(R.string.board_category_info_type)
+            tv_category.text = getString(R.string.board_category_info)
             changeCategory(type)
         }
 
         tv_category_free.setOnClickListener {
-            val type = "free"
-            tv_category.text = "자유게시판"
+            val type = getString(R.string.board_category_free_type)
+            tv_category.text = getString(R.string.board_category_free)
             changeCategory(type)
         }
 
@@ -77,15 +106,10 @@ class BoardFragment : Fragment(), BoardContract.View {
             layout_category_selector.visibility = View.GONE
         }
 
-        presenter?.setRecyclerViewScrollListener(articleList)
-
-        resetArticleList()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        //resetArticleList()
+        presenter?.apply {
+            this.setRecyclerViewScrollListener(articleList)
+            changeCategory(this.getType())
+        }
     }
 
     private fun changeCategory(type: String) {

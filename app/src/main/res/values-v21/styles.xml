@@ -1,0 +1,9 @@
+<resources>
+    <style name="SharedElementTransitionTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/custom_trans</item>
+        <item name="android:windowSharedElementExitTransition">@transition/custom_trans</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+</resources>

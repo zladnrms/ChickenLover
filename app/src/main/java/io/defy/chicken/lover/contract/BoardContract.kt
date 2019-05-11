@@ -26,6 +26,8 @@ interface BoardContract {
 
         fun setType(type: String)
 
+        fun getType(): String
+
         fun getArticleList()
 
         fun setRecyclerViewScrollListener(list: RecyclerView)

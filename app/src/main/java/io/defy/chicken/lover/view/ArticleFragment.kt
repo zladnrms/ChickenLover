@@ -1,5 +1,6 @@
 package io.defy.chicken.lover.view
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Build
@@ -19,6 +20,7 @@ import io.defy.chicken.lover.presenter.ArticlePresenter
 import io.defy.chicken.lover.rxbus.RxBus
 import io.defy.chicken.lover.rxbus.CommentThumbsRefreshEvent
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import io.defy.chicken.lover.R
 import org.json.JSONArray
@@ -57,8 +59,8 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        pref = activity!!.getSharedPreferences("pref", MODE_PRIVATE)
-        editor = pref!!.edit()
+        pref = activity?.getSharedPreferences("pref", MODE_PRIVATE)
+        editor = pref?.edit()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -71,6 +73,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
             presenter?.setType(this.getString("type"))
             presenter?.setArticleId(this.getInt("articleId"))
         }
+
         return view
     }
 
@@ -119,7 +122,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         /* Register Event */
         RxBus.listen(CommentThumbsRefreshEvent::class.java).subscribe {
             if (it.result.equals("refresh")) {
-                presenter?.getCommentList(pref!!.getInt("comment_id", 0))
+                presenter?.getCommentList(pref?.getInt("comment_id", 0))
             }
         }
 
@@ -199,11 +202,6 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         }
     }
 
-    private fun unknownPage() {
-        Toast.makeText(activity, "게시물 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
-        (activity as BoardActivity).onBackPressed()
-    }
-
     override fun loadingShow() {
         LoadingDialog.instance.show(activity as BoardActivity)
     }
@@ -240,5 +238,12 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         super.onDestroy()
 
         presenter?.detachView(this)
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+
+        layout_img.removeAllViewsInLayout()
+        Toast.makeText(context as BoardActivity, "메모리가 부족하여 이미지를 보여주지 않습니다", Toast.LENGTH_SHORT).show()
     }
 }

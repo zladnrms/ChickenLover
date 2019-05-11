@@ -1,6 +1,8 @@
 package io.defy.chicken.lover.view
 
+import android.app.ActivityOptions
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -13,6 +15,7 @@ import io.defy.chicken.lover.contract.HomeContract
 import kotlinx.android.synthetic.main.fragment_home.*
 import io.defy.chicken.lover.presenter.HomePresenter
 import io.defy.chicken.lover.util.RandomPickUtil
+import io.defy.chicken.lover.view.custom.TypeView
 import io.defy.chicken.lover.view.dialog.AlertDialog
 import io.defy.chicken.lover.view.dialog.LoadingDialog
 
@@ -50,12 +53,22 @@ class HomeFragment : Fragment(), HomeContract.View {
             startActivity(intent)
         }
 
+        card_chicken_info.setOnClickListener {
+            val intent = Intent(activity, ChickenInfoActivity::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val options = ActivityOptions.makeSceneTransitionAnimation(activity, iv_chicken_img, "chickenImg")
+                intent.putExtra("typeNumber", presenter?.getTypeNumber())
+                startActivity(intent, options.toBundle())
+            } else {
+                // makeSceneTransitionAnimation 역시 Api 21 이상에서만 동작하기 때문에 분기를 나눈다
+            }
+        }
+
         btn_id.setOnClickListener {
             val data = RandomPickUtil.randomBrandPick()
             val data2 = RandomPickUtil.randomTypePick()
 
             presenter?.getChickenInfo("choice", data, data2)
-            Log.d("ddd", "ㅇㅇ"+data +"ㅇㅇ" + data2)
         }
     }
 
@@ -64,6 +77,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun showChickenInfo(way: String, name: String, brand: String, thumbs_up: Int) {
+        layout_chicken_type.removeAllViewsInLayout()
 
         val fadeIn = AnimationUtils.loadAnimation(activity, R.anim.fade_in)
 
@@ -73,14 +87,17 @@ class HomeFragment : Fragment(), HomeContract.View {
         tv_chicken_info_brand.text = brand
         tv_chicken_info_brand.animation = fadeIn
 
-        iv_picked_chicken.setImageResource(R.drawable.fried)
-        iv_picked_chicken.animation = fadeIn
+        iv_chicken_img.setImageResource(R.drawable.fried)
+        iv_chicken_img.animation = fadeIn
+    }
 
-        //thumbs_up 해야함
+    override fun showChickenType(item: String) {
+        val tv = TypeView(context as HomeActivity, item)
+        layout_chicken_type.addView(tv)
     }
 
     override fun showChickenImage(drawable: Int) {
-        iv_picked_chicken.setImageResource(drawable)
+        iv_chicken_img.setImageResource(drawable)
     }
 
     inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R) {

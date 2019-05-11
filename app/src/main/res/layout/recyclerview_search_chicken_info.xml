@@ -34,7 +34,8 @@
             android:src="@drawable/fried"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/guideline_left"/>
+            app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+            android:transitionName="chickenImg"/>
 
     <TextView
             android:id="@+id/tv_chicken_brand"

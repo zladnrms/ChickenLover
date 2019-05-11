@@ -11,6 +11,7 @@ import io.defy.chicken.lover.network.response.UpdateLocalChickenInfoRes
 import io.defy.chicken.lover.network.response.VersionCheckRes
 import io.defy.chicken.lover.view.dialog.LoadingDialog
 import io.reactivex.Observer
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -52,25 +53,27 @@ class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
         retrofitClient.checkChickenInfoVersion("")
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<VersionCheckRes> {
+            .subscribe(object : SingleObserver<VersionCheckRes> {
                 override fun onSubscribe(d: Disposable) {
-
+                    view?.dialogShow()
                 }
 
-                override fun onNext(repo: VersionCheckRes) {
-                    if (repo.code != localVersionCode) {
-                        updateOk = true
-                        updateVersionCode = repo.code
+                override fun onSuccess(repo: VersionCheckRes?) {
+                    repo?.apply {
+                        if (this.code != localVersionCode) {
+                            updateOk = true
+                            updateVersionCode = this.code
+                        }
+
+                        if (updateOk)
+                            updateLocalChickenInfoForSearch(updateVersionCode)
                     }
+
+                    view?.dialogDismiss()
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-                }
-
-                override fun onComplete() {
-                    if (updateOk)
-                        updateLocalChickenInfoForSearch(updateVersionCode)
                 }
             })
     }
@@ -81,52 +84,52 @@ class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
         retrofitClient.updateLocalChickenInfo()
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<UpdateLocalChickenInfoRes> {
+            .subscribe(object : SingleObserver<UpdateLocalChickenInfoRes> {
                 override fun onSubscribe(d: Disposable) {
-
+                    view?.dialogShow()
                 }
 
-                override fun onNext(repo: UpdateLocalChickenInfoRes) {
-                    if (repo.result.equals("success")) {
-                        localRepo?.let {
-                            it.delete()
+                override fun onSuccess(repo: UpdateLocalChickenInfoRes?) {
+                    repo?.apply {
+                        if (this.result.equals("success")) {
+                            localRepo?.let {
+                                it.delete()
 
-                            if(it.selectAll().isNotEmpty())
-                            {
-                                Log.d("onNExt", "비움")
-                                return
+                                if(it.selectAll().isNotEmpty())
+                                {
+                                    Log.d("onNExt", "비움")
+                                    return
+                                }
+
+                                for (item in this.resultArray) {
+                                    val item_obj = JSONObject(item.toString())
+
+                                    it.insert(
+                                        item_obj.get("brand") as String,
+                                        item_obj.get("name") as String,
+                                        item_obj.get("type_number").toString().toInt(),
+                                        item_obj.get("type_array") as String
+                                    )
+                                }
+
+                                appVersionRepo?.update(updateVersionCode)
                             }
-
-                            for (item in repo.resultArray) {
-                                val item_obj = JSONObject(item.toString())
-
-                                it.insert(
-                                    item_obj.get("brand") as String,
-                                    item_obj.get("name") as String,
-                                    item_obj.get("type_number").toString().toInt(),
-                                    item_obj.get("type_array") as String
-                                )
-                            }
-
-                            appVersionRepo?.update(updateVersionCode)
                         }
                     }
+
+                    view?.dialogDismiss()
+                    searchChickenInfo("")
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
                 }
-
-                override fun onComplete() {
-
-                }
             })
     }
 
     override fun searchChickenInfo(text: CharSequence?) {
-        this.view?.dialogShow()
-
         view?.apply {
+            this.dialogShow()
             this.listClear()
 
             val searchResultList = localRepo?.select(text.toString())
@@ -140,8 +143,7 @@ class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
             }
 
             this.listRefresh()
+            this.dialogDismiss()
         }
-
-        this.view?.dialogDismiss()
     }
 }

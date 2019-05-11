@@ -14,6 +14,14 @@ import io.defy.chicken.lover.view.custom.TypeView
 import kotlinx.android.synthetic.main.recyclerview_search_chicken_info.view.*
 import org.json.JSONObject
 import java.util.*
+import android.support.v4.content.ContextCompat.startActivity
+import android.app.ActivityOptions
+import android.os.Build
+import android.content.Intent
+import android.support.v4.app.ActivityOptionsCompat
+import io.defy.chicken.lover.view.ChickenInfoActivity
+import io.defy.chicken.lover.view.SearchChickenInfoActivity
+
 
 /**
  * Created by kim on 2017-09-16.
@@ -68,6 +76,17 @@ class SearchChickenInfoListAdapter(var context: Context, var lists: ArrayList<Lo
         {
             val tv = TypeView(context, item)
             holder.itemView.layout_chicken_type.addView(tv)
+        }
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context as SearchChickenInfoActivity, ChickenInfoActivity::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val options = ActivityOptions.makeSceneTransitionAnimation(context as SearchChickenInfoActivity, holder.itemView.iv_chicken_img, "chickenImg")
+                intent.putExtra("typeNumber", lists[position].type_number)
+                context.startActivity(intent, options.toBundle())
+            } else {
+                // makeSceneTransitionAnimation 역시 Api 21 이상에서만 동작하기 때문에 분기를 나눈다
+            }
         }
     }
 

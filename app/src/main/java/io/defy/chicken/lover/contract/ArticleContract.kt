@@ -53,7 +53,7 @@ interface ArticleContract {
 
         fun writeBoardComment(content : String)
 
-        fun getCommentList(c_id: Int)
+        fun getCommentList(c_id: Int?)
 
         fun controlArticleThumbs(type2 : String, switch : Int)
 

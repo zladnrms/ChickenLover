@@ -37,15 +37,17 @@ class BoardPresenter : BoardContract.Presenter {
         this.type = type
     }
 
-    override fun getArticleList() {
-        this.view?.loadingShow()
+    override fun getType(): String {
+        return type
+    }
 
+    override fun getArticleList() {
         retrofitClient.getBoardArticleList(type, index, limit)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<BoardArticleListRes> {
                 override fun onSubscribe(d: Disposable) {
-
+                    view?.loadingShow()
                 }
 
                 override fun onNext(repo: BoardArticleListRes) {
@@ -55,7 +57,12 @@ class BoardPresenter : BoardContract.Presenter {
                         {
                             val item_obj = JSONObject(item.toString())
 
-                            val data = BoardArticleData(item_obj.get("_id") as String, item_obj.get("name") as String, item_obj.get("title") as String, item_obj.get("create_date") as String, item_obj.get("comment_amount") as String)
+                            var img_exist: String? = null
+
+                            if(!item_obj.get("img_url").toString().equals("null"))
+                                img_exist = "exist"
+
+                            val data = BoardArticleData(item_obj.get("_id") as String, item_obj.get("name") as String, item_obj.get("title") as String, img_exist, item_obj.get("create_date") as String, item_obj.get("comment_amount") as String)
                             view?.setArticleList(data)
                         }
                     }
@@ -81,12 +88,13 @@ class BoardPresenter : BoardContract.Presenter {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount
+                val layoutManager =  list.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
 
-                if (lastVisibleItemPosition == itemTotalCount) {
-                    index = lastVisibleItemPosition + 1
+                if (lastVisible >= (totalItemCount.minus(1))) {
+                    //Log.d("onScrolled", "lastVisibled , " + index + ", " + lastVisible + ", " + totalItemCount);
+                    index = lastVisible + 1
                     getArticleList()
                 }
             }

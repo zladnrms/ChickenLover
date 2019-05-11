@@ -8,6 +8,8 @@ import io.defy.chicken.lover.presenter.ChickenInfoPresenter
 import io.defy.chicken.lover.view.dialog.AlertDialog
 import kotlinx.android.synthetic.main.activity_chicken_info.*
 
+
+
 class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
 
     private var presenter: ChickenInfoContract.Presenter? = null
@@ -21,6 +23,19 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
 
         presenter = ChickenInfoPresenter()
         presenter?.attachView(this)
+
+        val intent = intent
+        presenter?.setTypeNumber(intent.getIntExtra("typeNumber", 0))
+        presenter?.setChickenImage()
+    }
+
+    override fun setImageResource(drawable: Int) {
+        iv_chicken_img.setImageResource(drawable)
+    }
+
+    override fun onEnterAnimationComplete() {
+        super.onEnterAnimationComplete()
+
     }
 
     override fun onDestroy() {
@@ -35,5 +50,10 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
 
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
+    }
+
+
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
     }
 }

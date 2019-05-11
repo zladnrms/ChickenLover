@@ -52,7 +52,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/info/get_chicken_info.php")
-    fun getChickenInfo(@Field("way") way: String, @Field("brand") brand: String?, @Field("type") type: String?): Observable<ChickenInfoRes>
+    fun getChickenInfo(@Field("way") way: String, @Field("brand") brand: String?, @Field("type") type: String?): Single<ChickenInfoRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/history/get_chicken_select_history.php")
@@ -71,12 +71,8 @@ interface ApiInterface {
     fun writeBoardArticle(@Part("type") type: RequestBody, @Part("name") name: RequestBody, @Part("title") title: RequestBody, @Part("content") content: RequestBody, @Part parts : List<MultipartBody.Part>): Observable<WriteArticleRes>
 
     @FormUrlEncoded
-    @POST("/chickenlover/mobile/board/article/test.php")
-    fun imgTestUpload(@Part("description") description: RequestBody, @Part files: List<MultipartBody.Part>): Observable<TestRes>
-
-    @FormUrlEncoded
     @POST("/chickenlover/mobile/board/comment/get_board_comment.php")
-    fun getBoardComment(@Field("type") type: String, @Field("c_id") c_id: Int): Single<BoardCommentRes>
+    fun getBoardComment(@Field("type") type: String, @Field("c_id") c_id: Int?): Single<BoardCommentRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/comment/write_board_comment.php")
@@ -108,10 +104,10 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/version/check_chicken_info_version.php")
-    fun checkChickenInfoVersion(@Field("mobile") mobile: String): Observable<VersionCheckRes>
+    fun checkChickenInfoVersion(@Field("mobile") mobile: String): Single<VersionCheckRes>
 
     @POST("/chickenlover/mobile/info/get_chicken_info_for_serarch.php")
-    fun updateLocalChickenInfo(): Observable<UpdateLocalChickenInfoRes>
+    fun updateLocalChickenInfo(): Single<UpdateLocalChickenInfoRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/control_board_article_thumbs.php")

@@ -143,7 +143,7 @@ class ArticlePresenter : ArticleContract.Presenter {
             })
     }
 
-    override fun getCommentList(c_id: Int) {
+    override fun getCommentList(c_id: Int?) {
         retrofitClient.getBoardComment(type, c_id)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())

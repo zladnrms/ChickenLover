@@ -10,6 +10,10 @@ import io.realm.FieldAttribute
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
+fun main() {
+
+}
+
 class GlobalApplication : Application() {
 
     override fun onCreate() {
@@ -56,14 +60,14 @@ class GlobalApplication : Application() {
             */
 
         Realm.setDefaultConfiguration(config)
-
+/*
             if (LeakCanary.isInAnalyzerProcess(this)) {
                 // This process is dedicated to LeakCanary for heap analysis.
                 // You should not init your app in this process.
                 return;
             }
             LeakCanary.install(this)
-            // Normal app init code...
+            // Normal app init code...*/
 
     }
 

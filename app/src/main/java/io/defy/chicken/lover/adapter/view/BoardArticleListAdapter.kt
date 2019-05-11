@@ -3,6 +3,7 @@ package io.defy.chicken.lover.adapter.view
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -49,6 +50,10 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
         holder.itemView.tv_comment_amount.text = "[" + lists[position].comment_amount + "]"
         holder.itemView.tv_date.text = DateUtil.parseDate(lists[position].create_date)
         holder.itemView.tv_name.text = lists[position].name
+
+        lists[position].img_exist?.apply {
+            holder.itemView.iv_image.visibility = View.VISIBLE
+        }
 
         holder.itemView.setOnClickListener {
             activity.switchFragment(ArticleFragment.newInstance(presenter.getType(), lists[position]._id.toInt()), "article")

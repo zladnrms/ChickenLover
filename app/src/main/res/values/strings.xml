@@ -20,6 +20,10 @@
     <string name="app_chicken_info_title">치킨 정보</string>
     <string name="join">회원가입</string>
     <string name="login">로그인</string>
+    <string name="board_category_info">실시간정보</string>
+    <string name="board_category_free">자유게시판</string>
+    <string name="board_category_info_type">info</string>
+    <string name="board_category_free_type">free</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -15,6 +15,8 @@ interface HomeContract {
         fun alertShow()
 
         fun alertDismiss()
+
+        fun showChickenType(item: String)
     }
 
     interface Presenter {
@@ -25,6 +27,8 @@ interface HomeContract {
         fun getChickenInfo(way: String, brand: String?, type: String?)
 
         fun getChickenSelectHistory(mobile: String)
+
+        fun getTypeNumber(): Int
     }
 
 }
