@@ -57,4 +57,10 @@ class RankNInfoFragment : Fragment(), RankNInfoContract.View {
 
         presenter?.detachView(this)
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.overridePendingTransition(0, 0)
+    }
 }

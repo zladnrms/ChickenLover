@@ -246,4 +246,10 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         layout_img.removeAllViewsInLayout()
         Toast.makeText(context as BoardActivity, "메모리가 부족하여 이미지를 보여주지 않습니다", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.overridePendingTransition(0, 0)
+    }
 }

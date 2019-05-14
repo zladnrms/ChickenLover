@@ -83,6 +83,7 @@ class SearchChickenInfoListAdapter(var context: Context, var lists: ArrayList<Lo
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val options = ActivityOptions.makeSceneTransitionAnimation(context as SearchChickenInfoActivity, holder.itemView.iv_chicken_img, "chickenImg")
                 intent.putExtra("typeNumber", lists[position].type_number)
+                intent.putExtra("infoId", lists[position].info_id)
                 context.startActivity(intent, options.toBundle())
             } else {
                 // makeSceneTransitionAnimation 역시 Api 21 이상에서만 동작하기 때문에 분기를 나눈다

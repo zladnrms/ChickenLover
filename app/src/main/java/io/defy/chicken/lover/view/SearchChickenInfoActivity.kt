@@ -99,4 +99,10 @@ class SearchChickenInfoActivity : AppCompatActivity(), SearchChickenInfoContract
     override fun addSearchResult(data: LocalChickenInfoData) {
         adapter?.add(data)
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        overridePendingTransition(0, 0)
+    }
 }

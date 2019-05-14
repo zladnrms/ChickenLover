@@ -186,4 +186,10 @@ class WriteFragment : Fragment(), WriteContract.View {
 
         presenter?.detachView(this)
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.overridePendingTransition(0, 0)
+    }
 }

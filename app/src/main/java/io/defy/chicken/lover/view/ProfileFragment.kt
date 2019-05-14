@@ -140,4 +140,10 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.overridePendingTransition(0, 0)
+    }
 }

@@ -8,6 +8,7 @@ import io.defy.chicken.lover.contract.BoardContract
 import io.defy.chicken.lover.model.data.BoardArticleData
 import io.defy.chicken.lover.network.response.BoardArticleListRes
 import io.reactivex.Observer
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -41,39 +42,43 @@ class BoardPresenter : BoardContract.Presenter {
         return type
     }
 
+    override fun setIndex(number: Int) {
+        this.index = number
+    }
+
     override fun getArticleList() {
         retrofitClient.getBoardArticleList(type, index, limit)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<BoardArticleListRes> {
+            .subscribe(object : SingleObserver<BoardArticleListRes> {
+
                 override fun onSubscribe(d: Disposable) {
                     view?.loadingShow()
                 }
 
-                override fun onNext(repo: BoardArticleListRes) {
-                    if(repo.result.equals("success"))
-                    {
-                        for(item in repo.resultArray)
+                override fun onSuccess(repo: BoardArticleListRes?) {
+                    repo?.let {
+                        if(it.result.equals("success"))
                         {
-                            val item_obj = JSONObject(item.toString())
+                            for(item in it.resultArray)
+                            {
+                                val item_obj = JSONObject(item.toString())
 
-                            var img_exist: String? = null
+                                var img_exist: String? = null
 
-                            if(!item_obj.get("img_url").toString().equals("null"))
-                                img_exist = "exist"
+                                if(!item_obj.get("img_url").toString().equals("null"))
+                                    img_exist = "exist"
 
-                            val data = BoardArticleData(item_obj.get("_id") as String, item_obj.get("name") as String, item_obj.get("title") as String, img_exist, item_obj.get("create_date") as String, item_obj.get("comment_amount") as String)
-                            view?.setArticleList(data)
+                                val data = BoardArticleData(item_obj.get("_id") as String, item_obj.get("name") as String, item_obj.get("title") as String, img_exist, item_obj.get("create_date") as String, item_obj.get("comment_amount") as String)
+                                view?.setArticleList(data)
+                            }
                         }
+                        view?.loadingDismiss()
                     }
                 }
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-                }
-
-                override fun onComplete() {
-                    view?.loadingDismiss()
                 }
             })
     }
@@ -92,9 +97,11 @@ class BoardPresenter : BoardContract.Presenter {
                 val totalItemCount = layoutManager.itemCount
                 val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
 
-                if (lastVisible >= (totalItemCount.minus(1))) {
-                    //Log.d("onScrolled", "lastVisibled , " + index + ", " + lastVisible + ", " + totalItemCount);
-                    index = lastVisible + 1
+                Log.d("ㅇㅂㅈㅇ", "d"+lastVisible)
+
+                if (lastVisible >= (totalItemCount.minus(1)) && lastVisible >= index + 14) {
+                    Log.d("onScrolled", "lastVisibled , " + index + ", " + lastVisible + ", " + totalItemCount);
+                    index += 15
                     getArticleList()
                 }
             }

@@ -28,7 +28,9 @@ interface HomeContract {
 
         fun getChickenSelectHistory(mobile: String)
 
-        fun getTypeNumber(): Int
+        fun getTypeNumber(): Int?
+
+        fun getInfoId(): Int?
     }
 
 }

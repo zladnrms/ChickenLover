@@ -37,21 +37,25 @@ class HomeActivity : AppCompatActivity() {
             R.id.action_board -> {
                 val intent = Intent(this, BoardActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_chat -> {
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_sale_info -> {
                 val intent = Intent(this, RankNInfoActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
         }
@@ -63,5 +67,16 @@ class HomeActivity : AppCompatActivity() {
 
         val fm = supportFragmentManager
         fm.popBackStackImmediate()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        overridePendingTransition(0, 0)
+    }
+
+    override fun onResume() {
+        this.overridePendingTransition(0,0);
+        super.onResume()
     }
 }

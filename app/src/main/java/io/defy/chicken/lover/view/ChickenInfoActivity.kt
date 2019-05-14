@@ -26,7 +26,10 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
 
         val intent = intent
         presenter?.setTypeNumber(intent.getIntExtra("typeNumber", 0))
+        presenter?.setInfoId(intent.getIntExtra("infoId", 0))
         presenter?.setChickenImage()
+
+        presenter?.getChickenInfo(presenter?.getInfoId())
     }
 
     override fun setImageResource(drawable: Int) {
@@ -52,8 +55,12 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
         AlertDialog.instance.dismiss()
     }
 
-
     override fun onBackPressed() {
         supportFinishAfterTransition()
+    }
+
+    override fun onResume() {
+        overridePendingTransition(0,0);
+        super.onResume()
     }
 }

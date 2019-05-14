@@ -20,6 +20,12 @@ interface ChickenInfoContract {
 
         fun getTypeNumber(): Int
 
+        fun setInfoId(infoId: Int)
+
+        fun getInfoId(): Int
+
         fun setChickenImage()
+
+        fun getChickenInfo(_id: Int?)
     }
 }

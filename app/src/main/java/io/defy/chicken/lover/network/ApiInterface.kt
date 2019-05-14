@@ -55,12 +55,20 @@ interface ApiInterface {
     fun getChickenInfo(@Field("way") way: String, @Field("brand") brand: String?, @Field("type") type: String?): Single<ChickenInfoRes>
 
     @FormUrlEncoded
+    @POST("/chickenlover/mobile/info/get_chicken_info_by_id.php")
+    fun getChickenInfo(@Field("_id") _id: Int?): Single<ChickenInfoRes>
+
+    @FormUrlEncoded
+    @POST("/chickenlover/mobile/info/get_chicken_info.php")
+    fun getChickenComment(@Field("_id") _id: Int?): Single<ChickenInfoRes>
+
+    @FormUrlEncoded
     @POST("/chickenlover/mobile/history/get_chicken_select_history.php")
     fun getChickenSelectHistory(@Field("mobile") mobile: String): Observable<ChickenSelectHistoryRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/get_board_article_list.php")
-    fun getBoardArticleList(@Field("type") type: String, @Field("index") index: Int, @Field("limit") limit: Int): Observable<BoardArticleListRes>
+    fun getBoardArticleList(@Field("type") type: String, @Field("index") index: Int, @Field("limit") limit: Int): Single<BoardArticleListRes>
 
     @FormUrlEncoded
     @POST("/chickenlover/mobile/board/article/get_board_article.php")

@@ -9,6 +9,9 @@ import java.util.List;
 
 public class ChickenInfoRes {
 
+    @SerializedName("_id")
+    int _id;
+
     @SerializedName("way")
     String way;
 
@@ -26,6 +29,10 @@ public class ChickenInfoRes {
 
     @SerializedName("thumbs_up")
     int thumbs_up;
+
+    public int getId() {
+        return _id;
+    }
 
     public String getWay() {
         return way;

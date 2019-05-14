@@ -59,4 +59,10 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        overridePendingTransition(0, 0)
+    }
 }

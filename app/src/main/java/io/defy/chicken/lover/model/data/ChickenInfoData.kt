@@ -1,5 +1,3 @@
 package io.defy.chicken.lover.model.data
 
-import org.json.JSONObject
-
-data class ChickenInfoData(val way : String, val name : String, val brand : String, val type : JSONObject)
+data class ChickenInfoData(val _id : Int, val way : String?, val name : String, val brand : String, val type_number : Int, val type_array : String)

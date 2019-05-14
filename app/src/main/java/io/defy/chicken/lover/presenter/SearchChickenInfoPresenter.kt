@@ -105,6 +105,7 @@ class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
                                     val item_obj = JSONObject(item.toString())
 
                                     it.insert(
+                                        item_obj.get("_id").toString().toInt(),
                                         item_obj.get("brand") as String,
                                         item_obj.get("name") as String,
                                         item_obj.get("type_number").toString().toInt(),

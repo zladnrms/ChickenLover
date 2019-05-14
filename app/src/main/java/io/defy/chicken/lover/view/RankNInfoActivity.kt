@@ -35,16 +35,19 @@ class RankNInfoActivity : AppCompatActivity() {
             R.id.action_home -> {
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_board -> {
                 val intent = Intent(this, BoardActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_chat -> {
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_sale_info -> {
@@ -53,6 +56,7 @@ class RankNInfoActivity : AppCompatActivity() {
             R.id.action_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
         }
@@ -64,5 +68,16 @@ class RankNInfoActivity : AppCompatActivity() {
 
         val fm = supportFragmentManager
         fm.popBackStackImmediate()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        overridePendingTransition(0, 0)
+    }
+
+    override fun onResume() {
+        overridePendingTransition(0,0);
+        super.onResume()
     }
 }

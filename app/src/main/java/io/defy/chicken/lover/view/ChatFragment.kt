@@ -165,4 +165,10 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.overridePendingTransition(0, 0)
+    }
 }

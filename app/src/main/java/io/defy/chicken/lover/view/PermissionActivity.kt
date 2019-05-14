@@ -63,6 +63,7 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
     }
 
     override fun onResume() {
+        overridePendingTransition(0,0)
         super.onResume()
 
         checkAndroidVersion()
@@ -141,5 +142,11 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
         super.onDestroy()
 
         presenter?.detachView(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        overridePendingTransition(0, 0)
     }
 }

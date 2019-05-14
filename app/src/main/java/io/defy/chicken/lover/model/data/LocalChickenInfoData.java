@@ -14,6 +14,8 @@ public class LocalChickenInfoData extends RealmObject {
     @PrimaryKey
     private int _id;
 
+    private int info_id;
+
     private String brand;
 
     private String name;
@@ -26,10 +28,19 @@ public class LocalChickenInfoData extends RealmObject {
 
     }
 
-    public LocalChickenInfoData(String brand, String name, int type_number) {
+    public LocalChickenInfoData(int info_id, String brand, String name, int type_number) {
+        this.info_id = info_id;
         this.brand = brand;
         this.name = name;
         this.type_number = type_number;
+    }
+
+    public int getInfo_id() {
+        return info_id;
+    }
+
+    public void setInfo_id(int info_id) {
+        this.info_id = info_id;
     }
 
     public String getName() {

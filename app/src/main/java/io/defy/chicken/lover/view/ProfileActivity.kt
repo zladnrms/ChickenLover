@@ -37,21 +37,25 @@ class ProfileActivity : AppCompatActivity() {
             R.id.action_home -> {
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_board -> {
                 val intent = Intent(this, BoardActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_chat -> {
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_sale_info -> {
                 val intent = Intent(this, RankNInfoActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             R.id.action_profile -> {
@@ -83,5 +87,16 @@ class ProfileActivity : AppCompatActivity() {
             // do something u want
             RxBus.publish(ImagePickResultEvent("profile",selectPaths))
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        overridePendingTransition(0, 0)
+    }
+
+    override fun onResume() {
+        this.overridePendingTransition(0,0);
+        super.onResume()
     }
 }

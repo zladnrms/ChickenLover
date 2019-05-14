@@ -1,16 +1,15 @@
 package io.defy.chicken.lover.presenter
 
-import android.util.Log
 import android.widget.TextView
 import com.zeniex.www.zeniexautomarketing.model.FavoriteBrandRepositoryModel
 import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.HomeContract
 import io.defy.chicken.lover.model.FavoriteBrandRepository
+import io.defy.chicken.lover.model.data.ChickenInfoData
 import io.defy.chicken.lover.model.data.SelectChickenHistoryData
 import io.defy.chicken.lover.network.response.ChickenInfoRes
 import io.defy.chicken.lover.network.response.ChickenSelectHistoryRes
-import io.defy.chicken.lover.view.custom.TypeView
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,7 +22,7 @@ import java.util.concurrent.TimeoutException
 
 class HomePresenter : HomeContract.Presenter {
 
-    private var typeNumber: Int = 0
+    private var chickenInfoData: ChickenInfoData? = null
     private var view: HomeContract.View? = null;
     private var fbRepo: FavoriteBrandRepositoryModel? = null
 
@@ -41,8 +40,12 @@ class HomePresenter : HomeContract.Presenter {
         this.fbRepo = null
     }
 
-    override fun getTypeNumber(): Int {
-        return this.typeNumber
+    override fun getTypeNumber(): Int? {
+        return this.chickenInfoData?.type_number
+    }
+
+    override fun getInfoId(): Int? {
+        return this.chickenInfoData?._id
     }
 
     override fun getChickenInfo(way: String, brand: String?, type: String?) {
@@ -56,23 +59,11 @@ class HomePresenter : HomeContract.Presenter {
                 }
 
                 override fun onSuccess(repo: ChickenInfoRes?) {
-
-                    repo?.apply {
-                        view?.showChickenInfo(this.way, this.name, this.brand, this.thumbs_up)
-
-                        setChickenImageByTypeNumber(this.type_number)
-
-                        val obj = JSONObject(this.type_array)
-
-                        val type_array = ArrayList<String>()
-
-                        for (key: String in obj.keys()) {
-                            type_array.add(obj.get(key).toString())
-                        }
-
-                        for (item in type_array) {
-                            view?.showChickenType(item)
-                        }
+                    repo?.let {
+                        chickenInfoData = ChickenInfoData(it.id, it.way, it.name, it.brand, it.type_number, it.type_array)
+                        view?.showChickenInfo(it.way, it.name, it.brand, it.thumbs_up)
+                        setChickenImageByTypeNumber()
+                        setChickenTypeByTypeArray()
                     }
                 }
 
@@ -104,7 +95,6 @@ class HomePresenter : HomeContract.Presenter {
                                 item.chicken_brand,
                                 item.select_date
                             )
-
                         }
                     }
                 }
@@ -122,16 +112,35 @@ class HomePresenter : HomeContract.Presenter {
             })
     }
 
-    private fun setChickenImageByTypeNumber(typeNumber: Int) {
-        this.typeNumber = typeNumber
-        when (typeNumber) {
-            0 -> view?.showChickenImage(R.drawable.fried)
-            1 -> view?.showChickenImage(R.drawable.seasoned_fried)
-            2 -> view?.showChickenImage(R.drawable.cheese_fried)
-            3 -> view?.showChickenImage(R.drawable.soy_fried)
-            4 -> view?.showChickenImage(R.drawable.green_onion_fried)
-            5 -> view?.showChickenImage(R.drawable.garlic_fried)
-            6 -> view?.showChickenImage(R.drawable.peoper_fried)
+    private fun setChickenImageByTypeNumber() {
+        this.chickenInfoData?.let {
+            when (it.type_number) {
+                0 -> view?.showChickenImage(R.drawable.fried)
+                1 -> view?.showChickenImage(R.drawable.seasoned_fried)
+                2 -> view?.showChickenImage(R.drawable.cheese_fried)
+                3 -> view?.showChickenImage(R.drawable.soy_fried)
+                4 -> view?.showChickenImage(R.drawable.green_onion_fried)
+                5 -> view?.showChickenImage(R.drawable.garlic_fried)
+                6 -> view?.showChickenImage(R.drawable.peoper_fried)
+                else -> view?.showChickenImage(R.drawable.fried)
+            }
+        }
+    }
+
+    fun setChickenTypeByTypeArray()
+    {
+        this.chickenInfoData?.let {
+            val obj = JSONObject( it.type_array)
+
+            val type_array = ArrayList<String>()
+
+            for (key: String in obj.keys()) {
+                type_array.add(obj.get(key).toString())
+            }
+
+            for (item in type_array) {
+                view?.showChickenType(item)
+            }
         }
     }
 

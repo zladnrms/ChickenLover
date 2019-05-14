@@ -57,6 +57,7 @@ class HomeFragment : Fragment(), HomeContract.View {
             val intent = Intent(activity, ChickenInfoActivity::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val options = ActivityOptions.makeSceneTransitionAnimation(activity, iv_chicken_img, "chickenImg")
+                intent.putExtra("infoId", presenter?.getInfoId())
                 intent.putExtra("typeNumber", presenter?.getTypeNumber())
                 startActivity(intent, options.toBundle())
             } else {
@@ -74,6 +75,7 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun onResume() {
         super.onResume()
+
     }
 
     override fun showChickenInfo(way: String, name: String, brand: String, thumbs_up: Int) {
@@ -125,5 +127,11 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.overridePendingTransition(0, 0)
     }
 }

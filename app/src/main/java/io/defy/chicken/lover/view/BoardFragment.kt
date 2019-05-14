@@ -63,25 +63,6 @@ class BoardFragment : Fragment(), BoardContract.View {
         adapter = BoardArticleListAdapter((activity as BoardActivity), ArrayList())
         articleList.adapter = adapter
 
-        /*
-        articleList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val layoutManager =  articleList.layoutManager as LinearLayoutManager
-                val totalItemCount = layoutManager.itemCount
-                val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
-
-                if (lastVisible >= totalItemCount - 1) {
-                    Log.d("dqd", "lastVisibled");
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-        })*/
-
         iv_write.setOnClickListener {
             (activity as BoardActivity).switchFragment(WriteFragment(), "write")
         }
@@ -119,7 +100,15 @@ class BoardFragment : Fragment(), BoardContract.View {
         layout_category_selector.visibility = View.GONE
     }
 
+
+    // 왓을때 index = 0 limit 15
+    // 다시오면 그대로여야만함 -> onREsume 에서 별도 작업x
+    // 아래로가면 15개씩 추가 됨 -> clear 없이 15개 add
+    // 글 쓰면 clear 후 index는 0부터 다시 받아옴 -> clkear, index 0
+    // 카테고리 바꾸면 clear 후 index는 0부터 다시 받아옴
+
     private fun resetArticleList() {
+        presenter?.setIndex(0)
         adapter?.clear()
         adapter?.refresh()
         presenter?.getArticleList()
@@ -165,5 +154,11 @@ class BoardFragment : Fragment(), BoardContract.View {
 
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.overridePendingTransition(0, 0)
     }
 }

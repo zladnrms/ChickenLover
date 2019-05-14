@@ -4,7 +4,7 @@ import io.defy.chicken.lover.model.data.LocalChickenInfoData
 import java.util.*
 
 interface LocalChickenInfoModel {
-    fun insert(brand: String?, name : String?, type_number : Int?, type_array: String?)
+    fun insert(info_id: Int?, brand: String?, name : String?, type_number : Int?, type_array: String?)
 
     fun select(text: String) : LinkedList<LocalChickenInfoData>
 
