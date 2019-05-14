@@ -10,6 +10,7 @@ import io.defy.chicken.lover.adapter.model.ChatListDataModel
 import io.defy.chicken.lover.adapter.presenter.ChatListAdapterPresenter
 import io.defy.chicken.lover.contract.ChatListContract
 import io.defy.chicken.lover.model.data.ChatData
+import io.defy.chicken.lover.model.data.FavoriteBrandData
 import kotlinx.android.synthetic.main.recyclerview_chat.view.*
 import java.util.*
 
@@ -17,7 +18,7 @@ import java.util.*
  * Created by kim on 2017-09-16.
  */
 class ChatListAdapter(var context: Context, var lists: ArrayList<ChatData>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    RecyclerView.Adapter<ChatListAdapter.ViewHolder>(),
     ChatListDataModel, ChatListContract.View {
 
     private var presenter: ChatListAdapterPresenter
@@ -27,27 +28,27 @@ class ChatListAdapter(var context: Context, var lists: ArrayList<ChatData>) :
         presenter.attachView(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var v = LayoutInflater.from(context).inflate(R.layout.recyclerview_chat, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(context).inflate(R.layout.recyclerview_chat, parent, false)
 
-        return Item(v)
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return lists.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.tv_name.text =  lists[position].name
-        holder.itemView.tv_content.text =  lists[position].content
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(lists[position])
     }
 
-    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bindData(_list: String) {
-            //itemView.tv_nickname.text = _list
+        fun bind(data: ChatData) {
+            itemView.tv_name.text =  data.name
+            itemView.tv_content.text =  data.content
         }
-    }
+     }
 
     override fun refresh() {
         notifyDataSetChanged()

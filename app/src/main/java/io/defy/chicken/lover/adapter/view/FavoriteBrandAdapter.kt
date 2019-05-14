@@ -21,7 +21,7 @@ import java.util.*
  * Created by kim on 2017-09-16.
  */
 class FavoriteBrandAdapter(var context: Context, var lists: ArrayList<FavoriteBrandData>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    RecyclerView.Adapter<FavoriteBrandAdapter.ViewHolder>(),
     FavoriteBrandDataModel, FavoriteBrandContract.View {
 
     private var presenter: FavoriteBrandAdapterPresenter
@@ -31,42 +31,38 @@ class FavoriteBrandAdapter(var context: Context, var lists: ArrayList<FavoriteBr
         presenter.attachView(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var v = LayoutInflater.from(context).inflate(R.layout.cardview_favorite_brand, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(context).inflate(R.layout.cardview_favorite_brand, parent, false)
 
-        return Item(v)
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return lists.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.fb_title?.text = lists[position].brandName
-
-        /*
-         * 체크 여부를 가져와서 그 여부에 따라 배경색을 설정한다
-         */
-        val check_status: Boolean = lists[position].checked
-        setBackgroundColor(check_status, holder)
-
-        /*
-         * 클릭 시 체크하며 local DB에 upgrade 및 실시간 반영
-         */
-        holder.itemView.setOnClickListener {
-
-            val result = presenter?.checkDetect(lists[position].uid)
-            result?.let {
-                lists[position].checked = !lists[position].checked
-            }
-            refresh()
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(lists[position])
     }
 
-    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bindData(_list: String) {
-            //itemView.tv_nickname.text = _list
+        fun bind(data: FavoriteBrandData) {
+            itemView.fb_title?.text = data.brandName
+
+            // 체크 여부를 가져와서 그 여부에 따라 배경색을 설정한다
+            val check_status: Boolean = data.checked
+            setBackgroundColor(check_status, this)
+
+            // 클릭 시 체크하며 local DB에 upgrade 및 실시간 반영
+            itemView.setOnClickListener {
+
+                val result = presenter.checkDetect(data.uid)
+                result?.let {
+                    data.checked = !data.checked
+                }
+                refresh()
+            }
         }
     }
 

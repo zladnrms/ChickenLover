@@ -13,6 +13,7 @@ import io.defy.chicken.lover.adapter.model.FileUploadDataModel
 import io.defy.chicken.lover.adapter.presenter.FileUploadAdapterPresenter
 import io.defy.chicken.lover.contract.FileUploadContract
 import io.defy.chicken.lover.model.data.FileUploadData
+import io.defy.chicken.lover.model.data.LocalChickenInfoData
 import kotlinx.android.synthetic.main.recyclerview_img_upload.view.*
 import java.io.File
 import java.util.*
@@ -21,7 +22,7 @@ import java.util.*
  * Created by kim on 2017-09-16.
  */
 class FileUploadListAdapter(var context: Context, var lists: ArrayList<FileUploadData>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    RecyclerView.Adapter<FileUploadListAdapter.ViewHolder>(),
     FileUploadDataModel, FileUploadContract.View {
 
     private var presenter: FileUploadAdapterPresenter
@@ -31,35 +32,34 @@ class FileUploadListAdapter(var context: Context, var lists: ArrayList<FileUploa
         presenter.attachView(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var v = LayoutInflater.from(context).inflate(R.layout.recyclerview_img_upload, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(context).inflate(R.layout.recyclerview_img_upload, parent, false)
 
-        return Item(v)
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return lists.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //holder.itemView.iv_file.setImageBitmap(lists[position].bitmap)
-        val file = File(lists[position].path)
-        val imageUri = Uri.fromFile(file)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        Glide.with(context)
-            .load(imageUri)
-            .into(holder.itemView.iv_file)
-
-        holder.itemView.iv_file.setOnClickListener {
-            lists.remove(lists[position])
-            refresh()
-        }
+        holder.bind(lists[position])
     }
 
-    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindData(_list: String) {
-            //itemView.tv_nickname.text = _list
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(data: FileUploadData) {
+
+            val file = File(data.path)
+            val imageUri = Uri.fromFile(file)
+
+            Glide.with(context).load(imageUri).into(itemView.iv_file)
+
+            itemView.iv_file.setOnClickListener {
+                lists.remove(data)
+                refresh()
+            }
         }
     }
 

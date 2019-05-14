@@ -24,7 +24,7 @@ import java.util.*
  * Created by kim on 2017-09-16.
  */
 class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<BoardArticleData>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    RecyclerView.Adapter<BoardArticleListAdapter.ViewHolder>(),
     BoardArticleDataModel, BoardArticleContract.View {
 
     private var presenter: BoardArticleAdapterPresenter
@@ -35,33 +35,35 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
         presenter.attachView(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var v = LayoutInflater.from(context).inflate(R.layout.recyclerview_article, parent, false)
 
-        return Item(v)
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return lists.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.tv_title.text = lists[position].title
-        holder.itemView.tv_comment_amount.text = "[" + lists[position].comment_amount + "]"
-        holder.itemView.tv_date.text = DateUtil.parseDate(lists[position].create_date)
-        holder.itemView.tv_name.text = lists[position].name
-
-        lists[position].img_exist?.apply {
-            holder.itemView.iv_image.visibility = View.VISIBLE
-        }
-
-        holder.itemView.setOnClickListener {
-            activity.switchFragment(ArticleFragment.newInstance(presenter.getType(), lists[position]._id.toInt()), "article")
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(lists[position])
     }
 
-    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindData(_list: String) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(data: BoardArticleData) {
+            itemView.tv_title.text = data.title
+            itemView.tv_comment_amount.text = "[" + data.comment_amount + "]"
+            itemView.tv_date.text = DateUtil.parseDate(data.create_date)
+            itemView.tv_name.text = data.name
+
+            data.img_exist?.apply {
+                itemView.iv_image.visibility = View.VISIBLE
+            }
+
+            itemView.setOnClickListener {
+                activity.switchFragment(ArticleFragment.newInstance(presenter.getType(), data._id.toInt()), "article")
+            }
         }
     }
 

@@ -27,7 +27,7 @@ import io.defy.chicken.lover.view.SearchChickenInfoActivity
  * Created by kim on 2017-09-16.
  */
 class SearchChickenInfoListAdapter(var context: Context, var lists: ArrayList<LocalChickenInfoData>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    RecyclerView.Adapter<SearchChickenInfoListAdapter.ViewHolder>(),
     SearchChickenInfoListDataModel, SearchChickenInfoListContract.View {
 
     private var presenter: SearchChickenInfoAdapterPresenter
@@ -37,64 +37,65 @@ class SearchChickenInfoListAdapter(var context: Context, var lists: ArrayList<Lo
         presenter.attachView(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var v = LayoutInflater.from(context).inflate(R.layout.recyclerview_search_chicken_info, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(context).inflate(R.layout.recyclerview_search_chicken_info, parent, false)
 
-        return Item(v)
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return lists.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.tv_chicken_brand.text = lists[position].brand
-        holder.itemView.tv_chicken_name.text = lists[position].name
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        when(lists[position].type_number)
-        {
-            0 -> holder.itemView.iv_chicken_img.setImageResource(R.drawable.fried)
-            1 -> holder.itemView.iv_chicken_img.setImageResource(R.drawable.seasoned_fried)
-            2 -> holder.itemView.iv_chicken_img.setImageResource(R.drawable.cheese_fried)
-            3 -> holder.itemView.iv_chicken_img.setImageResource(R.drawable.soy_fried)
-            4 -> holder.itemView.iv_chicken_img.setImageResource(R.drawable.green_onion_fried)
-            5 -> holder.itemView.iv_chicken_img.setImageResource(R.drawable.garlic_fried)
-            6 -> holder.itemView.iv_chicken_img.setImageResource(R.drawable.peoper_fried)
-        }
-
-        holder.itemView.layout_chicken_type.removeAllViewsInLayout()
-        val obj = JSONObject(lists[position].type_array)
-
-        val type_array = ArrayList<String>()
-
-        for(key : String in obj.keys())
-        {
-            type_array.add(obj.get(key).toString())
-        }
-
-        for(item in type_array)
-        {
-            val tv = TypeView(context, item)
-            holder.itemView.layout_chicken_type.addView(tv)
-        }
-
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context as SearchChickenInfoActivity, ChickenInfoActivity::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(context as SearchChickenInfoActivity, holder.itemView.iv_chicken_img, "chickenImg")
-                intent.putExtra("typeNumber", lists[position].type_number)
-                intent.putExtra("infoId", lists[position].info_id)
-                context.startActivity(intent, options.toBundle())
-            } else {
-                // makeSceneTransitionAnimation 역시 Api 21 이상에서만 동작하기 때문에 분기를 나눈다
-            }
-        }
+        holder.bind(lists[position])
     }
 
-    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bindData(_list: String) {
-            //itemView.tv_nickname.text = _list
+        fun bind(data: LocalChickenInfoData) {
+            itemView.tv_chicken_brand.text = data.brand
+            itemView.tv_chicken_name.text = data.name
+
+            when(data.type_number)
+            {
+                0 -> itemView.iv_chicken_img.setImageResource(R.drawable.fried)
+                1 -> itemView.iv_chicken_img.setImageResource(R.drawable.seasoned_fried)
+                2 -> itemView.iv_chicken_img.setImageResource(R.drawable.cheese_fried)
+                3 -> itemView.iv_chicken_img.setImageResource(R.drawable.soy_fried)
+                4 -> itemView.iv_chicken_img.setImageResource(R.drawable.green_onion_fried)
+                5 -> itemView.iv_chicken_img.setImageResource(R.drawable.garlic_fried)
+                6 -> itemView.iv_chicken_img.setImageResource(R.drawable.peoper_fried)
+            }
+
+            itemView.layout_chicken_type.removeAllViewsInLayout()
+            val obj = JSONObject(data.type_array)
+
+            val type_array = ArrayList<String>()
+
+            for(key : String in obj.keys())
+            {
+                type_array.add(obj.get(key).toString())
+            }
+
+            for(item in type_array)
+            {
+                val tv = TypeView(context, item)
+                itemView.layout_chicken_type.addView(tv)
+            }
+
+            itemView.setOnClickListener {
+                val intent = Intent(context as SearchChickenInfoActivity, ChickenInfoActivity::class.java)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val options = ActivityOptions.makeSceneTransitionAnimation(context as SearchChickenInfoActivity, itemView.iv_chicken_img, "chickenImg")
+                    intent.putExtra("typeNumber", data.type_number)
+                    intent.putExtra("infoId", data.info_id)
+                    context.startActivity(intent, options.toBundle())
+                } else {
+                    // makeSceneTransitionAnimation 역시 Api 21 이상에서만 동작하기 때문에 분기를 나눈다
+                }
+            }
         }
     }
 

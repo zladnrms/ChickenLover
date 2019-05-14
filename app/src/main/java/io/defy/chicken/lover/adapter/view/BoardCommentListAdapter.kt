@@ -23,7 +23,7 @@ import java.util.*
  * Created by kim on 2017-09-16.
  */
 class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCommentData>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    RecyclerView.Adapter<BoardCommentListAdapter.ViewHolder>(),
     BoardCommentDataModel, BoardCommentContract.View {
 
     private var presenter: BoardCommentAdapterPresenter
@@ -36,45 +36,46 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
         presenter.attachView(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var v = LayoutInflater.from(context).inflate(R.layout.recyclerview_article_comment, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(context).inflate(R.layout.recyclerview_article_comment, parent, false)
 
-        return Item(v)
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return lists.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.tv_name.text =  lists[position].name
-        holder.itemView.tv_date.text =  DateUtil.parseDate(lists[position].write_date)
-        holder.itemView.tv_content.text =  lists[position].content
-        holder.itemView.tv_thumbs_up.text = lists[position].thumbs_up.size.toString()
-        holder.itemView.tv_profile.text = lists[position].name[0].toString()
-
-        val comment_id = pref.getInt("comment_id", 0) // 해당 article의 comment_id
-        val comment_c_id = lists[position]._id // 해당 article의 comment_id에 걸린 댓글 중 몇 번째 인지
-        val thumbs_up_list = lists[position].thumbs_up
-        var thumbs_up_status = 0 // 해당 코멘트에 thumbs_up 했는지 여부
-
-        for(item in thumbs_up_list)
-        {
-            if(presenter.compareThumbsList(item))
-                thumbs_up_status = 1
-        }
-
-        holder.itemView.layout_thumbs_up.setOnClickListener {
-            presenter.controlCommentThumbs("up", NumberUtil.valueInverse(thumbs_up_status), comment_id, comment_c_id)
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(lists[position])
     }
 
-    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindData(_list: String) {
-            //itemView.tv_nickname.text = _list
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(data: BoardCommentData) {
+            itemView.tv_name.text =  data.name
+            itemView.tv_date.text =  DateUtil.parseDate(data.write_date)
+            itemView.tv_content.text =  data.content
+            itemView.tv_thumbs_up.text = data.thumbs_up.size.toString()
+            itemView.tv_profile.text = data.name[0].toString()
+
+            val comment_id = pref.getInt("comment_id", 0) // 해당 article의 comment_id
+            val comment_c_id = data._id // 해당 article의 comment_id에 걸린 댓글 중 몇 번째 인지
+            val thumbs_up_list = data.thumbs_up
+            var thumbs_up_status = 0 // 해당 코멘트에 thumbs_up 했는지 여부
+
+            for(item in thumbs_up_list)
+            {
+                if(presenter.compareThumbsList(item))
+                    thumbs_up_status = 1
+            }
+
+            itemView.layout_thumbs_up.setOnClickListener {
+                presenter.controlCommentThumbs("up", NumberUtil.valueInverse(thumbs_up_status), comment_id, comment_c_id)
+            }
         }
-    }
+     }
 
     override fun refresh() {
         notifyDataSetChanged()

@@ -11,6 +11,7 @@ import io.defy.chicken.lover.adapter.model.FavoriteTypeDataModel
 import io.defy.chicken.lover.adapter.presenter.FavoriteTypeAdapterPresenter
 import io.defy.chicken.lover.contract.FavoriteTypeContract
 import io.defy.chicken.lover.model.data.FavoriteTypeData
+import io.defy.chicken.lover.model.data.LocalChickenInfoData
 import kotlinx.android.synthetic.main.cardview_favorite_type.view.*
 import java.util.*
 
@@ -18,7 +19,7 @@ import java.util.*
  * Created by kim on 2017-09-16.
  */
 class FavoriteTypeAdapter(var context: Context, var lists: ArrayList<FavoriteTypeData>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    RecyclerView.Adapter<FavoriteTypeAdapter.ViewHolder>(),
     FavoriteTypeDataModel, FavoriteTypeContract.View {
 
     private var presenter: FavoriteTypeAdapterPresenter
@@ -28,41 +29,39 @@ class FavoriteTypeAdapter(var context: Context, var lists: ArrayList<FavoriteTyp
         presenter.attachView(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var v = LayoutInflater.from(context).inflate(R.layout.cardview_favorite_type, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(context).inflate(R.layout.cardview_favorite_type, parent, false)
 
-        return Item(v)
+        return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return lists.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder.itemView.ft_title?.text = lists[position].typeName
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        /*
-         * 체크 여부를 가져와서 그 여부에 따라 배경색을 설정한다
-         */
-        val check_status: Boolean = lists[position].checked
-        setBackgroundColor(check_status, holder)
-
-        /*
-         * 클릭 시 체크하며 local DB에 upgrade 및 실시간 반영
-         */
-        holder.itemView.setOnClickListener {
-            val result = presenter?.checkDetect(lists[position].uid)
-            result?.let {
-                lists[position].checked = !lists[position].checked
-            }
-            refresh()
-        }
+        holder.bind(lists[position])
     }
 
-    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindData(_list: String) {
-            //itemView.tv_nickname.text = _list
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(data: FavoriteTypeData) {
+            itemView.ft_title?.text = data.typeName
+
+            // 체크 여부를 가져와서 그 여부에 따라 배경색을 설정한다
+            val check_status: Boolean = data.checked
+            setBackgroundColor(check_status, this)
+
+            // 클릭 시 체크하며 local DB에 upgrade 및 실시간 반영
+            itemView.setOnClickListener {
+                val result = presenter.checkDetect(data.uid)
+                result?.let {
+                    data.checked = !data.checked
+                }
+                refresh()
+            }
         }
     }
 

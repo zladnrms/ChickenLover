@@ -100,13 +100,6 @@ class BoardFragment : Fragment(), BoardContract.View {
         layout_category_selector.visibility = View.GONE
     }
 
-
-    // 왓을때 index = 0 limit 15
-    // 다시오면 그대로여야만함 -> onREsume 에서 별도 작업x
-    // 아래로가면 15개씩 추가 됨 -> clear 없이 15개 add
-    // 글 쓰면 clear 후 index는 0부터 다시 받아옴 -> clkear, index 0
-    // 카테고리 바꾸면 clear 후 index는 0부터 다시 받아옴
-
     private fun resetArticleList() {
         presenter?.setIndex(0)
         adapter?.clear()
