@@ -97,10 +97,9 @@ class BoardPresenter : BoardContract.Presenter {
                 val totalItemCount = layoutManager.itemCount
                 val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
 
-                Log.d("ㅇㅂㅈㅇ", "d"+lastVisible)
 
                 if (lastVisible >= (totalItemCount.minus(1)) && lastVisible >= index + 14) {
-                    Log.d("onScrolled", "lastVisibled , " + index + ", " + lastVisible + ", " + totalItemCount);
+                    Log.d("onScrolled", "index : $index, lastVisible : $lastVisible, totalItemCount : $totalItemCount");
                     index += 15
                     getArticleList()
                 }

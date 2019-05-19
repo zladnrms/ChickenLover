@@ -1,6 +1,7 @@
 package io.defy.chicken.lover.view
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.HomeContract
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -25,7 +27,9 @@ import io.defy.chicken.lover.view.dialog.LoadingDialog
  */
 class HomeFragment : Fragment(), HomeContract.View {
 
-    private var presenter : HomeContract.Presenter? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private var presenter: HomeContract.Presenter? = null
+
     companion object {
         fun newInstance(): HomeFragment {
             return HomeFragment()
@@ -34,6 +38,15 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        context?.let {
+            firebaseAnalytics = FirebaseAnalytics.getInstance(it)
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,8 +74,14 @@ class HomeFragment : Fragment(), HomeContract.View {
                 intent.putExtra("typeNumber", presenter?.getTypeNumber())
                 startActivity(intent, options.toBundle())
             } else {
-                // makeSceneTransitionAnimation 역시 Api 21 이상에서만 동작하기 때문에 분기를 나눈다
+                intent.putExtra("infoId", presenter?.getInfoId())
+                intent.putExtra("typeNumber", presenter?.getTypeNumber())
+                startActivity(intent)
             }
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "card_click")
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
         }
 
         btn_id.setOnClickListener {
@@ -107,6 +126,7 @@ class HomeFragment : Fragment(), HomeContract.View {
             code(a, b)
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
 

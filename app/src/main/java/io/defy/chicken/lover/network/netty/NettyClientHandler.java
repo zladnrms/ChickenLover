@@ -30,7 +30,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<HeaderPacket
                 String entryName = entryPacket.getName();
                 int entryRoomId = entryPacket.getRoomId();
 
-                Log.d("EntryPacket","Name" + entryName + ", Room Id : " + entryRoomId + ", view : " + view);
+                Log.d("EntryPacket","Name $entryName, Room Id : $entryRoomId, $view : " + view);
 
                 ChatData entryData = new ChatData(entryName, entryRoomId, "님이 입장하셨습니다", "");
                 view.appendChatMessage(entryData);

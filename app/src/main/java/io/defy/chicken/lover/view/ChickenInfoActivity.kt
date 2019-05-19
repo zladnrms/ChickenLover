@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.ChickenInfoContract
+import io.defy.chicken.lover.model.data.ChickenInfoData
 import io.defy.chicken.lover.presenter.ChickenInfoPresenter
 import io.defy.chicken.lover.view.dialog.AlertDialog
 import kotlinx.android.synthetic.main.activity_chicken_info.*
@@ -34,6 +35,13 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
 
     override fun setImageResource(drawable: Int) {
         iv_chicken_img.setImageResource(drawable)
+    }
+
+    override fun setChickenInfo(chickenInfoData: ChickenInfoData?) {
+        chickenInfoData?.let {
+            tv_chicken_brand.text = it.brand
+            tv_chicken_name.text = it.name
+        }
     }
 
     override fun onEnterAnimationComplete() {

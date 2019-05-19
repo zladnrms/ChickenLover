@@ -1,6 +1,7 @@
 package io.defy.chicken.lover.contract
 
 import android.content.Intent
+import io.defy.chicken.lover.model.data.ChickenInfoData
 
 interface ChickenInfoContract {
     interface View {
@@ -9,6 +10,8 @@ interface ChickenInfoContract {
         fun alertDismiss()
 
         fun setImageResource(drawable: Int)
+
+        fun setChickenInfo(chickenInfoData: ChickenInfoData?)
     }
 
     interface Presenter {

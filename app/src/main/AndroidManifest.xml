@@ -30,8 +30,10 @@
             android:usesCleartextTraffic="true">
         <activity
                 android:name=".view.SplashActivity"
-                android:screenOrientation="portrait">
+                android:screenOrientation="portrait"
+                android:theme="@style/SplashTheme">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -30,6 +30,11 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
         finish()
     }
 
+
+    override fun onBackPressed() {
+
+    }
+
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT)
     }

@@ -61,10 +61,77 @@
                     android:id="@+id/iv_chicken_img"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:transitionName="chickenImg"/>
+
+            <TextView
+                    android:id="@+id/tv_chicken_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#3A3A3A"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_chicken_img"/>
+
+            <TextView
+                    android:id="@+id/tv_chicken_brand"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#ADADAD"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_chicken_name"/>
+
+            <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layout_chicken_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="14sp"
+                    android:textColor="#3A3A3A"
+                    app:layout_constraintRight_toLeftOf="@id/divider_line_1"
+                    app:layout_constraintTop_toBottomOf="@id/tv_chicken_brand"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <View
+                    android:id="@+id/divider_line_1"
+                    android:layout_width="1dp"
+                    android:layout_height="50dp"
+                    android:background="#DFDFDF"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_chicken_brand"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+            <Button
+                    android:id="@+id/admobs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#000000"
+                    android:text="GOOGLE ADMOBS"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/divider_line_1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
 
         </android.support.constraint.ConstraintLayout>
 

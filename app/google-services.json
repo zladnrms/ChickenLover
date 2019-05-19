@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "596251638927",
+    "firebase_url": "https://defy-chickenlover.firebaseio.com",
+    "project_id": "defy-chickenlover",
+    "storage_bucket": "defy-chickenlover.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596251638927:android:ae2e09617dbcb127",
+        "android_client_info": {
+          "package_name": "io.defy.chicken.lover"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596251638927-suu5her4saocpsc484jpvfolekjes3us.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.defy.chicken.lover",
+            "certificate_hash": "847c4c6379280728cdf079348ca629093a29e7ae"
+          }
+        },
+        {
+          "client_id": "596251638927-5mgodeb3poc33oi3l166ppkcnuvfs893.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc1hWg9B0e95PAS01ltMMcM-TO3TAQpFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596251638927-5mgodeb3poc33oi3l166ppkcnuvfs893.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
