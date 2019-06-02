@@ -1,5 +1,6 @@
 package io.defy.chicken.lover.contract
 
+import io.defy.chicken.lover.model.data.ChickenInfoData
 import org.json.JSONObject
 
 interface HomeContract {
@@ -20,6 +21,10 @@ interface HomeContract {
     }
 
     interface Presenter {
+        var pickBrand: String?
+
+        var pickType: String?
+
         fun attachView(view: Any)
 
         fun detachView(view: Any)
@@ -28,9 +33,7 @@ interface HomeContract {
 
         fun getChickenSelectHistory(mobile: String)
 
-        fun getTypeNumber(): Int?
-
-        fun getInfoId(): Int?
+        fun getChickenInfo(): ChickenInfoData?
     }
 
 }

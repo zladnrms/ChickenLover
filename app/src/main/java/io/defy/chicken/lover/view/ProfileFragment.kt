@@ -56,7 +56,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
                     startActivity(intent)
                 }
                 else -> {
-                    PickPhotoView.Builder(activity as ProfileActivity)
+                    PickPhotoView.Builder(activity as MainActivity)
                         .setPickPhotoSize(1)                  // select image size
                         .setClickSelectable(true)             // click one image immediately close and return image
                         .setShowCamera(true)                  // is show camera
@@ -90,7 +90,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
                 val file = File(it.imagesPath.get(0))
                 val imageUri = Uri.fromFile(file)
 
-                Glide.with(activity as ProfileActivity)
+                Glide.with(activity as MainActivity)
                     .load(imageUri)
                     .into(profile_image)
 
@@ -126,7 +126,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     override fun loadingShow() {
-        LoadingDialog.instance.show(activity as BoardActivity)
+        LoadingDialog.instance.show(activity as MainActivity)
     }
 
     override fun loadingDismiss() {
@@ -134,7 +134,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     override fun alertShow() {
-        AlertDialog.instance.show(this as ProfileActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+        AlertDialog.instance.show(this as MainActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
     }
 
     override fun alertDismiss() {

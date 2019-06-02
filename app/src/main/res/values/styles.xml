@@ -50,7 +50,8 @@
     <style name="SplashTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowBackground">@drawable/heart_pink_66_size</item>
+        <!--item name="android:background">#64C9C6</item-->
     </style>
 
 

@@ -23,7 +23,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.view.LayoutInflater
 
 
-class SearchChickenInfoActivity : AppCompatActivity(), SearchChickenInfoContract.View {
+class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View {
 
     private var presenter: SearchChickenInfoContract.Presenter? = null
     private var adapter : SearchChickenInfoListAdapter? = null
@@ -44,6 +44,11 @@ class SearchChickenInfoActivity : AppCompatActivity(), SearchChickenInfoContract
         searchList.addItemDecoration(dividerItemDecoration)
         adapter = SearchChickenInfoListAdapter(this, ArrayList())
         searchList.adapter = adapter
+
+        layout_category.setOnClickListener {
+            val intent = Intent(this, SelectChickenTypeActivity::class.java)
+            startActivity(intent)
+        }
 
         et_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -102,7 +107,9 @@ class SearchChickenInfoActivity : AppCompatActivity(), SearchChickenInfoContract
 
     override fun onPause() {
         super.onPause()
+    }
 
-        overridePendingTransition(0, 0)
+    override fun onResume() {
+        super.onResume()
     }
 }

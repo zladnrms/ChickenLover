@@ -63,7 +63,7 @@ class ChatFragment : Fragment(), ChatContract.View {
 
         chatList.layoutManager = LinearLayoutManager(activity)
         chatList.hasFixedSize()
-        adapter = ChatListAdapter((activity as ChatActivity), ArrayList<ChatData>())
+        adapter = ChatListAdapter((activity as MainActivity), ArrayList<ChatData>())
         chatList.adapter = adapter
 
         iv_door.setOnClickListener {
@@ -151,7 +151,7 @@ class ChatFragment : Fragment(), ChatContract.View {
     }
 
     override fun loadingShow() {
-        LoadingDialog.instance.show(activity as ChatActivity)
+        LoadingDialog.instance.show(activity as MainActivity)
     }
 
     override fun loadingDismiss() {
@@ -159,7 +159,7 @@ class ChatFragment : Fragment(), ChatContract.View {
     }
 
     override fun alertShow() {
-        AlertDialog.instance.show(this as ChatActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+        AlertDialog.instance.show(activity as MainActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
     }
 
     override fun alertDismiss() {

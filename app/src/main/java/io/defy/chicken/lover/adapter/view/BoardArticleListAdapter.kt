@@ -1,7 +1,9 @@
 package io.defy.chicken.lover.adapter.view
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,16 +16,14 @@ import io.defy.chicken.lover.adapter.presenter.BoardArticleAdapterPresenter
 import io.defy.chicken.lover.contract.BoardArticleContract
 import io.defy.chicken.lover.model.data.BoardArticleData
 import io.defy.chicken.lover.util.DateUtil
-import io.defy.chicken.lover.view.ArticleFragment
-import io.defy.chicken.lover.view.BoardActivity
-import io.defy.chicken.lover.view.MainActivity
+import io.defy.chicken.lover.view.*
 import kotlinx.android.synthetic.main.recyclerview_article.view.*
 import java.util.*
 
 /**
  * Created by kim on 2017-09-16.
  */
-class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<BoardArticleData>) :
+class BoardArticleListAdapter(var activity: MainActivity, var lists: ArrayList<BoardArticleData>) :
     RecyclerView.Adapter<BoardArticleListAdapter.ViewHolder>(),
     BoardArticleDataModel, BoardArticleContract.View {
 
@@ -62,7 +62,12 @@ class BoardArticleListAdapter(var activity: BoardActivity, var lists: ArrayList<
             }
 
             itemView.setOnClickListener {
-                activity.switchFragment(ArticleFragment.newInstance(presenter.getType(), data._id.toInt()), "article")
+                val intent = Intent(context, ArticleActivity::class.java)
+                intent.putExtra("type", presenter.getType())
+                intent.putExtra("id", data._id.toInt())
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+                //activity.switchFragment(ArticleFragment.newInstance(presenter.getType(), data._id.toInt()), "article")
             }
         }
     }

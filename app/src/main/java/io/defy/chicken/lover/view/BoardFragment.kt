@@ -1,6 +1,7 @@
 package io.defy.chicken.lover.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -60,11 +61,14 @@ class BoardFragment : Fragment(), BoardContract.View {
         articleList.layoutManager = LinearLayoutManager(activity)
         articleList.hasFixedSize()
         articleList.addItemDecoration(dividerItemDecoration)
-        adapter = BoardArticleListAdapter((activity as BoardActivity), ArrayList())
+        adapter = BoardArticleListAdapter((activity as MainActivity), ArrayList())
         articleList.adapter = adapter
 
         iv_write.setOnClickListener {
-            (activity as BoardActivity).switchFragment(WriteFragment(), "write")
+            val intent = Intent(activity, WriteActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+            //(activity as MainActivity).switchFragment(WriteFragment(), "write")
         }
 
         layout_category.setOnClickListener {
@@ -108,7 +112,7 @@ class BoardFragment : Fragment(), BoardContract.View {
     }
 
     override fun switchFragment(fragment: Fragment, tag: String) {
-        val fm = (activity as BoardActivity).supportFragmentManager
+        val fm = (activity as MainActivity).supportFragmentManager
         val ft = fm.beginTransaction()
         ft.replace(R.id.fragment_layout, fragment, tag)
         ft.addToBackStack(null)
@@ -134,7 +138,7 @@ class BoardFragment : Fragment(), BoardContract.View {
     }
 
     override fun loadingShow() {
-        LoadingDialog.instance.show(activity as BoardActivity)
+        LoadingDialog.instance.show(activity as MainActivity)
     }
 
     override fun loadingDismiss() {
@@ -142,7 +146,7 @@ class BoardFragment : Fragment(), BoardContract.View {
     }
 
     override fun alertShow() {
-        AlertDialog.instance.show(this as BoardActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+        AlertDialog.instance.show(this as MainActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
     }
 
     override fun alertDismiss() {

@@ -81,7 +81,7 @@ class WritePresenter : WriteContract.Presenter {
                         "success"->
                         {
                             view?.loadingDismiss()
-                            view?.writeResultCallback(type, repo.last_id)
+                            view?.writeResultCallback()
                         }
                         "exceed_size"->view?.toastMsg("업로드하려는 이미지 용량이 너무 큽니다")
                         "file_not_found"->view?.toastMsg("업로드하려는 이미지를 찾을 수 없습니다")

@@ -1,16 +1,10 @@
 package io.defy.chicken.lover.view
 
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import io.defy.chicken.lover.adapter.view.BoardCommentListAdapter
 import io.defy.chicken.lover.contract.ArticleContract
@@ -19,8 +13,6 @@ import io.defy.chicken.lover.network.response.BoardArticleRes
 import io.defy.chicken.lover.presenter.ArticlePresenter
 import io.defy.chicken.lover.rxbus.RxBus
 import io.defy.chicken.lover.rxbus.CommentThumbsRefreshEvent
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import io.defy.chicken.lover.R
 import org.json.JSONArray
@@ -29,7 +21,7 @@ import io.defy.chicken.lover.rxbus.ArticleThumbsRefreshEvent
 import io.defy.chicken.lover.view.custom.ArticleImageViewLayout
 import io.defy.chicken.lover.view.dialog.AlertDialog
 import io.defy.chicken.lover.view.dialog.LoadingDialog
-import kotlinx.android.synthetic.main.fragment_article.*
+import kotlinx.android.synthetic.main.activity_article.*
 
 
 
@@ -37,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_article.*
 /**
  * Created by kim on 2017-09-20.
  */
-class ArticleFragment : Fragment(), ArticleContract.View {
+class ArticleActivity : BaseActivity(), ArticleContract.View {
 
     private var presenter: ArticleContract.Presenter? = null
     private var adapter: BoardCommentListAdapter? = null
@@ -45,46 +37,23 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     private var pref: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
 
-    companion object {
-        @JvmStatic
-        fun newInstance(type:String, articleId: Int) =
-            ArticleFragment().apply {
-                arguments = Bundle().apply {
-                    putString("type", type)
-                    putInt("articleId", articleId)
-                }
-            }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_article)
 
-        pref = activity?.getSharedPreferences("pref", MODE_PRIVATE)
+        pref = getSharedPreferences("pref", MODE_PRIVATE)
         editor = pref?.edit()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_article, container, false)
 
         presenter = ArticlePresenter()
         presenter?.attachView(this)
 
-        arguments?.apply {
-            presenter?.setType(this.getString("type"))
-            presenter?.setArticleId(this.getInt("articleId"))
-        }
+        val intent = intent
+        presenter?.setType(intent.getStringExtra("type"))
+        presenter?.setArticleId(intent.getIntExtra("id", 0))
 
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        presenter?.getArticleInfo(null)
-
-        commentList.layoutManager = LinearLayoutManager(activity)
+        commentList.layoutManager = LinearLayoutManager(this)
         commentList.hasFixedSize()
-        adapter = BoardCommentListAdapter((activity as BoardActivity), ArrayList<BoardCommentData>())
+        adapter = BoardCommentListAdapter(this, ArrayList<BoardCommentData>())
         commentList.adapter = adapter
         adapter?.setType(presenter?.getType())
 
@@ -93,7 +62,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
 
             if(comment.trim().equals(""))
             {
-                Toast.makeText(activity, "내용을 작성해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "내용을 작성해주세요", Toast.LENGTH_SHORT).show()
             }
             else
             {
@@ -132,6 +101,8 @@ class ArticleFragment : Fragment(), ArticleContract.View {
                 presenter?.getArticleThumbsInfo(null)
             }
         }
+
+        presenter?.getArticleInfo(null)
     }
 
     override fun setArticleInfo(data: BoardArticleRes) {
@@ -152,7 +123,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
             }
             img_url?.let{
                 for (item in img_url) {
-                    val layout = ArticleImageViewLayout(activity as BoardActivity)
+                    val layout = ArticleImageViewLayout(applicationContext)
                     layout.setImageView(item)
                     layout_img.addView(layout)
                 }
@@ -188,7 +159,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     }
 
     override fun complete() {
-        activity?.apply {
+        this.apply {
             try {
                 val imm = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(this.currentFocus.windowToken, 0)
@@ -203,7 +174,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     }
 
     override fun loadingShow() {
-        LoadingDialog.instance.show(activity as BoardActivity)
+        LoadingDialog.instance.show(this)
     }
 
     override fun loadingDismiss() {
@@ -211,7 +182,7 @@ class ArticleFragment : Fragment(), ArticleContract.View {
     }
 
     override fun alertShow() {
-        AlertDialog.instance.show(this as BoardActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+        AlertDialog.instance.show(this, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
     }
 
     override fun alertDismiss() {
@@ -227,16 +198,11 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         adapter?.refresh()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        /* for memory */
-        commentList.adapter = null
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
+        /* for memory */
+        commentList.adapter = null
         presenter?.detachView(this)
     }
 
@@ -244,12 +210,14 @@ class ArticleFragment : Fragment(), ArticleContract.View {
         super.onLowMemory()
 
         layout_img.removeAllViewsInLayout()
-        Toast.makeText(context as BoardActivity, "메모리가 부족하여 이미지를 보여주지 않습니다", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "메모리가 부족하여 이미지를 보여주지 않습니다", Toast.LENGTH_SHORT).show()
     }
 
     override fun onPause() {
         super.onPause()
+    }
 
-        activity?.overridePendingTransition(0, 0)
+    override fun onResume() {
+        super.onResume()
     }
 }

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment
 
 interface MainContract {
     interface View {
-        fun switchFragment(fragment: Fragment, tag: String)
+        fun switchFragment(fragment: Fragment, tag: String, title: String)
 
         fun toastMsg(msg : String)
     }

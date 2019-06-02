@@ -10,7 +10,7 @@ import io.defy.chicken.lover.presenter.SplashPresenter
 import io.defy.chicken.lover.view.dialog.AlertDialog
 import io.defy.chicken.lover.view.dialog.LoadingDialog
 
-class SplashActivity : AppCompatActivity(), SplashContract.View {
+class SplashActivity : BaseActivity(), SplashContract.View {
 
     private var presenter: SplashContract.Presenter? = null
 
@@ -67,7 +67,5 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
 
     override fun onPause() {
         super.onPause()
-
-        overridePendingTransition(0, 0)
     }
 }

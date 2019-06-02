@@ -6,9 +6,9 @@ import io.defy.chicken.lover.model.data.FileUploadData
 
 interface WriteContract {
     interface View {
-        fun writeResultCallback(type: String, lastId : Int)
+        fun writeResultCallback()
 
-        fun switchFragment(fragment: Fragment, tag: String)
+        //fun switchFragment(fragment: Fragment, tag: String)
 
         fun toastMsg(msg: String)
 

@@ -39,21 +39,18 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        presenter = HomePresenter()
+        presenter?.attachView(this)
+
         context?.let {
             firebaseAnalytics = FirebaseAnalytics.getInstance(it)
         }
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
+        retainInstance = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_home, container, false)
-
-        presenter = HomePresenter()
-        presenter?.attachView(this)
 
         return view
     }
@@ -62,21 +59,23 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         layout_search.setOnClickListener {
-            var intent = Intent(activity, SearchChickenInfoActivity::class.java)
+            val intent = Intent(activity, SearchChickenInfoActivity::class.java)
             startActivity(intent)
         }
 
         card_chicken_info.setOnClickListener {
             val intent = Intent(activity, ChickenInfoActivity::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(activity, iv_chicken_img, "chickenImg")
-                intent.putExtra("infoId", presenter?.getInfoId())
-                intent.putExtra("typeNumber", presenter?.getTypeNumber())
-                startActivity(intent, options.toBundle())
-            } else {
-                intent.putExtra("infoId", presenter?.getInfoId())
-                intent.putExtra("typeNumber", presenter?.getTypeNumber())
-                startActivity(intent)
+            presenter?.getChickenInfo()?.let {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val options = ActivityOptions.makeSceneTransitionAnimation(activity, iv_chicken_img, "chickenImg")
+                    intent.putExtra("infoId", it._id)
+                    intent.putExtra("typeNumber", it.type_number)
+                    startActivity(intent, options.toBundle())
+                } else {
+                    intent.putExtra("infoId", it._id)
+                    intent.putExtra("typeNumber", it.type_number)
+                    startActivity(intent)
+                }
             }
 
             val bundle = Bundle()
@@ -85,16 +84,15 @@ class HomeFragment : Fragment(), HomeContract.View {
         }
 
         btn_id.setOnClickListener {
-            val data = RandomPickUtil.randomBrandPick()
-            val data2 = RandomPickUtil.randomTypePick()
+            val brand = RandomPickUtil.randomBrandPick()
+            val type = RandomPickUtil.randomTypePick()
 
-            presenter?.getChickenInfo("choice", data, data2)
+            presenter?.getChickenInfo("choice", brand, type)
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-
+        ifNotNull(presenter?.pickBrand, presenter?.pickType) { b, t ->
+            presenter?.getChickenInfo("choice", b, t)
+        }
     }
 
     override fun showChickenInfo(way: String, name: String, brand: String, thumbs_up: Int) {
@@ -113,7 +111,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun showChickenType(item: String) {
-        val tv = TypeView(context as HomeActivity, item)
+        val tv = TypeView(context as MainActivity, item)
         layout_chicken_type.addView(tv)
     }
 
@@ -134,7 +132,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun loadingShow() {
-        LoadingDialog.instance.show(activity as HomeActivity)
+        LoadingDialog.instance.show(activity as MainActivity)
     }
 
     override fun loadingDismiss() {
@@ -142,7 +140,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun alertShow() {
-        AlertDialog.instance.show(activity as HomeActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
+        AlertDialog.instance.show(activity as MainActivity, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
     }
 
     override fun alertDismiss() {

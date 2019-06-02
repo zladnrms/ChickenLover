@@ -23,8 +23,9 @@ import java.util.concurrent.TimeoutException
 class HomePresenter : HomeContract.Presenter {
 
     private var chickenInfoData: ChickenInfoData? = null
-    private var view: HomeContract.View? = null;
-    private var fbRepo: FavoriteBrandRepositoryModel? = null
+    private var view: HomeContract.View? = null
+    override var pickBrand: String? = null
+    override var pickType: String? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
@@ -32,20 +33,14 @@ class HomePresenter : HomeContract.Presenter {
 
     override fun attachView(view: Any) {
         this.view = view as HomeContract.View
-        this.fbRepo = FavoriteBrandRepository.getInstance()
     }
 
     override fun detachView(view: Any) {
         this.view = null
-        this.fbRepo = null
     }
 
-    override fun getTypeNumber(): Int? {
-        return this.chickenInfoData?.type_number
-    }
-
-    override fun getInfoId(): Int? {
-        return this.chickenInfoData?._id
+    override fun getChickenInfo(): ChickenInfoData? {
+        return this.chickenInfoData
     }
 
     override fun getChickenInfo(way: String, brand: String?, type: String?) {
@@ -64,6 +59,9 @@ class HomePresenter : HomeContract.Presenter {
                         view?.showChickenInfo(it.way, it.name, it.brand, it.thumbs_up)
                         setChickenImageByTypeNumber()
                         setChickenTypeByTypeArray()
+
+                        pickBrand = brand
+                        pickType = type
                     }
                 }
 

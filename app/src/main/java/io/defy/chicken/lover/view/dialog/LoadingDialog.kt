@@ -32,7 +32,7 @@ class LoadingDialog {
                 this.window.setBackgroundDrawableResource(android.R.color.transparent)
                 this.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 this.setContentView(LAYOUT)
-                this.setCancelable(true)
+                this.setCancelable(false)
                 this.show()
 
                 val iv_loading = this.findViewById(R.id.iv_loading) as ImageView

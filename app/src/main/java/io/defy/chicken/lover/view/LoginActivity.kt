@@ -11,7 +11,7 @@ import io.defy.chicken.lover.view.dialog.AlertDialog
 import io.defy.chicken.lover.view.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity(), LoginContract.View {
+class LoginActivity : BaseActivity(), LoginContract.View {
 
     private var presenter: LoginContract.Presenter? = null
 
@@ -69,12 +69,9 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     override fun onPause() {
         super.onPause()
-
-        overridePendingTransition(0, 0)
     }
 
     override fun onResume() {
-        overridePendingTransition(0,0);
         super.onResume()
     }
 }

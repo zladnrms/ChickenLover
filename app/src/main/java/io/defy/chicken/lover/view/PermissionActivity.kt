@@ -16,7 +16,7 @@ import io.defy.chicken.lover.contract.PermissionContract
 import io.defy.chicken.lover.presenter.PermissionPresenter
 
 
-class PermissionActivity : AppCompatActivity(), PermissionContract.View {
+class PermissionActivity : BaseActivity(), PermissionContract.View {
 
     /* presenter */
     private var presenter: PermissionContract.Presenter? = null
@@ -63,7 +63,6 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
     }
 
     override fun onResume() {
-        overridePendingTransition(0,0)
         super.onResume()
 
         checkAndroidVersion()
@@ -73,7 +72,7 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermission()
         } else {
-            val intent = Intent(this@PermissionActivity,  HomeActivity::class.java)
+            val intent = Intent(this@PermissionActivity,  MainActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -104,7 +103,7 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
             }
         } else {
             // if permission already granted
-            val intent = Intent(this@PermissionActivity,  HomeActivity::class.java)
+            val intent = Intent(this@PermissionActivity,  MainActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -121,7 +120,7 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
 
                 if (readExternalFile && writeExternalFile && camera) {
                     // if permission granted
-                    val intent = Intent(this@PermissionActivity, HomeActivity::class.java)
+                    val intent = Intent(this@PermissionActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
@@ -146,7 +145,5 @@ class PermissionActivity : AppCompatActivity(), PermissionContract.View {
 
     override fun onPause() {
         super.onPause()
-
-        overridePendingTransition(0, 0)
     }
 }

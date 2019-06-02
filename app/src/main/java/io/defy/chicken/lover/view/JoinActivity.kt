@@ -14,7 +14,7 @@ import io.defy.chicken.lover.view.dialog.LoadingDialog
 import java.util.regex.Pattern
 
 
-class JoinActivity : AppCompatActivity(), JoinContract.View {
+class JoinActivity : BaseActivity(), JoinContract.View {
 
     private var presenter: JoinContract.Presenter? = null
 
@@ -83,12 +83,9 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
 
     override fun onPause() {
         super.onPause()
-
-        overridePendingTransition(0, 0)
     }
 
     override fun onResume() {
-        overridePendingTransition(0,0);
         super.onResume()
     }
 }
