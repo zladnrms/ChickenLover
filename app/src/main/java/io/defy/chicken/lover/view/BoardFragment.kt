@@ -57,10 +57,10 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
+        //val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
         articleList.layoutManager = LinearLayoutManager(activity)
         articleList.hasFixedSize()
-        articleList.addItemDecoration(dividerItemDecoration)
+        articleList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         adapter = BoardArticleListAdapter((activity as MainActivity), ArrayList())
         articleList.adapter = adapter
 
@@ -68,7 +68,6 @@ class BoardFragment : Fragment(), BoardContract.View {
             val intent = Intent(activity, WriteActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            //(activity as MainActivity).switchFragment(WriteFragment(), "write")
         }
 
         layout_category.setOnClickListener {

@@ -60,7 +60,7 @@ class BoardPresenter : BoardContract.Presenter {
                     repo?.let {
                         if(it.result.equals("success"))
                         {
-                            for(item in it.resultArray)
+                            for(item in it.result_array)
                             {
                                 val item_obj = JSONObject(item.toString())
 

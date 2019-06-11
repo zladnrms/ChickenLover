@@ -38,10 +38,9 @@ class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View
         presenter = SearchChickenInfoPresenter()
         presenter?.attachView(this)
 
-        val dividerItemDecoration = DividerItemDecoration(applicationContext, LinearLayoutManager(this).orientation)
         searchList.layoutManager = LinearLayoutManager(this)
         searchList.hasFixedSize()
-        searchList.addItemDecoration(dividerItemDecoration)
+        searchList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         adapter = SearchChickenInfoListAdapter(this, ArrayList())
         searchList.adapter = adapter
 

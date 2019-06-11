@@ -67,7 +67,6 @@ class BoardArticleListAdapter(var activity: MainActivity, var lists: ArrayList<B
                 intent.putExtra("id", data._id.toInt())
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
-                //activity.switchFragment(ArticleFragment.newInstance(presenter.getType(), data._id.toInt()), "article")
             }
         }
     }

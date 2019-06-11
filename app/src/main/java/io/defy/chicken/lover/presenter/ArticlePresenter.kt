@@ -160,7 +160,7 @@ class ArticlePresenter : ArticleContract.Presenter {
                 override fun onSuccess(repo: BoardCommentRes?) {
                     repo?.apply {
                         if(this.result.equals("success")) {
-                            this.resultArray?.let {
+                            this.result_array?.let {
                                 for(item in it) {
                                     val data = BoardCommentData(item._id.toInt(), item.name as String, item.content as String, item.thumbs_up, item.write_date as String, item.invisible)
                                     view?.setCommentList(data)

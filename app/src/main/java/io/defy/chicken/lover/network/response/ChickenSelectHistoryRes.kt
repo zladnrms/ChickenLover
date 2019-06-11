@@ -8,9 +8,9 @@ data class ChickenSelectHistoryRes(
 ) {
     data class InnerArray(
         @SerializedName("_id") var _id : Int = 0,
-        @SerializedName("name") var name: String? = null,
-        @SerializedName("chicken_name") var chicken_name: String? = null,
-        @SerializedName("chicken_brand") val chicken_brand : String? = null,
-        @SerializedName("select_date") var select_date: String? = null
+        @SerializedName("name") var name: String,
+        @SerializedName("chicken_name") var chicken_name: String,
+        @SerializedName("chicken_brand") val chicken_brand : String,
+        @SerializedName("select_date") var select_date: String
     )
 }

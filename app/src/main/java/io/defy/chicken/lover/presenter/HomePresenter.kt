@@ -55,7 +55,7 @@ class HomePresenter : HomeContract.Presenter {
 
                 override fun onSuccess(repo: ChickenInfoRes?) {
                     repo?.let {
-                        chickenInfoData = ChickenInfoData(it.id, it.way, it.name, it.brand, it.type_number, it.type_array)
+                        chickenInfoData = ChickenInfoData(it._id, it.way, it.name, it.brand, it.type_number, it.type_array)
                         view?.showChickenInfo(it.way, it.name, it.brand, it.thumbs_up)
                         setChickenImageByTypeNumber()
                         setChickenTypeByTypeArray()
@@ -85,7 +85,7 @@ class HomePresenter : HomeContract.Presenter {
 
                 override fun onNext(repo: ChickenSelectHistoryRes) {
                     if (repo.result.equals("success")) {
-                        for (item in repo.resultArray) {
+                        for (item in repo.result_array) {
                             val data = SelectChickenHistoryData(
                                 item._id.toInt(),
                                 item.name,

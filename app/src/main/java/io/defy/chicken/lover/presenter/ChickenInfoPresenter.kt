@@ -73,9 +73,9 @@ class ChickenInfoPresenter : ChickenInfoContract.Presenter {
 
                 }
 
-                override fun onSuccess(repo: ChickenInfoRes?) {
-                    repo?.let {
-                        chickenInfoData = ChickenInfoData(it.id, it.way, it.name, it.brand, it.type_number, it.type_array)
+                override fun onSuccess(repo: ChickenInfoRes) {
+                    repo.let {
+                        chickenInfoData = ChickenInfoData(it._id, it.way, it.name, it.brand, it.type_number, it.type_array)
                         view?.setChickenInfo(chickenInfoData)
                     }
                 }
