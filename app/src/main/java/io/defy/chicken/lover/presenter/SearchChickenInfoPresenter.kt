@@ -10,7 +10,6 @@ import io.defy.chicken.lover.model.LocalChickenInfoRepository
 import io.defy.chicken.lover.network.response.UpdateLocalChickenInfoRes
 import io.defy.chicken.lover.network.response.VersionCheckRes
 import io.defy.chicken.lover.view.dialog.LoadingDialog
-import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

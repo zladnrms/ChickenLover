@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="iconText">#FFFFFF</color>
-    <color name="background">#FFA811</color><!--#FFA873-->
+    <color name="ic_launcher_background">#64C9C6</color>
+    <color name="background">#FFA811</color>
     <color name="recommend_count_color">#696969</color>
     <color name="favorite_brand_background_checked">#FFCD12</color>
     <color name="favorite_brand_background_unchecked">#FFFFFF</color>

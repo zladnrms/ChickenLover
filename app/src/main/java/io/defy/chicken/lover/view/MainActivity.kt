@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun toastMsg(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT)
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onResume() {
@@ -134,10 +134,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-
         if(bottom_navigation.selectedItemId == R.id.action_home){
-            super.onBackPressed()
+            toastMsg("나가시겟습니까?")
         }else{
             bottom_navigation.selectedItemId = R.id.action_home
         }

@@ -3,6 +3,7 @@
           package="io.defy.chicken.lover"
           android:versionCode="1"
           android:versionName="1.1">
+
     <!-- 단말기 켜졌는지 감지 -->
     <uses-permission android:name="android.permission.BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE"/>
@@ -28,6 +29,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <meta-data
+                android:name="com.google.android.actions"
+                android:resource="@xml/splash_layout"/>
+
         <activity
                 android:name=".view.SplashActivity"
                 android:screenOrientation="portrait"
@@ -42,8 +47,8 @@
         <activity
                 android:name=".view.MainActivity"
                 android:launchMode="singleTop"
-                android:windowSoftInputMode="adjustPan"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan"/>
         <activity
                 android:name=".view.SelectFavoriteBrandActivity"
                 android:screenOrientation="portrait"/>
@@ -76,6 +81,7 @@
         <activity
                 android:name=".view.SelectChickenTypeActivity"
                 android:screenOrientation="portrait"/>
+
         <provider
                 android:name="com.werb.pickphotoview.provider.PickProvider"
                 android:authorities="${applicationId}.provider"

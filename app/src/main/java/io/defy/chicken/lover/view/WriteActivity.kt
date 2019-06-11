@@ -28,6 +28,9 @@ class WriteActivity : BaseActivity(), WriteContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
 
+        toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
+        toolbar.setNavigationOnClickListener { v -> finish() }
+
         this.apply {
             this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }

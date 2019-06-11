@@ -27,6 +27,9 @@ class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_chicken_type)
 
+        toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
+        toolbar.setNavigationOnClickListener { v -> finish() }
+
         presenter = SelectChickenTypePresenter()
         presenter?.attachView(this)
 

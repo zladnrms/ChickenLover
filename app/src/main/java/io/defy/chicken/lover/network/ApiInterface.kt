@@ -2,7 +2,7 @@ package com.zeniex.www.zeniexautomarketing.network
 
 import com.google.gson.GsonBuilder
 import io.defy.chicken.lover.BuildConfig
-import io.defy.chicken.lover.network.AddHeaderInterceptor
+import io.defy.chicken.lover.network.HeaderInterceptor
 import io.defy.chicken.lover.network.response.*
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -33,7 +33,7 @@ interface ApiInterface {
                 .writeTimeout(10, TimeUnit.SECONDS)
                     .addInterceptor { chain -> chain.proceed(chain.request()) }
                     .addInterceptor(interceptor)
-                    .addNetworkInterceptor(AddHeaderInterceptor()).build()
+                    .addNetworkInterceptor(HeaderInterceptor()).build()
 
             val gson = GsonBuilder()
                     .setLenient()

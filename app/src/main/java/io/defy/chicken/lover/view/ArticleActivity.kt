@@ -41,6 +41,9 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
 
+        toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
+        toolbar.setNavigationOnClickListener { v -> finish() }
+
         pref = getSharedPreferences("pref", MODE_PRIVATE)
         editor = pref?.edit()
 
