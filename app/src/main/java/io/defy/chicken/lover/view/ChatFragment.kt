@@ -73,14 +73,14 @@ class ChatFragment : Fragment(), ChatContract.View {
             val content = et_content.text.toString()
 
             if(!content.trim().equals(""))
-                presenter?.send(content)
+                presenter.send(content)
 
             et_content.text = null
         }
 
         btn_agree.setOnClickListener {
             layout_agreement.visibility = View.GONE
-            editor?.let {
+            editor.let {
                 it.putBoolean("chat_agreement", true)
                 it.commit()
             }
@@ -127,9 +127,8 @@ class ChatFragment : Fragment(), ChatContract.View {
         presenter.let {
             it.onStop()
             it.isConnect()
-            it.detachView(this)
+            it.detachView()
         }
-        //presenter = null
 
         handler = null
     }
@@ -169,5 +168,11 @@ class ChatFragment : Fragment(), ChatContract.View {
         super.onPause()
 
         activity?.overridePendingTransition(0, 0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.detachView()
     }
 }

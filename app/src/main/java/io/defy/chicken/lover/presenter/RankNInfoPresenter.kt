@@ -1,22 +1,20 @@
 package io.defy.chicken.lover.presenter
 
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.RankNInfoContract
+import io.defy.chicken.lover.network.ApiInterface
 
 
-class RankNInfoPresenter : RankNInfoContract.Presenter {
-
-    private var view: RankNInfoContract.View? = null;
+class RankNInfoPresenter : RankNInfoContract.Presenter, AbstractPresenter<RankNInfoContract.View>() {
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as RankNInfoContract.View
+    override fun attachView(view: RankNInfoContract.View) {
+        super.attachView(view)
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
     }
 }

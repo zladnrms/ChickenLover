@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import com.zeniex.www.zeniexautomarketing.network.ApiInterface
+import io.defy.chicken.lover.contract.ArticleContract
 import io.defy.chicken.lover.contract.BoardContract
 import io.defy.chicken.lover.model.data.BoardArticleData
 import io.defy.chicken.lover.network.response.BoardArticleListRes
@@ -14,7 +15,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 
-class BoardPresenter : BoardContract.Presenter {
+class BoardPresenter : BoardContract.Presenter, AbstractPresenter<BoardContract.View>() {
 
     private var type = "free"
     private var index = 0
@@ -24,14 +25,12 @@ class BoardPresenter : BoardContract.Presenter {
         ApiInterface.create()
     }
 
-    private var view: BoardContract.View? = null
-
-    override fun attachView(view: Any) {
-        this.view = view as BoardContract.View
+    override fun attachView(view: BoardContract.View) {
+        super.attachView(view)
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
     }
 
     override fun setType(type: String) {

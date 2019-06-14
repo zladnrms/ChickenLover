@@ -133,7 +133,7 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onDestroy() {
         super.onDestroy()
 
-        presenter.detachView(this)
+        presenter.detachView()
     }
 
     override fun loadingShow() {

@@ -1,21 +1,14 @@
 package io.defy.chicken.lover.contract
 
-import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
 
 interface BoardArticleContract {
-    /*
-     * For BoardArticleAdapter
-     */
-    interface View {
+    interface View : BaseView {
         fun refresh()
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-
+    interface Presenter : BasePresenter<View> {
         fun setType(type: String)
 
         fun getType(): String

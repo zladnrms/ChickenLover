@@ -2,11 +2,10 @@ package io.defy.chicken.lover.view
 
 import android.support.v7.app.AppCompatActivity
 
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-
         supportFragmentManager.apply { popBackStackImmediate() }
     }
 

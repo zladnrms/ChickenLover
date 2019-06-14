@@ -2,26 +2,26 @@ package io.defy.chicken.lover.presenter
 
 import android.util.Log
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.ProfileContract
 import io.defy.chicken.lover.model.UserInfoDataRepository
+import io.defy.chicken.lover.network.ApiInterface
 
-class ProfilePresenter : ProfileContract.Presenter {
+class ProfilePresenter : ProfileContract.Presenter, AbstractPresenter<ProfileContract.View>() {
 
-    private var view: ProfileContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as ProfileContract.View
+    override fun attachView(view: ProfileContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
     }
 
     override fun getUserName() {

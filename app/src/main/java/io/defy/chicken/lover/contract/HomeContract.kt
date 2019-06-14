@@ -1,10 +1,13 @@
 package io.defy.chicken.lover.contract
 
 import io.defy.chicken.lover.model.data.ChickenInfoData
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
 import org.json.JSONObject
+import java.util.ArrayList
 
 interface HomeContract {
-    interface View {
+    interface View : BaseView {
         fun showChickenInfo(way: String, name: String, brand: String, thumbs_up: Int)
 
         fun showChickenImage(drawable: Int)
@@ -20,14 +23,10 @@ interface HomeContract {
         fun showChickenType(item: String)
     }
 
-    interface Presenter {
+    interface Presenter : BasePresenter<View> {
         var pickBrand: String?
 
         var pickType: String?
-
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
 
         fun getChickenInfo(way: String, brand: String?, type: String?)
 
@@ -35,5 +34,4 @@ interface HomeContract {
 
         fun getChickenInfo(): ChickenInfoData?
     }
-
 }

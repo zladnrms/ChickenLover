@@ -15,23 +15,22 @@ import io.reactivex.schedulers.Schedulers
 import java.net.ConnectException
 import java.util.concurrent.TimeoutException
 
-class ChickenInfoPresenter : ChickenInfoContract.Presenter {
+class ChickenInfoPresenter : ChickenInfoContract.Presenter, AbstractPresenter<ChickenInfoContract.View>() {
 
     private var chickenInfoData: ChickenInfoData? = null
     private var infoId: Int = 0
     private var typeNumber: Int = 0
-    private var view: ChickenInfoContract.View? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as ChickenInfoContract.View
+    override fun attachView(view: ChickenInfoContract.View) {
+        super.attachView(view)
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
     }
 
     override fun setTypeNumber(typeNumber: Int) {

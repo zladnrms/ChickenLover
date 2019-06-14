@@ -210,8 +210,7 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
     override fun onDestroy() {
         super.onDestroy()
 
-        /* for memory */
-        presenter.detachView(this)
+        presenter.detachView()
     }
 
     override fun onLowMemory() {

@@ -1,9 +1,11 @@
 package io.defy.chicken.lover.contract
 
 import io.defy.chicken.lover.model.data.LocalChickenInfoData
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
 
 interface SearchChickenInfoContract {
-    interface View {
+    interface View : BaseView {
         fun addSearchResult(data: LocalChickenInfoData)
 
         fun listClear()
@@ -15,11 +17,7 @@ interface SearchChickenInfoContract {
         fun dialogDismiss()
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-
+    interface Presenter : BasePresenter<View> {
         fun initChickenInfoVersion()
 
         fun checkChickenInfoVersion()

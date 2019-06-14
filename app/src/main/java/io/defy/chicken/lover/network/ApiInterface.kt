@@ -1,4 +1,4 @@
-package com.zeniex.www.zeniexautomarketing.network
+package io.defy.chicken.lover.network
 
 import com.google.gson.GsonBuilder
 import io.defy.chicken.lover.BuildConfig

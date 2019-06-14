@@ -1,13 +1,13 @@
 package io.defy.chicken.lover.contract
 
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
+
 interface SearchChickenInfoListContract {
-    interface View {
+    interface View : BaseView {
         fun refresh()
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
+    interface Presenter : BasePresenter<View> {
     }
 }

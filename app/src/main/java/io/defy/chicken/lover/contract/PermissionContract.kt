@@ -1,13 +1,10 @@
 package io.defy.chicken.lover.contract
 
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
+
 interface PermissionContract {
-    interface View {
+    interface View : BaseView
 
-    }
-
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-    }
+    interface Presenter : BasePresenter<View>
 }

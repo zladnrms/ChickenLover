@@ -1,12 +1,13 @@
 package io.defy.chicken.lover.contract
 
-import android.support.v7.widget.RecyclerView
 import io.defy.chicken.lover.model.data.BoardCommentData
 import io.defy.chicken.lover.network.response.BoardArticleRes
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
 import org.json.JSONArray
 
 interface ArticleContract {
-    interface View {
+    interface View : BaseView {
         fun setArticleInfo(data : BoardArticleRes)
 
         fun setArticleThumbsInfo(data: BoardArticleRes)
@@ -28,11 +29,7 @@ interface ArticleContract {
         fun alertDismiss()
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-
+    interface Presenter : BasePresenter<View> {
         fun setType(type: String)
 
         fun getType(): String

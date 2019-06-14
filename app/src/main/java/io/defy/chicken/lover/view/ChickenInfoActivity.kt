@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_chicken_info.*
 class ChickenInfoActivity : BaseActivity(), ChickenInfoContract.View {
 
     private val presenter: ChickenInfoContract.Presenter by lazy {
-        ChickenInfoPresenter().apply { attachView(this) }
+        ChickenInfoPresenter().apply { attachView(this@ChickenInfoActivity) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,5 +65,11 @@ class ChickenInfoActivity : BaseActivity(), ChickenInfoContract.View {
 
     override fun onBackPressed() {
         supportFinishAfterTransition()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.detachView()
     }
 }

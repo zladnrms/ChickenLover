@@ -2,9 +2,11 @@ package io.defy.chicken.lover.contract
 
 import android.content.Intent
 import io.defy.chicken.lover.model.data.ChickenInfoData
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
 
 interface ChickenInfoContract {
-    interface View {
+    interface View : BaseView {
         fun alertShow()
 
         fun alertDismiss()
@@ -14,11 +16,7 @@ interface ChickenInfoContract {
         fun setChickenInfo(chickenInfoData: ChickenInfoData?)
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-
+    interface Presenter : BasePresenter<View> {
         fun setTypeNumber(typeNumber: Int)
 
         fun getTypeNumber(): Int

@@ -19,9 +19,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 
-class ChatPresenter : ChatContract.Presenter {
+class ChatPresenter : ChatContract.Presenter, AbstractPresenter<ChatContract.View>() {
 
-    private var view: ChatContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
     private var client : NettyClient? = null
     var connectOn = false
@@ -30,13 +29,14 @@ class ChatPresenter : ChatContract.Presenter {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as ChatContract.View
+    override fun attachView(view: ChatContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
     }
 
     override fun connect() {

@@ -4,10 +4,11 @@ import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import io.defy.chicken.lover.model.data.ChatData
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
 
 interface ChatContract {
-
-    interface View {
+    interface View : BaseView {
         fun changeConnectImage(drawable : Int)
 
         fun getHandler(): Handler?
@@ -29,11 +30,7 @@ interface ChatContract {
         fun alertDismiss()
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-
+    interface Presenter : BasePresenter<View> {
         fun connect()
 
         fun onStop()

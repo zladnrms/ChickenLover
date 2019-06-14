@@ -1,7 +1,10 @@
 package io.defy.chicken.lover.contract
 
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
+
 interface ProfileContract {
-    interface View {
+    interface View : BaseView {
         fun setUserName(name : String)
 
         fun setUserPoint(point : Int)
@@ -17,11 +20,7 @@ interface ProfileContract {
         fun alertDismiss()
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-
+    interface Presenter : BasePresenter<View> {
         fun getUserName()
 
         fun getUserPoint()

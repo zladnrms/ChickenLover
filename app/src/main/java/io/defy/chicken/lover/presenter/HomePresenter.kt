@@ -4,6 +4,7 @@ import android.widget.TextView
 import com.zeniex.www.zeniexautomarketing.model.FavoriteBrandRepositoryModel
 import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.R
+import io.defy.chicken.lover.contract.ArticleContract
 import io.defy.chicken.lover.contract.HomeContract
 import io.defy.chicken.lover.model.FavoriteBrandRepository
 import io.defy.chicken.lover.model.data.ChickenInfoData
@@ -20,10 +21,9 @@ import java.net.ConnectException
 import java.util.concurrent.TimeoutException
 
 
-class HomePresenter : HomeContract.Presenter {
+class HomePresenter : HomeContract.Presenter, AbstractPresenter<HomeContract.View>()  {
 
     private var chickenInfoData: ChickenInfoData? = null
-    private var view: HomeContract.View? = null
     override var pickBrand: String? = null
     override var pickType: String? = null
 
@@ -31,12 +31,15 @@ class HomePresenter : HomeContract.Presenter {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as HomeContract.View
+    override fun attachView(view: HomeContract.View) {
+        super.attachView(view)
     }
-
-    override fun detachView(view: Any) {
-        this.view = null
+    
+    override fun detachView() {
+        super.detachView()
+        chickenInfoData = null
+        pickBrand = null
+        pickType = null
     }
 
     override fun getChickenInfo(): ChickenInfoData? {

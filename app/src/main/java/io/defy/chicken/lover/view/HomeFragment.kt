@@ -127,12 +127,6 @@ class HomeFragment : Fragment(), HomeContract.View {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter.detachView(this)
-    }
-
     override fun loadingShow() {
         LoadingDialog.instance.show(activity as MainActivity)
     }
@@ -153,5 +147,11 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onPause()
 
         activity?.overridePendingTransition(0, 0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.detachView()
     }
 }

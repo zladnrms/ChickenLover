@@ -124,4 +124,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.detachView()
+    }
 }

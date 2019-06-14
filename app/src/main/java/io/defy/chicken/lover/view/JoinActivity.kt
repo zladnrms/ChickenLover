@@ -73,4 +73,22 @@ class JoinActivity : BaseActivity(), JoinContract.View {
     override fun complete() {
         finish()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.detachView()
+    }
 }

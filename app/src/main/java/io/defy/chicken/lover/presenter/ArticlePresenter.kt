@@ -18,7 +18,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 
-class ArticlePresenter : ArticleContract.Presenter {
+class ArticlePresenter : ArticleContract.Presenter, AbstractPresenter<ArticleContract.View>() {
 
     private var type = "free"
     private var articleId: Int = 0
@@ -28,16 +28,16 @@ class ArticlePresenter : ArticleContract.Presenter {
         ApiInterface.create()
     }
 
-    private var view: ArticleContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
-    override fun attachView(view: Any) {
-        this.view = view as ArticleContract.View
+    override fun attachView(view: ArticleContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
     }
 
     override fun setType(type: String) {

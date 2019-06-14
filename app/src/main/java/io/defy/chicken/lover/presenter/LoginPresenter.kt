@@ -1,35 +1,31 @@
 package io.defy.chicken.lover.presenter
 
-import android.util.Log
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
-import io.defy.chicken.lover.contract.ChickenInfoContract
-import io.defy.chicken.lover.contract.JoinContract
 import io.defy.chicken.lover.contract.LoginContract
-import io.defy.chicken.lover.contract.SplashContract
 import io.defy.chicken.lover.model.UserInfoDataRepository
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.*
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class LoginPresenter : LoginContract.Presenter {
+class LoginPresenter : LoginContract.Presenter, AbstractPresenter<LoginContract.View>() {
 
-    private var view: LoginContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as LoginContract.View
+    override fun attachView(view: LoginContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
     }
 
     override fun login(mobile : String, loginType : Int, id: String, password: String) {
