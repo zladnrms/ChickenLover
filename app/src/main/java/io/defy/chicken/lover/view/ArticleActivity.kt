@@ -31,11 +31,10 @@ import kotlinx.android.synthetic.main.activity_article.*
  */
 class ArticleActivity : BaseActivity(), ArticleContract.View {
 
+    private lateinit var adapter : BoardCommentListAdapter
     private val presenter: ArticleContract.Presenter by lazy {
         ArticlePresenter().apply { attachView(this@ArticleActivity) }
     }
-    private lateinit var adapter : BoardCommentListAdapter
-
     private val pref: SharedPreferences by lazy {
         getSharedPreferences("pref", MODE_PRIVATE)
     }
@@ -52,7 +51,7 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
 
         setDataFromIntent()
 
-        adapter = BoardCommentListAdapter(this, ArrayList<BoardCommentData>()).apply { setType(presenter?.getType()) }
+        adapter = BoardCommentListAdapter(this, ArrayList<BoardCommentData>()).apply { setType(presenter.getType()) }
         commentList.apply {
             this.layoutManager = LinearLayoutManager(this@ArticleActivity)
             this.hasFixedSize()

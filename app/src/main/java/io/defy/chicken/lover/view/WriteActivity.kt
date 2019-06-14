@@ -21,8 +21,11 @@ import kotlinx.android.synthetic.main.activity_write.*
 
 class WriteActivity : BaseActivity(), WriteContract.View {
 
-    private var presenter: WriteContract.Presenter? = null
-    private var adapter: FileUploadListAdapter? = null
+
+    private lateinit var adapter : FileUploadListAdapter
+    private val presenter: WriteContract.Presenter by lazy {
+        WritePresenter().apply { attachView(this@WriteActivity) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,20 +34,15 @@ class WriteActivity : BaseActivity(), WriteContract.View {
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        this.apply {
-            this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        adapter = FileUploadListAdapter(this, ArrayList())
+        recyclerview.apply {
+            this.layoutManager = LinearLayoutManager(this@WriteActivity, LinearLayoutManager.HORIZONTAL, false)
+            this.hasFixedSize()
         }
-
-        presenter = WritePresenter()
-        presenter?.attachView(this)
-
-        uploadFileList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        uploadFileList.hasFixedSize()
-        adapter = FileUploadListAdapter(this, ArrayList<FileUploadData>())
-        uploadFileList.adapter = adapter
+        recyclerview.adapter = adapter
 
         iv_submit.setOnClickListener {
-            adapter?.let {
+            adapter.let {
                 val title = et_title.text.toString()
                 val content = et_content.text.toString().replace("\n", "<br />")
                 val imagesPath = it.getImagesPath()
@@ -52,7 +50,7 @@ class WriteActivity : BaseActivity(), WriteContract.View {
                 if (title.trim().equals("") || content.trim().equals("")) {
                     Toast.makeText(this, "제목 혹은 내용을 작성해주세요", Toast.LENGTH_SHORT).show()
                 } else {
-                    presenter?.write(title, content, imagesPath)
+                    presenter.write(title, content, imagesPath)
                 }
             }
         }
@@ -78,13 +76,13 @@ class WriteActivity : BaseActivity(), WriteContract.View {
 
         tv_category_notice.setOnClickListener {
             tv_category.text = "실시간정보"
-            presenter?.setType("info")
+            presenter.setType("info")
             layout_category_selector.visibility = View.GONE
         }
 
         tv_category_free.setOnClickListener {
             tv_category.text = "자유게시판"
-            presenter?.setType("free")
+            presenter.setType("free")
             layout_category_selector.visibility = View.GONE
         }
 
@@ -96,42 +94,45 @@ class WriteActivity : BaseActivity(), WriteContract.View {
         RxBus.listen(ImagePickResultEvent::class.java).subscribe {
             /* 이미지 경로값을 받아온 후 리스트에 배열*/
             if (it.from.equals("board")) {
-                adapter?.clear()
-                it.imagesPath?.let {
+                adapter.clear()
+                it.imagesPath.let {
                     for ((index, item) in it.withIndex()) {
                         val bitmap = presenter?.imgPathToBitmap(item)
-                        val data = FileUploadData(index, presenter?.getFileName(item, true), item, bitmap)
-                        adapter?.add(data)
-                        adapter?.refresh()
+                        val data = FileUploadData(index, presenter.getFileName(item, true), item, bitmap)
+                        adapter.add(data)
+                        adapter.refresh()
                     }
                 }
             }
         }
+
+        initKeyBoard()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == 0) {
-            return
-        }
-        if (data == null) {
-            return
-        }
+        if (resultCode == 0) { return }
+        data ?: return
+
         /* WriteFragment로부터 이미지 선택 시 path를 WriteFragment로 전송 */
         if (requestCode == PickConfig.PICK_PHOTO_DATA) {
             val selectPaths: ArrayList<String> =
                 data.getSerializableExtra(PickConfig.INTENT_IMG_LIST_SELECT) as ArrayList<String>
 
-            selectPaths?.let {
+            selectPaths.let {
                 for ((index, item) in it.withIndex()) {
-                    val bitmap = presenter?.imgPathToBitmap(item)
-                    val data = FileUploadData(index, presenter?.getFileName(item, true), item, bitmap)
-                    adapter?.add(data)
-                    adapter?.refresh()
+                    val bitmap = presenter.imgPathToBitmap(item)
+                    val data = FileUploadData(index, presenter.getFileName(item, true), item, bitmap)
+                    adapter.add(data)
+                    adapter.refresh()
                 }
             }
         }
+    }
+
+    private fun initKeyBoard() {
+        this@WriteActivity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
     override fun writeResultCallback() {
@@ -157,20 +158,5 @@ class WriteActivity : BaseActivity(), WriteContract.View {
 
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        uploadFileList.adapter = null
-        presenter?.detachView(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 }

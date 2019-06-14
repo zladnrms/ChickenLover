@@ -20,10 +20,10 @@ import java.util.ArrayList
 
 class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View {
 
+    private lateinit var adapter : SelectChickenTypeAdapter
     private val presenter: SelectChickenTypeContract.Presenter by lazy {
         SelectChickenTypePresenter().apply { attachView(this) }
     }
-    private lateinit var adapter : SelectChickenTypeAdapter
 
     private val spanCount = 3
     private val spacing = 30
@@ -45,23 +45,5 @@ class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View
         typeList.adapter = adapter
 
         adapter = SelectChickenTypeAdapter(this, presenter.getChickenTypeList())
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter.detachView(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 }

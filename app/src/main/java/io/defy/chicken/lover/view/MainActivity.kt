@@ -16,21 +16,20 @@ import io.defy.chicken.lover.R
 
 class MainActivity : BaseActivity(), MainContract.View {
 
-    private var presenter : MainContract.Presenter? = null
+    private val presenter: MainContract.Presenter by lazy {
+        MainPresenter().apply { attachView(this@MainActivity) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = MainPresenter()
-        presenter?.attachView(this)
-
-        if(savedInstanceState == null) {
-            val homeFragment : Fragment = HomeFragment()
-            val fm : FragmentManager = supportFragmentManager
-            val ft : FragmentTransaction = fm.beginTransaction()
-            ft.replace(R.id.fragment_layout, homeFragment, "home")
-            ft.commit()
+        savedInstanceState ?: let {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_layout, HomeFragment(), "home")
+                addToBackStack(null)
+                commit()
+            }
         }
 
         bottom_navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -65,11 +64,10 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private val onNavigationItemReselectedListener = object : BottomNavigationView.OnNavigationItemReselectedListener {
-
-        override fun onNavigationItemReselected(item: MenuItem) {
-            Toast.makeText(this@MainActivity, "Reselected", Toast.LENGTH_SHORT).show()
+            override fun onNavigationItemReselected(item: MenuItem) {
+                Toast.makeText(this@MainActivity, "Reselected", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     /*
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -119,9 +117,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun onBackPressed() {
-        if(bottom_navigation.selectedItemId == R.id.action_home){
+        if (bottom_navigation.selectedItemId == R.id.action_home) {
             toastMsg("나가시겟습니까?")
-        }else{
+        } else {
             bottom_navigation.selectedItemId = R.id.action_home
         }
     }

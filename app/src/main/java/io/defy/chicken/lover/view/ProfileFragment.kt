@@ -24,7 +24,9 @@ import java.io.File
  */
 class ProfileFragment : Fragment(), ProfileContract.View {
 
-    private var presenter : ProfileContract.Presenter? = null
+    private val presenter: ProfileContract.Presenter by lazy {
+        ProfilePresenter().apply { attachView(this@ProfileFragment) }
+    }
 
     companion object {
         fun newInstance(): ProfileFragment {
@@ -39,8 +41,6 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        presenter = ProfilePresenter().apply { attachView(this@ProfileFragment) }
-
         return view
     }
 
@@ -48,7 +48,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         layout_profile.setOnClickListener {
-            when(presenter?.getLoginType())
+            when(presenter.getLoginType())
             {
                 0 -> {
                     val intent = Intent(activity, JoinActivity::class.java)
@@ -101,7 +101,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onResume() {
         super.onResume()
 
-        presenter?.apply {
+        presenter.apply {
             getUserName()
             getUserPoint()
             getUserVisitTime()
@@ -123,7 +123,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onDestroy() {
         super.onDestroy()
 
-        presenter?.detachView(this)
+        presenter.detachView(this)
     }
 
     override fun loadingShow() {

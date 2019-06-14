@@ -18,8 +18,9 @@ import io.defy.chicken.lover.presenter.PermissionPresenter
 
 class PermissionActivity : BaseActivity(), PermissionContract.View {
 
-    /* presenter */
-    private var presenter: PermissionContract.Presenter? = null
+    private val presenter: PermissionContract.Presenter by lazy {
+        PermissionPresenter().apply { attachView(this@PermissionActivity) }
+    }
 
     private var showCamera = true
     private var showStorage = true
@@ -30,29 +31,27 @@ class PermissionActivity : BaseActivity(), PermissionContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
 
-        presenter = PermissionPresenter().apply { attachView(this@PermissionActivity) }
-
         layoutCameraCollapse.setOnClickListener{
             if(showCamera) {
-                showCamera = false;
-                ivCamera.setImageResource(R.drawable.ic_chevron_down);
-                layoutCameraDetail.setVisibility(View.GONE);
+                showCamera = false
+                ivCamera.setImageResource(R.drawable.ic_chevron_down)
+                layoutCameraDetail.visibility = View.GONE
             } else {
-                showCamera = true;
-                ivCamera.setImageResource(R.drawable.ic_chevron_up);
-                layoutCameraDetail.setVisibility(View.VISIBLE);
+                showCamera = true
+                ivCamera.setImageResource(R.drawable.ic_chevron_up)
+                layoutCameraDetail.visibility = View.VISIBLE
             }
         }
 
         layoutStorageCollapse.setOnClickListener{
             if(showStorage) {
-                showStorage = false;
-                ivStorage.setImageResource(R.drawable.ic_chevron_down);
-                layoutStorageDetail.setVisibility(View.GONE);
+                showStorage = false
+                ivStorage.setImageResource(R.drawable.ic_chevron_down)
+                layoutStorageDetail.visibility = View.GONE
             } else {
-                showStorage = true;
-                ivStorage.setImageResource(R.drawable.ic_chevron_up);
-                layoutStorageDetail.setVisibility(View.VISIBLE);
+                showStorage = true
+                ivStorage.setImageResource(R.drawable.ic_chevron_up)
+                layoutStorageDetail.visibility = View.VISIBLE
             }
         }
 
@@ -134,15 +133,5 @@ class PermissionActivity : BaseActivity(), PermissionContract.View {
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 }

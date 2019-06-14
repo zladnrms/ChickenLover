@@ -26,13 +26,14 @@ import kotlinx.android.synthetic.main.fragment_chat.*
 class ChatFragment : Fragment(), ChatContract.View {
 
     private lateinit  var adapter : ChatListAdapter
+    private lateinit var pref: SharedPreferences
     private val presenter: ChatContract.Presenter by lazy {
         ChatPresenter().apply { attachView(this@ChatFragment) }
     }
+    private val editor: SharedPreferences.Editor by lazy {
+        pref.edit()
+    }
     private var handler : Handler? = null
-
-    private var pref: SharedPreferences? = null
-    private var editor: SharedPreferences.Editor? = null
 
     companion object {
         fun newInstance(): ChatFragment {
@@ -43,12 +44,11 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        pref = context.getSharedPreferences("chat_agreement", MODE_PRIVATE)
+        context.getSharedPreferences("chat_agreement", MODE_PRIVATE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,7 +66,7 @@ class ChatFragment : Fragment(), ChatContract.View {
         chatList.adapter = adapter
 
         iv_door.setOnClickListener {
-            presenter?.onConnectClick()
+            presenter.onConnectClick()
         }
 
         iv_send.setOnClickListener {
@@ -103,16 +103,16 @@ class ChatFragment : Fragment(), ChatContract.View {
     }
 
     override fun listClear() {
-        adapter?.clear()
+        adapter.clear()
     }
 
     override fun listRefresh() {
-        adapter?.refresh()
+        adapter.refresh()
     }
 
     override fun appendChatMessage(data: ChatData) {
         handler?.post {
-            adapter?.let {
+            adapter.let {
                 it.add(data)
                 it.refresh()
                 chatList.scrollToPosition(it.itemCount - 1)
@@ -124,7 +124,7 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun onStop() {
         super.onStop()
 
-        presenter?.let {
+        presenter.let {
             it.onStop()
             it.isConnect()
             it.detachView(this)
@@ -138,7 +138,7 @@ class ChatFragment : Fragment(), ChatContract.View {
     override fun onStart() {
         super.onStart()
 
-        presenter?.isConnect()
+        presenter.isConnect()
 
         if(presenter == null)
         {

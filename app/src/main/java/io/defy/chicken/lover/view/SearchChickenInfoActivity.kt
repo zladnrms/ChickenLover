@@ -25,10 +25,10 @@ import android.view.LayoutInflater
 
 class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View {
 
+    private lateinit var adapter : SearchChickenInfoListAdapter
     private val presenter: SearchChickenInfoContract.Presenter by lazy {
         SearchChickenInfoPresenter().apply { attachView(this) }
     }
-    private lateinit var adapter : SearchChickenInfoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,12 +87,6 @@ class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View
         LoadingDialog.instance.dismiss()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter.detachView(this)
-    }
-
     override fun listClear() {
         adapter.clear()
     }
@@ -103,13 +97,5 @@ class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View
 
     override fun addSearchResult(data: LocalChickenInfoData) {
         adapter.add(data)
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 }

@@ -12,10 +12,15 @@ import io.defy.chicken.lover.model.data.FavoriteBrandData
 import io.defy.chicken.lover.presenter.SelectFavoriteBrandPresenter
 import kotlinx.android.synthetic.main.activity_select_favorite_brand.*
 
-class SelectFavoriteBrandActivity : AppCompatActivity(), SelectFavoriteBrandContract.View {
+class SelectFavoriteBrandActivity : BaseActivity(), SelectFavoriteBrandContract.View {
 
-    private var presenter: SelectFavoriteBrandContract.Presenter? = null
-    private var adapter: FavoriteBrandAdapter? = null
+    private lateinit var adapter : FavoriteBrandAdapter
+    private val presenter:SelectFavoriteBrandContract.Presenter by lazy {
+        SelectFavoriteBrandPresenter().apply {
+            attachView(this@SelectFavoriteBrandActivity)
+            initFirstBrand()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,25 +29,21 @@ class SelectFavoriteBrandActivity : AppCompatActivity(), SelectFavoriteBrandCont
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        presenter = SelectFavoriteBrandPresenter()
-        presenter?.attachView(this)
-        presenter?.initFirstBrand()
-
         /*
          * 선호하는 치킨 브랜드 고르기 recyclerview
          */
         val mGridLayoutManager = GridLayoutManager(this, 3)
-        recyclerview_favorite_brand.layoutManager = mGridLayoutManager
-        recyclerview_favorite_brand.hasFixedSize()
+        recyclerview.layoutManager = mGridLayoutManager
+        recyclerview.hasFixedSize()
         val spanCount = 3 // 3 columns
         val spacing = 30 // 간격 (px)
         val includeEdge = true
-        recyclerview_favorite_brand.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
+        recyclerview.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
         adapter = FavoriteBrandAdapter(
             this,
             ArrayList<FavoriteBrandData>()
         )
-        recyclerview_favorite_brand.adapter = adapter
+        recyclerview.adapter = adapter
 
         /* init first page (because presenter's page initial value is Zero ( 0 ) )*/
         nextPageClick()
@@ -56,7 +57,7 @@ class SelectFavoriteBrandActivity : AppCompatActivity(), SelectFavoriteBrandCont
         }
 
         favorite_brand_submit.setOnClickListener {
-            presenter?.submit()
+            presenter.submit()
         }
     }
 
@@ -97,11 +98,5 @@ class SelectFavoriteBrandActivity : AppCompatActivity(), SelectFavoriteBrandCont
             }
             favorite_brand_next.visibility = View.VISIBLE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
     }
 }

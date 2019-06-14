@@ -137,11 +137,11 @@
             android:textSize="11sp"
             android:textColor="#222222"
             android:background="@drawable/round_corner_yellow_button"
-            app:layout_constraintBottom_toTopOf="@id/uploadFileList"
+            app:layout_constraintBottom_toTopOf="@id/recyclerview"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
-            android:id="@+id/uploadFileList"
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintHeight_min="40dp"

@@ -27,8 +27,11 @@ import io.defy.chicken.lover.view.dialog.LoadingDialog
  */
 class HomeFragment : Fragment(), HomeContract.View {
 
+    private val presenter: HomeContract.Presenter by lazy {
+        HomePresenter().apply { attachView(this@HomeFragment) }
+    }
+
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private var presenter: HomeContract.Presenter? = null
 
     companion object {
         fun newInstance(): HomeFragment {
@@ -36,14 +39,14 @@ class HomeFragment : Fragment(), HomeContract.View {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        presenter = HomePresenter().apply { attachView(this@HomeFragment) }
-
-        context?.let {
-            firebaseAnalytics = FirebaseAnalytics.getInstance(it)
-        }
 
         retainInstance = true
     }
@@ -64,7 +67,7 @@ class HomeFragment : Fragment(), HomeContract.View {
 
         card_chicken_info.setOnClickListener {
             val intent = Intent(activity, ChickenInfoActivity::class.java)
-            presenter?.getChickenInfo()?.let {
+            presenter.getChickenInfo()?.let {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     val options = ActivityOptions.makeSceneTransitionAnimation(activity, iv_chicken_img, "chickenImg")
                     intent.putExtra("infoId", it._id)
@@ -86,11 +89,11 @@ class HomeFragment : Fragment(), HomeContract.View {
             val brand = RandomPickUtil.randomBrandPick()
             val type = RandomPickUtil.randomTypePick()
 
-            presenter?.getChickenInfo("choice", brand, type)
+            presenter.getChickenInfo("choice", brand, type)
         }
 
-        ifNotNull(presenter?.pickBrand, presenter?.pickType) { b, t ->
-            presenter?.getChickenInfo("choice", b, t)
+        ifNotNull(presenter.pickBrand, presenter.pickType) { b, t ->
+            presenter.getChickenInfo("choice", b, t)
         }
     }
 
@@ -127,7 +130,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun onDestroy() {
         super.onDestroy()
 
-        presenter?.detachView(this)
+        presenter.detachView(this)
     }
 
     override fun loadingShow() {

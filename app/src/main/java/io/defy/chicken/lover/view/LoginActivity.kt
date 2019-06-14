@@ -13,7 +13,9 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), LoginContract.View {
 
-    private var presenter: LoginContract.Presenter? = null
+    private val presenter: LoginContract.Presenter by lazy {
+        LoginPresenter().apply { attachView(this@LoginActivity) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +24,10 @@ class LoginActivity : BaseActivity(), LoginContract.View {
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { finish() }
 
-        presenter = LoginPresenter().apply { attachView(this@LoginActivity) }
-
         btn_login.setOnClickListener {
             val id = et_id.text.toString().trim()
             val password = et_password.text.toString().trim()
-            presenter?.login("mobile", 1, id, password)
+            presenter.login("mobile", 1, id, password)
         }
 
         btn_go_join.setOnClickListener {
@@ -59,18 +59,5 @@ class LoginActivity : BaseActivity(), LoginContract.View {
 
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT)
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 }

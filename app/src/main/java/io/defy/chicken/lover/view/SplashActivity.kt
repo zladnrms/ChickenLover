@@ -12,27 +12,23 @@ import io.defy.chicken.lover.view.dialog.LoadingDialog
 
 class SplashActivity : BaseActivity(), SplashContract.View {
 
-    private var presenter: SplashContract.Presenter? = null
+    private val presenter: SplashContract.Presenter by lazy {
+        SplashPresenter().apply {
+            attachView(this@SplashActivity)
+            login()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        presenter = SplashPresenter()
-        presenter?.attachView(this)
-
-        presenter?.login()
     }
 
     override fun pass() {
         val intent = Intent(this, PermissionActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-
-    override fun onBackPressed() {
-
     }
 
     override fun toastMsg(msg: String) {
@@ -51,21 +47,11 @@ class SplashActivity : BaseActivity(), SplashContract.View {
         LoadingDialog.instance.dismiss()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
-    }
-
     override fun alertShow() {
         AlertDialog.instance.show(this, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
     }
 
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 }

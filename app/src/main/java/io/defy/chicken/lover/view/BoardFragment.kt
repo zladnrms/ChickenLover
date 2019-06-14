@@ -25,11 +25,11 @@ import kotlinx.android.synthetic.main.fragment_board.*
  */
 class BoardFragment : Fragment(), BoardContract.View {
 
-    private var fView : View? = null
+    private lateinit var adapter : BoardArticleListAdapter
     private val presenter: BoardContract.Presenter by lazy {
         BoardPresenter().apply { attachView(this@BoardFragment) }
     }
-    private var adapter : BoardArticleListAdapter? = null
+    private var fView : View? = null
 
     companion object {
         fun newInstance(): BoardFragment {
@@ -45,13 +45,6 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if(fView == null)
             fView = inflater.inflate(R.layout.fragment_board, container, false)
-        //val view = inflater.inflate(R.layout.fragment_board, container, false)
-
-        /*
-        if(presenter == null)
-        {
-            presenter = BoardPresenter().apply { attachView(this@BoardFragment) }
-        }*/
 
         return fView
     }
@@ -59,10 +52,12 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        articleList.layoutManager = LinearLayoutManager(activity)
-        articleList.hasFixedSize()
-        articleList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         adapter = BoardArticleListAdapter((activity as MainActivity), ArrayList())
+        articleList.apply {
+            this.layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            this.hasFixedSize()
+        }
         articleList.adapter = adapter
 
         iv_write.setOnClickListener {
@@ -91,24 +86,26 @@ class BoardFragment : Fragment(), BoardContract.View {
             layout_category_selector.visibility = View.GONE
         }
 
-        presenter?.apply {
+        presenter.apply {
             this.setRecyclerViewScrollListener(articleList)
             changeCategory(this.getType())
         }
     }
 
     private fun changeCategory(type: String) {
-        presenter?.setType(type)
-        adapter?.setType(type)
+        presenter.setType(type)
+        adapter.setType(type)
         resetArticleList()
         layout_category_selector.visibility = View.GONE
     }
 
     private fun resetArticleList() {
-        presenter?.setIndex(0)
-        adapter?.clear()
-        adapter?.refresh()
-        presenter?.getArticleList()
+        presenter.setIndex(0)
+        adapter.apply {
+            clear()
+            refresh()
+        }
+        presenter.getArticleList()
     }
 
     override fun switchFragment(fragment: Fragment, tag: String) {
@@ -120,8 +117,10 @@ class BoardFragment : Fragment(), BoardContract.View {
     }
 
     override fun setArticleList(item : BoardArticleData) {
-        adapter?.add(item)
-        adapter?.refresh()
+        adapter.apply {
+            add(item)
+            refresh()
+        }
     }
 
     override fun onDestroyView() {
@@ -134,7 +133,7 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onDestroy() {
         super.onDestroy()
 
-        presenter?.detachView(this)
+        presenter.detachView(this)
     }
 
     override fun loadingShow() {
@@ -155,7 +154,6 @@ class BoardFragment : Fragment(), BoardContract.View {
 
     override fun onPause() {
         super.onPause()
-
         activity?.overridePendingTransition(0, 0)
     }
 }

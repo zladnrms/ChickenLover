@@ -16,7 +16,9 @@ import java.util.regex.Pattern
 
 class JoinActivity : BaseActivity(), JoinContract.View {
 
-    private var presenter: JoinContract.Presenter? = null
+    private val presenter: JoinContract.Presenter by lazy {
+        JoinPresenter().apply { attachView(this@JoinActivity) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +26,6 @@ class JoinActivity : BaseActivity(), JoinContract.View {
 
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { finish() }
-
-        presenter = JoinPresenter().apply { attachView(this@JoinActivity) }
 
         et_id.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
             val ps = Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
@@ -40,7 +40,7 @@ class JoinActivity : BaseActivity(), JoinContract.View {
             val id = et_id.text.toString().trim()
             val password = et_password.text.toString().trim()
             val name = et_name.text.toString().trim()
-            presenter?.join(id, password, name)
+            presenter.join(id, password, name)
         }
 
         btn_go_login.setOnClickListener {
@@ -72,19 +72,5 @@ class JoinActivity : BaseActivity(), JoinContract.View {
 
     override fun complete() {
         finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 }

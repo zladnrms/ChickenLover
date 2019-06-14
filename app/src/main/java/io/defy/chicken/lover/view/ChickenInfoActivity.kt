@@ -11,9 +11,11 @@ import kotlinx.android.synthetic.main.activity_chicken_info.*
 
 
 
-class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
+class ChickenInfoActivity : BaseActivity(), ChickenInfoContract.View {
 
-    private var presenter: ChickenInfoContract.Presenter? = null
+    private val presenter: ChickenInfoContract.Presenter by lazy {
+        ChickenInfoPresenter().apply { attachView(this) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +24,15 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        presenter = ChickenInfoPresenter().apply { attachView(this) }
-
         setDataFromIntent()
 
-        presenter?.getChickenInfo(presenter?.getInfoId())
+        presenter.getChickenInfo(presenter.getInfoId())
     }
 
 
     private fun setDataFromIntent() {
         val intent = intent
-        presenter?.apply {
+        presenter.apply {
             setTypeNumber(intent.getIntExtra("typeNumber", 0))
             setInfoId(intent.getIntExtra("infoId", 0))
             setChickenImage()
@@ -55,12 +55,6 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
-    }
-
     override fun alertShow() {
         AlertDialog.instance.show(this, "연결 끊김", "네트워크 연결 상태를 확인해주세요")
     }
@@ -71,10 +65,5 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
 
     override fun onBackPressed() {
         supportFinishAfterTransition()
-    }
-
-    override fun onResume() {
-        overridePendingTransition(0,0);
-        super.onResume()
     }
 }

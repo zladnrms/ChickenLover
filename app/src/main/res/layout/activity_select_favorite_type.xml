@@ -68,7 +68,7 @@
                             sl:scale_base_height="1000">
 
                         <android.support.v7.widget.RecyclerView
-                                android:id="@+id/recyclerview_favorite_type"
+                                android:id="@+id/recyclerview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 sl:scale_height="700"

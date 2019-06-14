@@ -12,10 +12,19 @@ import io.defy.chicken.lover.model.data.FavoriteTypeData
 import io.defy.chicken.lover.presenter.SelectFavoriteTypePresenter
 import kotlinx.android.synthetic.main.activity_select_favorite_type.*
 
-class SelectFavoriteTypeActivity : AppCompatActivity(), SelectFavoriteTypeContract.View {
+class SelectFavoriteTypeActivity : BaseActivity(), SelectFavoriteTypeContract.View {
 
-    private var presenter: SelectFavoriteTypeContract.Presenter? = null
-    private var adapter: FavoriteTypeAdapter? = null
+    private lateinit var adapter : FavoriteTypeAdapter
+    private val presenter: SelectFavoriteTypeContract.Presenter by lazy {
+        SelectFavoriteTypePresenter().apply {
+            attachView(this@SelectFavoriteTypeActivity)
+            initFirstType()
+        }
+    }
+
+    private val spanCount = 3
+    private val spacing = 30
+    private val includeEdge = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,25 +33,14 @@ class SelectFavoriteTypeActivity : AppCompatActivity(), SelectFavoriteTypeContra
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        presenter = SelectFavoriteTypePresenter()
-        presenter?.attachView(this)
-        presenter?.initFirstType()
-
-        /*
-         * 선호하는 치킨 브랜드 고르기 recyclerview
-         */
         val mGridLayoutManager = GridLayoutManager(this, 3)
-        recyclerview_favorite_type.layoutManager = mGridLayoutManager
-        recyclerview_favorite_type.hasFixedSize()
-        val spanCount = 3 // 3 columns
-        val spacing = 30 // 간격 (px)
-        val includeEdge = true
-        recyclerview_favorite_type.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
-        adapter = FavoriteTypeAdapter(
-            this,
-            ArrayList<FavoriteTypeData>()
-        )
-        recyclerview_favorite_type.adapter = adapter
+        recyclerview.apply {
+            this.layoutManager = mGridLayoutManager
+            this.hasFixedSize()
+            this.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
+        }
+        recyclerview.adapter = adapter
+        adapter = FavoriteTypeAdapter(this, ArrayList())
 
         /* init first page (because presenter's page initial value is Zero ( 0 ) )*/
         nextPageClick()
@@ -56,15 +54,10 @@ class SelectFavoriteTypeActivity : AppCompatActivity(), SelectFavoriteTypeContra
         }
 
         favorite_type_submit.setOnClickListener {
-            presenter?.submit()
+            presenter.submit()
         }
     }
 
-    /*
-     * 2개 이상의 null check용
-     * 사용법 :
-     * ifNotNull(변수1, 변수2) { 변수1, 변수2 -> 처리 }
-     */
     inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R) {
         if (a != null && b != null) {
             code(a, b)
@@ -97,10 +90,5 @@ class SelectFavoriteTypeActivity : AppCompatActivity(), SelectFavoriteTypeContra
             }
             favorite_type_next.visibility = View.VISIBLE
         }
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
     }
 }
