@@ -22,8 +22,7 @@ class LoginActivity : BaseActivity(), LoginContract.View {
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { finish() }
 
-        presenter = LoginPresenter()
-        presenter?.attachView(this)
+        presenter = LoginPresenter().apply { attachView(this@LoginActivity) }
 
         btn_login.setOnClickListener {
             val id = et_id.text.toString().trim()

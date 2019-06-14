@@ -25,8 +25,10 @@ import android.view.LayoutInflater
 
 class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View {
 
-    private var presenter: SearchChickenInfoContract.Presenter? = null
-    private var adapter : SearchChickenInfoListAdapter? = null
+    private val presenter: SearchChickenInfoContract.Presenter by lazy {
+        SearchChickenInfoPresenter().apply { attachView(this) }
+    }
+    private lateinit var adapter : SearchChickenInfoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +37,12 @@ class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        presenter = SearchChickenInfoPresenter()
-        presenter?.attachView(this)
-
-        searchList.layoutManager = LinearLayoutManager(this)
-        searchList.hasFixedSize()
-        searchList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         adapter = SearchChickenInfoListAdapter(this, ArrayList())
+        searchList.apply {
+            this.layoutManager = LinearLayoutManager(this@SearchChickenInfoActivity)
+            this.hasFixedSize()
+            this.addItemDecoration(DividerItemDecoration(this@SearchChickenInfoActivity, DividerItemDecoration.VERTICAL))
+        }
         searchList.adapter = adapter
 
         layout_category.setOnClickListener {
@@ -59,19 +60,19 @@ class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                presenter?.searchChickenInfo(p0)
+                presenter.searchChickenInfo(p0)
             }
         })
 
         et_search.setOnKeyListener { v, keyCode, event ->
             if(keyCode == KeyEvent.KEYCODE_DEL){
 
-                presenter?.searchChickenInfo(et_search.text.toString())
+                presenter.searchChickenInfo(et_search.text.toString())
             }
             false
         }
 
-        presenter?.apply {
+        presenter.apply {
             this.initChickenInfoVersion()
             this.checkChickenInfoVersion()
             this.searchChickenInfo("")
@@ -89,19 +90,19 @@ class SearchChickenInfoActivity : BaseActivity(), SearchChickenInfoContract.View
     override fun onDestroy() {
         super.onDestroy()
 
-        presenter?.detachView(this)
+        presenter.detachView(this)
     }
 
     override fun listClear() {
-        adapter?.clear()
+        adapter.clear()
     }
 
     override fun listRefresh() {
-        adapter?.refresh()
+        adapter.refresh()
     }
 
     override fun addSearchResult(data: LocalChickenInfoData) {
-        adapter?.add(data)
+        adapter.add(data)
     }
 
     override fun onPause() {

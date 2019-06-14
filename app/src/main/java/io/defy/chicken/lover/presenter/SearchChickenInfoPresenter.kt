@@ -100,7 +100,7 @@ class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
                                     return
                                 }
 
-                                for (item in this.resultArray) {
+                                for (item in this.result_array) {
                                     val item_obj = JSONObject(item.toString())
 
                                     it.insert(

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.adapter.model.BoardCommentDataModel
@@ -34,6 +35,7 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
     init {
         presenter = BoardCommentAdapterPresenter()
         presenter.attachView(this)
+        setHasStableIds(true)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,17 +53,15 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
     }
 
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         fun bind(data: BoardCommentData) {
+
             itemView.tv_name.text =  data.name
             itemView.tv_date.text =  DateUtil.parseDate(data.write_date)
             itemView.tv_content.text =  data.content
             itemView.tv_thumbs_up.text = data.thumbs_up.size.toString()
             itemView.tv_profile.text = data.name[0].toString()
 
-            val comment_id = pref.getInt("comment_id", 0) // 해당 article의 comment_id
-            val comment_c_id = data._id // 해당 article의 comment_id에 걸린 댓글 중 몇 번째 인지
             val thumbs_up_list = data.thumbs_up
             var thumbs_up_status = 0 // 해당 코멘트에 thumbs_up 했는지 여부
 
@@ -71,9 +71,15 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
                     thumbs_up_status = 1
             }
 
-            itemView.layout_thumbs_up.setOnClickListener {
-                presenter.controlCommentThumbs("up", NumberUtil.valueInverse(thumbs_up_status), comment_id, comment_c_id)
-            }
+            itemView.layout_thumbs_up.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View) {
+            val comment_id = pref.getInt("comment_id", 0) // 해당 article의 comment_id
+            val comment_c_id = lists[adapterPosition]._id // 해당 article의 comment_id에 걸린 댓글 중 몇 번째 인지
+            val thumbs_up_list = lists[adapterPosition].thumbs_up
+            var thumbs_up_status = 0 // 해당 코멘트에 thumbs_up 했는지 여부
+            presenter.controlCommentThumbs("up", NumberUtil.valueInverse(thumbs_up_status), comment_id, comment_c_id)
         }
      }
 

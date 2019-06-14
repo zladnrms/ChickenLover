@@ -26,7 +26,9 @@ import kotlinx.android.synthetic.main.fragment_board.*
 class BoardFragment : Fragment(), BoardContract.View {
 
     private var fView : View? = null
-    private var presenter : BoardContract.Presenter? = null
+    private val presenter: BoardContract.Presenter by lazy {
+        BoardPresenter().apply { attachView(this@BoardFragment) }
+    }
     private var adapter : BoardArticleListAdapter? = null
 
     companion object {
@@ -45,11 +47,11 @@ class BoardFragment : Fragment(), BoardContract.View {
             fView = inflater.inflate(R.layout.fragment_board, container, false)
         //val view = inflater.inflate(R.layout.fragment_board, container, false)
 
+        /*
         if(presenter == null)
         {
-            presenter = BoardPresenter()
-            presenter?.attachView(this)
-        }
+            presenter = BoardPresenter().apply { attachView(this@BoardFragment) }
+        }*/
 
         return fView
     }
@@ -57,7 +59,6 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager(context).orientation)
         articleList.layoutManager = LinearLayoutManager(activity)
         articleList.hasFixedSize()
         articleList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))

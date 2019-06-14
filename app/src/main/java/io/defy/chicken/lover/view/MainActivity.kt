@@ -1,6 +1,5 @@
 package io.defy.chicken.lover.view
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
@@ -15,7 +14,7 @@ import com.werb.pickphotoview.extensions.string
 import io.defy.chicken.lover.R
 
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : BaseActivity(), MainContract.View {
 
     private var presenter : MainContract.Presenter? = null
 
@@ -107,30 +106,16 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
     */
     override fun switchFragment(fragment: Fragment, tag: String, title: String) {
-        val fm = supportFragmentManager
-        val ft = fm.beginTransaction()
-        ft.replace(R.id.fragment_layout, fragment, tag)
-        ft.addToBackStack(null)
-        ft.commit()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_layout, fragment, tag)
+            addToBackStack(null)
+            commit()
+        }
         toolbar_title.text = title
     }
 
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter?.detachView(this)
     }
 
     override fun onBackPressed() {

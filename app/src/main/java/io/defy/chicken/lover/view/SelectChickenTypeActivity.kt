@@ -20,8 +20,14 @@ import java.util.ArrayList
 
 class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View {
 
-    private var presenter: SelectChickenTypeContract.Presenter? = null
-    private var adapter : SelectChickenTypeAdapter? = null
+    private val presenter: SelectChickenTypeContract.Presenter by lazy {
+        SelectChickenTypePresenter().apply { attachView(this) }
+    }
+    private lateinit var adapter : SelectChickenTypeAdapter
+
+    private val spanCount = 3
+    private val spacing = 30
+    private val includeEdge = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,29 +36,15 @@ class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        presenter = SelectChickenTypePresenter()
-        presenter?.attachView(this)
-
         val mGridLayoutManager = GridLayoutManager(this, 3)
-        typeList.layoutManager = mGridLayoutManager
-        typeList.hasFixedSize()
-        val spanCount = 3 // 3 columns
-        val spacing = 30 // 간격 (px)
-        val includeEdge = true
-        typeList.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
-        adapter = SelectChickenTypeAdapter(
-            this,
-            arrayListOf(
-                SelectChickenTypeData(0,"후라이드"),
-                SelectChickenTypeData(1,"양념"),
-                SelectChickenTypeData(2,"치즈"),
-                SelectChickenTypeData(3,"간장"),
-                SelectChickenTypeData(4,"파닭"),
-                SelectChickenTypeData(5,"갈릭"),
-                SelectChickenTypeData(6,"매운맛")
-            )
-        )
+        typeList.apply {
+            this.layoutManager = mGridLayoutManager
+            this.hasFixedSize()
+            this.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
+        }
         typeList.adapter = adapter
+
+        adapter = SelectChickenTypeAdapter(this, presenter.getChickenTypeList())
     }
 
     override fun onBackPressed() {
@@ -62,7 +54,7 @@ class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View
     override fun onDestroy() {
         super.onDestroy()
 
-        presenter?.detachView(this)
+        presenter.detachView(this)
     }
 
     override fun onResume() {

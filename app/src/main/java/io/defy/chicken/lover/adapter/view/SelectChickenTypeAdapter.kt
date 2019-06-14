@@ -22,13 +22,6 @@ class SelectChickenTypeAdapter(var context: Context, var lists: ArrayList<Select
     RecyclerView.Adapter<SelectChickenTypeAdapter.ViewHolder>(),
     SelectChickenTypeDataModel, SelectChickenTypeContract.View {
 
-    private var presenter: SelectChickenTypePresenter
-
-    init {
-        presenter = SelectChickenTypePresenter()
-        presenter.attachView(this)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.recyclerview_select_chicken_type, parent, false)
 

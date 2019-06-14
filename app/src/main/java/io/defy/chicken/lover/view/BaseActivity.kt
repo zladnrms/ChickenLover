@@ -7,13 +7,11 @@ open class BaseActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
 
-        val fm = supportFragmentManager
-        fm.popBackStackImmediate()
+        supportFragmentManager.apply { popBackStackImmediate() }
     }
 
     override fun onPause() {
         super.onPause()
-
         overridePendingTransition(0, 0)
     }
 

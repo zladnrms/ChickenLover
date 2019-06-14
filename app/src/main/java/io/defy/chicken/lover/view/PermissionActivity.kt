@@ -30,8 +30,7 @@ class PermissionActivity : BaseActivity(), PermissionContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
 
-        presenter = PermissionPresenter()
-        presenter?.attachView(this)
+        presenter = PermissionPresenter().apply { attachView(this@PermissionActivity) }
 
         layoutCameraCollapse.setOnClickListener{
             if(showCamera) {

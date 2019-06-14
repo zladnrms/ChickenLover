@@ -31,11 +31,17 @@ import kotlinx.android.synthetic.main.activity_article.*
  */
 class ArticleActivity : BaseActivity(), ArticleContract.View {
 
-    private var presenter: ArticleContract.Presenter? = null
-    private var adapter: BoardCommentListAdapter? = null
+    private val presenter: ArticleContract.Presenter by lazy {
+        ArticlePresenter().apply { attachView(this@ArticleActivity) }
+    }
+    private lateinit var adapter : BoardCommentListAdapter
 
-    private var pref: SharedPreferences? = null
-    private var editor: SharedPreferences.Editor? = null
+    private val pref: SharedPreferences by lazy {
+        getSharedPreferences("pref", MODE_PRIVATE)
+    }
+    private val editor: SharedPreferences.Editor by lazy {
+        pref.edit()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,21 +50,14 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        pref = getSharedPreferences("pref", MODE_PRIVATE)
-        editor = pref?.edit()
+        setDataFromIntent()
 
-        presenter = ArticlePresenter()
-        presenter?.attachView(this)
-
-        val intent = intent
-        presenter?.setType(intent.getStringExtra("type"))
-        presenter?.setArticleId(intent.getIntExtra("id", 0))
-
-        commentList.layoutManager = LinearLayoutManager(this)
-        commentList.hasFixedSize()
-        adapter = BoardCommentListAdapter(this, ArrayList<BoardCommentData>())
+        adapter = BoardCommentListAdapter(this, ArrayList<BoardCommentData>()).apply { setType(presenter?.getType()) }
+        commentList.apply {
+            this.layoutManager = LinearLayoutManager(this@ArticleActivity)
+            this.hasFixedSize()
+        }
         commentList.adapter = adapter
-        adapter?.setType(presenter?.getType())
 
         iv_submit.setOnClickListener {
             val comment = et_comment.text.toString()
@@ -70,22 +69,22 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
             else
             {
                 et_comment.text = null
-                presenter?.writeBoardComment(comment)
+                presenter.writeBoardComment(comment)
             }
         }
 
         layout_thumbs_up.setOnClickListener {
-            presenter?.let {
-                val thumbsUpList = presenter?.getThumbsUpList()
+            presenter.let {
+                val thumbsUpList = presenter.getThumbsUpList()
 
                 when(it.checkThumbsList(thumbsUpList))
                 {
                     1 -> {
-                        presenter?.controlArticleThumbs("up", 0)
+                        presenter.controlArticleThumbs("up", 0)
                     }
                     else ->
                     {
-                        presenter?.controlArticleThumbs("up", 1)
+                        presenter.controlArticleThumbs("up", 1)
                     }
                 }
             }
@@ -94,30 +93,38 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
         /* Register Event */
         RxBus.listen(CommentThumbsRefreshEvent::class.java).subscribe {
             if (it.result.equals("refresh")) {
-                presenter?.getCommentList(pref?.getInt("comment_id", 0))
+                presenter.getCommentList(pref.getInt("comment_id", 0))
             }
         }
 
         /* Register Event */
         RxBus.listen(ArticleThumbsRefreshEvent::class.java).subscribe {
             if (it.result.equals("refresh")) {
-                presenter?.getArticleThumbsInfo(null)
+                presenter.getArticleThumbsInfo(null)
             }
         }
 
-        presenter?.getArticleInfo(null)
+        presenter.getArticleInfo(null)
+    }
+
+    private fun setDataFromIntent() {
+        val intent = intent
+        presenter.apply {
+            setType(intent.getStringExtra("type"))
+            setArticleId(intent.getIntExtra("id", 0))
+        }
     }
 
     override fun setArticleInfo(data: BoardArticleRes) {
         data.apply {
-            title?.let {
+            title.let {
                 tv_title.text = it
             }
-            writer?.let {
+            writer.let {
                 tv_writer.text = it
                 tv_profile.text = it[0].toString()
             }
-            content?.let {
+            content.let {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     tv_content.setText(Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY))
                 } else {
@@ -131,34 +138,34 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
                     layout_img.addView(layout)
                 }
             }
-            thumbs?.let{
+            thumbs.let{
                 val thumbsList = JSONObject(it)
                 val thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
                 presenter?.setThumbsUpList(thumbsUpList)
 
                 tv_thumbs_up.text = thumbsUpList?.length().toString()
             }
-            comment_id?.let {
-                editor?.putInt("comment_id", it.toInt())
-                editor?.commit()
-                presenter?.getCommentList(it.toInt())
+            comment_id.let {
+                editor.putInt("comment_id", it.toInt())
+                editor.commit()
+                presenter.getCommentList(it.toInt())
             }
         }
     }
 
     override fun setArticleThumbsInfo(data: BoardArticleRes) {
-        data.thumbs?.let {
+        data.thumbs.let {
             val thumbsList = JSONObject(it)
             val thumbsUpList = thumbsList.get("thumbs_up") as JSONArray
-            presenter?.setThumbsUpList(thumbsUpList)
+            presenter.setThumbsUpList(thumbsUpList)
 
             tv_thumbs_up.text = thumbsUpList.length().toString()
         }
     }
 
     override fun setCommentId(c_id: String) {
-        editor?.putInt("comment_id", c_id.toInt())
-        editor?.commit()
+        editor.putInt("comment_id", c_id.toInt())
+        editor.commit()
     }
 
     override fun complete() {
@@ -171,8 +178,8 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
             }
         }
 
-        pref?.apply {
-            presenter?.getCommentList(this.getInt("comment_id", 0))
+        pref.apply {
+            presenter.getCommentList(this.getInt("comment_id", 0))
         }
     }
 
@@ -193,20 +200,19 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
     }
 
     override fun clearCommentList() {
-        adapter?.clear()
+        adapter.clear()
     }
 
     override fun setCommentList(item: BoardCommentData) {
-        adapter?.add(item)
-        adapter?.refresh()
+        adapter.add(item)
+        adapter.refresh()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         /* for memory */
-        commentList.adapter = null
-        presenter?.detachView(this)
+        presenter.detachView(this)
     }
 
     override fun onLowMemory() {
@@ -214,13 +220,5 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
 
         layout_img.removeAllViewsInLayout()
         Toast.makeText(this, "메모리가 부족하여 이미지를 보여주지 않습니다", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 }

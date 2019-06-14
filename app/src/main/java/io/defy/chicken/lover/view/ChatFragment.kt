@@ -25,8 +25,10 @@ import kotlinx.android.synthetic.main.fragment_chat.*
  */
 class ChatFragment : Fragment(), ChatContract.View {
 
-    private var presenter : ChatContract.Presenter? = null
-    private var adapter : ChatListAdapter? = null
+    private lateinit  var adapter : ChatListAdapter
+    private val presenter: ChatContract.Presenter by lazy {
+        ChatPresenter().apply { attachView(this@ChatFragment) }
+    }
     private var handler : Handler? = null
 
     private var pref: SharedPreferences? = null
@@ -50,10 +52,7 @@ class ChatFragment : Fragment(), ChatContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_chat, container, false)
-
-        presenter = ChatPresenter()
-        presenter?.attachView(this)
+        val view = inflater.inflate(R.layout.fragment_chat, container, false)
 
         return view
     }
@@ -130,7 +129,7 @@ class ChatFragment : Fragment(), ChatContract.View {
             it.isConnect()
             it.detachView(this)
         }
-        presenter = null
+        //presenter = null
 
         handler = null
     }
@@ -143,7 +142,7 @@ class ChatFragment : Fragment(), ChatContract.View {
 
         if(presenter == null)
         {
-            presenter = ChatPresenter()
+            //presenter = ChatPresenter()
             presenter?.attachView(this)
         }
 

@@ -25,8 +25,7 @@ class JoinActivity : BaseActivity(), JoinContract.View {
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { finish() }
 
-        presenter = JoinPresenter()
-        presenter?.attachView(this)
+        presenter = JoinPresenter().apply { attachView(this@JoinActivity) }
 
         et_id.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
             val ps = Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")

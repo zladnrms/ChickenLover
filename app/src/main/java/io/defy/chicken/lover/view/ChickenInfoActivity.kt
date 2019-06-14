@@ -22,15 +22,21 @@ class ChickenInfoActivity : AppCompatActivity(), ChickenInfoContract.View {
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
-        presenter = ChickenInfoPresenter()
-        presenter?.attachView(this)
+        presenter = ChickenInfoPresenter().apply { attachView(this) }
 
-        val intent = intent
-        presenter?.setTypeNumber(intent.getIntExtra("typeNumber", 0))
-        presenter?.setInfoId(intent.getIntExtra("infoId", 0))
-        presenter?.setChickenImage()
+        setDataFromIntent()
 
         presenter?.getChickenInfo(presenter?.getInfoId())
+    }
+
+
+    private fun setDataFromIntent() {
+        val intent = intent
+        presenter?.apply {
+            setTypeNumber(intent.getIntExtra("typeNumber", 0))
+            setInfoId(intent.getIntExtra("infoId", 0))
+            setChickenImage()
+        }
     }
 
     override fun setImageResource(drawable: Int) {
