@@ -31,8 +31,7 @@ class BoardArticleListAdapter(var activity: MainActivity, var lists: ArrayList<B
     private val context: Context = activity.applicationContext
 
     init {
-        presenter = BoardArticleAdapterPresenter()
-        presenter.attachView(this)
+        presenter = BoardArticleAdapterPresenter().apply { attachView(this@BoardArticleListAdapter) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -1,13 +1,10 @@
 package io.defy.chicken.lover.presenter
 
-import android.content.Intent
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.R
 import io.defy.chicken.lover.contract.ChickenInfoContract
 import io.defy.chicken.lover.model.data.ChickenInfoData
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.ChickenInfoRes
-import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

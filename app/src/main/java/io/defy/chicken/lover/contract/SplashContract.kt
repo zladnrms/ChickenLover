@@ -1,9 +1,10 @@
 package io.defy.chicken.lover.contract
 
-import android.support.v4.app.Fragment
+import io.defy.chicken.lover.presenter.BasePresenter
+import io.defy.chicken.lover.view.BaseView
 
 interface SplashContract {
-    interface View {
+    interface View : BaseView {
         fun pass()
 
         fun toastMsg(msg: String)
@@ -13,11 +14,7 @@ interface SplashContract {
         fun alertDismiss()
     }
 
-    interface Presenter {
-        fun attachView(view: Any)
-
-        fun detachView(view: Any)
-
+    interface Presenter : BasePresenter<View> {
         fun login()
     }
 }

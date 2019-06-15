@@ -33,8 +33,7 @@ class BoardCommentListAdapter(var context: Context, var lists: ArrayList<BoardCo
     private val editor = pref!!.edit()
 
     init {
-        presenter = BoardCommentAdapterPresenter()
-        presenter.attachView(this)
+        presenter = BoardCommentAdapterPresenter().apply { attachView(this@BoardCommentListAdapter) }
         setHasStableIds(true)
     }
 

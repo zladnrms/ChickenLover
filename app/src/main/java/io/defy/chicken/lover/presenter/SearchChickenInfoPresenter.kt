@@ -3,10 +3,10 @@ package io.defy.chicken.lover.presenter
 import android.util.Log
 import com.zeniex.www.zeniexautomarketing.model.AppVersionDataModel
 import com.zeniex.www.zeniexautomarketing.model.LocalChickenInfoModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.SearchChickenInfoContract
 import io.defy.chicken.lover.model.AppVersionDataRepository
 import io.defy.chicken.lover.model.LocalChickenInfoRepository
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.UpdateLocalChickenInfoRes
 import io.defy.chicken.lover.network.response.VersionCheckRes
 import io.defy.chicken.lover.view.dialog.LoadingDialog
@@ -16,25 +16,25 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 
-class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter {
+class SearchChickenInfoPresenter : SearchChickenInfoContract.Presenter, AbstractPresenter<SearchChickenInfoContract.View>() {
 
-    private var view: SearchChickenInfoContract.View? = null
     private var localRepo: LocalChickenInfoModel? = null
     private var appVersionRepo: AppVersionDataModel? = null
-    private var dialog: LoadingDialog? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as SearchChickenInfoContract.View
+    override fun attachView(view: SearchChickenInfoContract.View) {
+        super.attachView(view)
         this.localRepo = LocalChickenInfoRepository.getInstance()
         this.appVersionRepo = AppVersionDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.localRepo = null
+        this.appVersionRepo = null
     }
 
     override fun initChickenInfoVersion() {

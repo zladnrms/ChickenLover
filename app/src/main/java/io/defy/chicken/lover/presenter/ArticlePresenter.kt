@@ -1,17 +1,16 @@
 package io.defy.chicken.lover.presenter
 
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.ArticleContract
 import io.defy.chicken.lover.model.UserInfoDataRepository
 import io.defy.chicken.lover.model.data.BoardCommentData
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.ArticleThumbsRes
 import io.defy.chicken.lover.network.response.BoardArticleRes
 import io.defy.chicken.lover.network.response.BoardCommentRes
 import io.defy.chicken.lover.network.response.WriteCommentRes
 import io.defy.chicken.lover.rxbus.ArticleThumbsRefreshEvent
 import io.defy.chicken.lover.rxbus.RxBus
-import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

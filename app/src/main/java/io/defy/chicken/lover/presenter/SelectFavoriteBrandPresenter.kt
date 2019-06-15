@@ -6,22 +6,23 @@ import io.defy.chicken.lover.contract.SelectFavoriteBrandContract
 import io.defy.chicken.lover.model.FavoriteBrandRepository
 import io.defy.chicken.lover.model.UserInfoDataRepository
 
-class SelectFavoriteBrandPresenter : SelectFavoriteBrandContract.Presenter {
+class SelectFavoriteBrandPresenter : SelectFavoriteBrandContract.Presenter, AbstractPresenter<SelectFavoriteBrandContract.View>() {
 
-    private var view: SelectFavoriteBrandContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
     private var fbRepo: FavoriteBrandRepositoryModel? = null
 
     private var fbPage = 0
 
-    override fun attachView(view: Any) {
-        this.view = view as SelectFavoriteBrandContract.View
+    override fun attachView(view: SelectFavoriteBrandContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
         this.fbRepo = FavoriteBrandRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
+        this.fbRepo = null
     }
 
     override fun initFirstBrand() {

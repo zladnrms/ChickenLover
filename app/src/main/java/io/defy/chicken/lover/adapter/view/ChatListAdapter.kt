@@ -24,8 +24,7 @@ class ChatListAdapter(var context: Context, var lists: ArrayList<ChatData>) :
     private var presenter: ChatListAdapterPresenter
 
     init {
-        presenter = ChatListAdapterPresenter()
-        presenter.attachView(this)
+        presenter = ChatListAdapterPresenter().apply { attachView(this@ChatListAdapter) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -120,12 +120,6 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter.detachView(this)
-    }
-
     override fun loadingShow() {
         LoadingDialog.instance.show(activity as MainActivity)
     }
@@ -146,5 +140,10 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         super.onPause()
 
         activity?.overridePendingTransition(0, 0)
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
     }
 }

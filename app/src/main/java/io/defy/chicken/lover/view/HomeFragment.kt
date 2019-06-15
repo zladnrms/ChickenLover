@@ -150,8 +150,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-
         presenter.detachView()
+        super.onDestroy()
     }
 }

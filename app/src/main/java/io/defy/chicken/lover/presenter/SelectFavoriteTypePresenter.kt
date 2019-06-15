@@ -6,22 +6,23 @@ import io.defy.chicken.lover.contract.SelectFavoriteTypeContract
 import io.defy.chicken.lover.model.FavoriteTypeRepository
 import io.defy.chicken.lover.model.UserInfoDataRepository
 
-class SelectFavoriteTypePresenter : SelectFavoriteTypeContract.Presenter {
+class SelectFavoriteTypePresenter : SelectFavoriteTypeContract.Presenter, AbstractPresenter<SelectFavoriteTypeContract.View>() {
 
-    private var view: SelectFavoriteTypeContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
     private var ftRepo: FavoriteTypeRepositoryModel? = null
 
     private var ftPage = 0
 
-    override fun attachView(view: Any) {
-        this.view = view as SelectFavoriteTypeContract.View
+    override fun attachView(view: SelectFavoriteTypeContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
         this.ftRepo = FavoriteTypeRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
+        this.ftRepo = null
     }
 
     override fun initFirstType() {

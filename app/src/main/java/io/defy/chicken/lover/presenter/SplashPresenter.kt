@@ -1,12 +1,9 @@
 package io.defy.chicken.lover.presenter
 
-import android.util.Log
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
-import io.defy.chicken.lover.contract.ChickenInfoContract
 import io.defy.chicken.lover.contract.SplashContract
 import io.defy.chicken.lover.model.UserInfoDataRepository
-import io.defy.chicken.lover.network.response.ChickenInfoRes
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.JoinGuestRes
 import io.defy.chicken.lover.network.response.LoginGuestRes
 import io.reactivex.Observer
@@ -16,22 +13,22 @@ import io.reactivex.schedulers.Schedulers
 import java.net.ConnectException
 import java.util.concurrent.TimeoutException
 
-class SplashPresenter : SplashContract.Presenter {
+class SplashPresenter : SplashContract.Presenter, AbstractPresenter<SplashContract.View>() {
 
-    private var view: SplashContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as SplashContract.View
+    override fun attachView(view: SplashContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
     }
 
     override fun login() {

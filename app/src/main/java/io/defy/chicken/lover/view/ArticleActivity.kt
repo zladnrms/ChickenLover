@@ -206,17 +206,15 @@ class ArticleActivity : BaseActivity(), ArticleContract.View {
         adapter.add(item)
         adapter.refresh()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter.detachView()
-    }
-
     override fun onLowMemory() {
         super.onLowMemory()
 
         layout_img.removeAllViewsInLayout()
         Toast.makeText(this, "메모리가 부족하여 이미지를 보여주지 않습니다", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
     }
 }

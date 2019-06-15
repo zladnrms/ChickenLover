@@ -1,13 +1,13 @@
 package io.defy.chicken.lover.adapter.presenter
 
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.BoardCommentContract
 import io.defy.chicken.lover.model.UserInfoDataRepository
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.CommentThumbsRes
+import io.defy.chicken.lover.presenter.AbstractPresenter
 import io.defy.chicken.lover.rxbus.RxBus
 import io.defy.chicken.lover.rxbus.CommentThumbsRefreshEvent
-import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,23 +16,23 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by kim on 2017-09-14.
  */
-class BoardCommentAdapterPresenter : BoardCommentContract.Presenter {
+class BoardCommentAdapterPresenter : BoardCommentContract.Presenter, AbstractPresenter<BoardCommentContract.View>() {
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
     private var type = "free"
-    private var view: BoardCommentContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
-    override fun attachView(view: Any) {
-        this.view = view as BoardCommentContract.View
+    override fun attachView(view: BoardCommentContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
     }
 
     override fun getUid(): Int? {

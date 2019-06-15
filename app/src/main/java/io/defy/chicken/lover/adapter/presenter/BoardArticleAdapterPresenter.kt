@@ -1,21 +1,21 @@
 package io.defy.chicken.lover.adapter.presenter
 
 import io.defy.chicken.lover.contract.BoardArticleContract
+import io.defy.chicken.lover.presenter.AbstractPresenter
 
 /**
  * Created by kim on 2017-09-14.
  */
-class BoardArticleAdapterPresenter : BoardArticleContract.Presenter {
+class BoardArticleAdapterPresenter : BoardArticleContract.Presenter, AbstractPresenter<BoardArticleContract.View>() {
 
     private var type = "free"
-    private var view: BoardArticleContract.View? = null
 
-    override fun attachView(view: Any) {
-        this.view = view as BoardArticleContract.View
+    override fun attachView(view: BoardArticleContract.View) {
+        super.attachView(view)
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
     }
 
     override fun setType(type: String) {

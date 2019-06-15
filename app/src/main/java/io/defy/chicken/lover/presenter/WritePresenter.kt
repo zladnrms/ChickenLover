@@ -3,10 +3,10 @@ package io.defy.chicken.lover.presenter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.WriteContract
 import io.defy.chicken.lover.model.UserInfoDataRepository
 import io.defy.chicken.lover.model.data.FileUploadData
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.WriteArticleRes
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,24 +21,24 @@ import java.net.ConnectException
 import java.util.concurrent.TimeoutException
 
 
-class WritePresenter : WriteContract.Presenter {
+class WritePresenter : WriteContract.Presenter, AbstractPresenter<WriteContract.View>()  {
 
     private var type = "free"
 
-    private var view: WriteContract.View? = null
     private var userRepo: UserInfoDataRepositoryModel? = null
 
     val retrofitClient by lazy {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as WriteContract.View
+    override fun attachView(view: WriteContract.View) {
+        super.attachView(view)
         this.userRepo = UserInfoDataRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.userRepo = null
     }
 
     override fun setType(type: String) {

@@ -130,12 +130,6 @@ class BoardFragment : Fragment(), BoardContract.View {
         articleList.adapter = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        presenter.detachView()
-    }
-
     override fun loadingShow() {
         LoadingDialog.instance.show(activity as MainActivity)
     }
@@ -155,5 +149,10 @@ class BoardFragment : Fragment(), BoardContract.View {
     override fun onPause() {
         super.onPause()
         activity?.overridePendingTransition(0, 0)
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
     }
 }

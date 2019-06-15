@@ -15,7 +15,6 @@ class SplashActivity : BaseActivity(), SplashContract.View {
     private val presenter: SplashContract.Presenter by lazy {
         SplashPresenter().apply {
             attachView(this@SplashActivity)
-            login()
         }
     }
 
@@ -23,6 +22,7 @@ class SplashActivity : BaseActivity(), SplashContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        presenter.login()
     }
 
     override fun pass() {
@@ -53,5 +53,10 @@ class SplashActivity : BaseActivity(), SplashContract.View {
 
     override fun alertDismiss() {
         AlertDialog.instance.dismiss()
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
     }
 }

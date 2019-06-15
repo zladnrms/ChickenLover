@@ -4,23 +4,23 @@ import com.zeniex.www.zeniexautomarketing.model.FavoriteTypeRepositoryModel
 import io.defy.chicken.lover.contract.FavoriteTypeContract
 import io.defy.chicken.lover.model.FavoriteTypeRepository
 import io.defy.chicken.lover.model.data.FavoriteTypeData
+import io.defy.chicken.lover.presenter.AbstractPresenter
 
 /**
  * Created by kim on 2017-09-14.
  */
-class FavoriteTypeAdapterPresenter : FavoriteTypeContract.Presenter {
+class FavoriteTypeAdapterPresenter : FavoriteTypeContract.Presenter, AbstractPresenter<FavoriteTypeContract.View>() {
 
-    private var view: FavoriteTypeContract.View? = null
     private var repo: FavoriteTypeRepositoryModel? = null
 
-    override fun attachView(view: Any) {
-        this.view = view as FavoriteTypeContract.View
+    override fun attachView(view: FavoriteTypeContract.View) {
+        super.attachView(view)
         this.repo = FavoriteTypeRepository.getInstance()
     }
 
-    override fun detachView(view: Any) {
-        this.view = view as FavoriteTypeContract.View
-        this.view = null
+    override fun detachView() {
+        super.detachView()
+        this.repo = null
     }
 
     override fun selectPaging(page : Int) : List<FavoriteTypeData>? {

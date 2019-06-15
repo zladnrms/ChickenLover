@@ -1,14 +1,11 @@
 package io.defy.chicken.lover.presenter
 
 import android.widget.TextView
-import com.zeniex.www.zeniexautomarketing.model.FavoriteBrandRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.R
-import io.defy.chicken.lover.contract.ArticleContract
 import io.defy.chicken.lover.contract.HomeContract
-import io.defy.chicken.lover.model.FavoriteBrandRepository
 import io.defy.chicken.lover.model.data.ChickenInfoData
 import io.defy.chicken.lover.model.data.SelectChickenHistoryData
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.ChickenInfoRes
 import io.defy.chicken.lover.network.response.ChickenSelectHistoryRes
 import io.reactivex.Observer

@@ -3,10 +3,9 @@ package io.defy.chicken.lover.presenter
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
-import io.defy.chicken.lover.contract.ArticleContract
 import io.defy.chicken.lover.contract.BoardContract
 import io.defy.chicken.lover.model.data.BoardArticleData
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.response.BoardArticleListRes
 import io.reactivex.Observer
 import io.reactivex.SingleObserver

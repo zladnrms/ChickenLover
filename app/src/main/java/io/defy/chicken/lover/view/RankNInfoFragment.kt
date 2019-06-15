@@ -11,10 +11,6 @@ import io.defy.chicken.lover.contract.RankNInfoContract
 import io.defy.chicken.lover.presenter.HomePresenter
 import io.defy.chicken.lover.presenter.RankNInfoPresenter
 
-
-/**
- * Created by kim on 2017-09-20.
- */
 class RankNInfoFragment : Fragment(), RankNInfoContract.View {
 
     private val presenter: RankNInfoContract.Presenter by lazy {
@@ -55,7 +51,7 @@ class RankNInfoFragment : Fragment(), RankNInfoContract.View {
     override fun onDestroy() {
         super.onDestroy()
 
-        presenter.detachView(this)
+        presenter.detachView()
     }
 
     override fun onPause() {

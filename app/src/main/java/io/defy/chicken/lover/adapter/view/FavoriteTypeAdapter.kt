@@ -25,8 +25,7 @@ class FavoriteTypeAdapter(var context: Context, var lists: ArrayList<FavoriteTyp
     private var presenter: FavoriteTypeAdapterPresenter
 
     init {
-        presenter = FavoriteTypeAdapterPresenter()
-        presenter.attachView(this)
+        presenter = FavoriteTypeAdapterPresenter().apply { attachView(this@FavoriteTypeAdapter) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -28,8 +28,7 @@ class FileUploadListAdapter(var context: Context, var lists: ArrayList<FileUploa
     private var presenter: FileUploadAdapterPresenter
 
     init {
-        presenter = FileUploadAdapterPresenter()
-        presenter.attachView(this)
+        presenter = FileUploadAdapterPresenter().apply { attachView(this@FileUploadListAdapter) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

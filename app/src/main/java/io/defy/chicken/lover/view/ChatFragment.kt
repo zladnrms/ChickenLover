@@ -171,8 +171,7 @@ class ChatFragment : Fragment(), ChatContract.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-
         presenter.detachView()
+        super.onDestroy()
     }
 }

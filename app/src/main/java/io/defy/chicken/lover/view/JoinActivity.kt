@@ -87,8 +87,7 @@ class JoinActivity : BaseActivity(), JoinContract.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-
         presenter.detachView()
+        super.onDestroy()
     }
 }

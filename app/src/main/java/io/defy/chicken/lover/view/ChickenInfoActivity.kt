@@ -68,8 +68,7 @@ class ChickenInfoActivity : BaseActivity(), ChickenInfoContract.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-
         presenter.detachView()
+        super.onDestroy()
     }
 }

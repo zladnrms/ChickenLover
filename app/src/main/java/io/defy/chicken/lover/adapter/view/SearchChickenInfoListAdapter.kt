@@ -33,8 +33,7 @@ class SearchChickenInfoListAdapter(var context: Context, var lists: ArrayList<Lo
     private var presenter: SearchChickenInfoAdapterPresenter
 
     init {
-        presenter = SearchChickenInfoAdapterPresenter()
-        presenter.attachView(this)
+        presenter = SearchChickenInfoAdapterPresenter().apply { attachView(this@SearchChickenInfoListAdapter) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

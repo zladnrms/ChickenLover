@@ -136,8 +136,7 @@ class PermissionActivity : BaseActivity(), PermissionContract.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-
         presenter.detachView()
+        super.onDestroy()
     }
 }

@@ -22,7 +22,7 @@ class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View
 
     private lateinit var adapter : SelectChickenTypeAdapter
     private val presenter: SelectChickenTypeContract.Presenter by lazy {
-        SelectChickenTypePresenter().apply { attachView(this) }
+        SelectChickenTypePresenter().apply { attachView(this@SelectChickenTypeActivity) }
     }
 
     private val spanCount = 3
@@ -36,6 +36,7 @@ class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp)
         toolbar.setNavigationOnClickListener { v -> finish() }
 
+        adapter = SelectChickenTypeAdapter(this, ArrayList())
         val mGridLayoutManager = GridLayoutManager(this, 3)
         typeList.apply {
             this.layoutManager = mGridLayoutManager
@@ -45,5 +46,10 @@ class SelectChickenTypeActivity : BaseActivity(), SelectChickenTypeContract.View
         typeList.adapter = adapter
 
         adapter = SelectChickenTypeAdapter(this, presenter.getChickenTypeList())
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
     }
 }

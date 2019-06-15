@@ -4,7 +4,6 @@ import io.defy.chicken.lover.presenter.BasePresenter
 import io.defy.chicken.lover.view.BaseView
 
 interface SelectFavoriteBrandContract {
-
     interface View : BaseView {
         fun nextPageClick()
 

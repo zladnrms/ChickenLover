@@ -10,5 +10,4 @@ class PermissionPresenter : PermissionContract.Presenter, AbstractPresenter<Perm
     override fun detachView() {
         super.detachView()
     }
-
 }

@@ -99,4 +99,9 @@ class SelectFavoriteBrandActivity : BaseActivity(), SelectFavoriteBrandContract.
             favorite_brand_next.visibility = View.VISIBLE
         }
     }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
+    }
 }

@@ -91,4 +91,9 @@ class SelectFavoriteTypeActivity : BaseActivity(), SelectFavoriteTypeContract.Vi
             favorite_type_next.visibility = View.VISIBLE
         }
     }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
+    }
 }

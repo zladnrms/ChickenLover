@@ -27,8 +27,7 @@ class FavoriteBrandAdapter(var context: Context, var lists: ArrayList<FavoriteBr
     private var presenter: FavoriteBrandAdapterPresenter
 
     init {
-        presenter = FavoriteBrandAdapterPresenter()
-        presenter.attachView(this)
+        presenter = FavoriteBrandAdapterPresenter().apply { attachView(this@FavoriteBrandAdapter) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

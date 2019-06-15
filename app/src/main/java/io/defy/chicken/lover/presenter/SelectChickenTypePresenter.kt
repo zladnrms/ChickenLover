@@ -1,13 +1,12 @@
 package io.defy.chicken.lover.presenter
 
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.contract.SelectChickenTypeContract
 import io.defy.chicken.lover.model.data.SelectChickenTypeData
+import io.defy.chicken.lover.network.ApiInterface
 
 
-class SelectChickenTypePresenter : SelectChickenTypeContract.Presenter {
+class SelectChickenTypePresenter : SelectChickenTypeContract.Presenter, AbstractPresenter<SelectChickenTypeContract.View>() {
 
-    private var view: SelectChickenTypeContract.View? = null
     private val list :  ArrayList<SelectChickenTypeData> by lazy {
         arrayListOf(SelectChickenTypeData(0,"후라이드"),
             SelectChickenTypeData(1,"양념"),
@@ -22,12 +21,12 @@ class SelectChickenTypePresenter : SelectChickenTypeContract.Presenter {
         ApiInterface.create()
     }
 
-    override fun attachView(view: Any) {
-        this.view = view as SelectChickenTypeContract.View
+    override fun attachView(view: SelectChickenTypeContract.View) {
+        super.attachView(view)
     }
 
-    override fun detachView(view: Any) {
-        this.view = null
+    override fun detachView() {
+        super.detachView()
     }
 
     override fun getChickenTypeList(): ArrayList<SelectChickenTypeData> {

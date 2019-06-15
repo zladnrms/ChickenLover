@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_write.*
 
 class WriteActivity : BaseActivity(), WriteContract.View {
 
-
     private lateinit var adapter : FileUploadListAdapter
     private val presenter: WriteContract.Presenter by lazy {
         WritePresenter().apply { attachView(this@WriteActivity) }
@@ -158,5 +157,10 @@ class WriteActivity : BaseActivity(), WriteContract.View {
 
     override fun toastMsg(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        presenter.detachView()
+        super.onDestroy()
     }
 }

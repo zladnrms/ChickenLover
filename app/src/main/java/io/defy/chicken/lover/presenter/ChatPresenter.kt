@@ -2,22 +2,14 @@ package io.defy.chicken.lover.presenter
 
 import android.util.Log
 import com.zeniex.www.zeniexautomarketing.model.UserInfoDataRepositoryModel
-import com.zeniex.www.zeniexautomarketing.network.ApiInterface
 import io.defy.chicken.lover.R
-import io.defy.chicken.lover.contract.BoardContract
 import io.defy.chicken.lover.contract.ChatContract
 import io.defy.chicken.lover.model.UserInfoDataRepository
-import io.defy.chicken.lover.model.data.BoardArticleData
+import io.defy.chicken.lover.network.ApiInterface
 import io.defy.chicken.lover.network.netty.NettyClient
 import io.defy.chicken.lover.network.packet.ChatPacket
 import io.defy.chicken.lover.network.packet.EntryPacket
 import io.defy.chicken.lover.network.packet.ExitPacket
-import io.defy.chicken.lover.network.response.BoardArticleListRes
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import org.json.JSONObject
 
 class ChatPresenter : ChatContract.Presenter, AbstractPresenter<ChatContract.View>() {
 
